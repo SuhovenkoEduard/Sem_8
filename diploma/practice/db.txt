@@ -1,0 +1,10 @@
++ аутентификация (Authentication);
++ дневники (Diary);
++ цели (Goal);
++ сотрудники (Employee)
++ тематические материалы (ThematicMaterial)
++ комментарии (Comment)
++ чат (Chat)
+
+- отчёты (Report); (из дневников)
+
