@@ -1,4 +1,4 @@
-import { Medication, Timestamp, User } from "firestore/types/collections.types";
+import { Medication, Timestamp, User } from "./collections.types";
 
 export enum Role {
   PATIENT = "patient",
@@ -36,21 +36,28 @@ export enum EmployeeReviewRate {
   TERRIBLE = "terrible",
 }
 
-export type UserInfo = Omit<User, "diary">;
+export type UserInfo = Omit<User, "diary" | "employee">;
+
+export type Diary = {
+  dailyLogs: DailyLog[];
+  goals: Goal[];
+};
 
 export type DailyLog = {
   createdAt: Timestamp;
-  carbohydratesIntake: number;
   takenMedications: TakenMedication[];
   blood: {
-    sugarLevels: number[];
+    sugarLevel: number;
     pulse?: number;
     pressure?: {
       systolic: number;
       diastolic: number;
     };
   };
-  calories?: number;
+  calories?: {
+    total: number;
+    carbohydratesIntake?: number;
+  };
   temperature?: number;
   weight?: number;
   notes: Note[];
@@ -90,6 +97,7 @@ export type Message = {
 };
 
 export type EmployeeReview = {
+  createdAt: Timestamp;
   rate: EmployeeReviewRate;
   content: string;
   reviewer: UserInfo;

@@ -1,15 +1,13 @@
 import {
-  DailyLog,
   Comment,
   Message,
   UserInfo,
   EmployeeReview,
-  Goal,
   Role,
-  MedicationRoute,
-} from "firestore/types/utils.types";
+  MedicationRoute, Diary,
+} from "./utils.types";
 
-export type Timestamp = number;
+export type Timestamp = string;
 
 export type FirebaseDocId = {
   docId: string;
@@ -25,12 +23,11 @@ export type User = FirebaseDocId & {
   address: string;
   phone: string;
   role: Role;
-  diary?: string;
-};
-
-export type Diary = FirebaseDocId & {
-  dailyLogs: DailyLog[];
-  goals: Goal[];
+  diary?: Diary;
+  employee?: {
+    reviews: EmployeeReview[];
+    salary: number;
+  }
 };
 
 export type Medication = FirebaseDocId & {
@@ -39,12 +36,11 @@ export type Medication = FirebaseDocId & {
   description: string;
   instruction: string;
   medicationRoute: MedicationRoute;
-  frequency: string;
 };
 
 export type ThematicMaterial = FirebaseDocId & {
   imageUrl: string;
-  pdfUrl: string;
+  docUrl: string;
   createdAt: Timestamp;
   title: string;
   description: string;
@@ -56,11 +52,4 @@ export type Dialog = FirebaseDocId & {
   doctor: UserInfo;
   patient: UserInfo;
   messages: Message[];
-};
-
-export type Employee = FirebaseDocId & {
-  user: UserInfo;
-  hiredAt: Timestamp;
-  reviews: EmployeeReview[];
-  salary: number;
 };
