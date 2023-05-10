@@ -35,9 +35,18 @@ export const shrinkUser = (user: User): FBUser => {
     }
   }
   
+  let relativePatientObj: Pick<FBUser, 'relativePatient'> | Record<never, never> = {}
+  
+  if (user?.relativePatient) {
+    relativePatientObj = {
+      relativePatient: user.relativePatient.docId,
+    }
+  }
+  
   return {
     ...user,
     ...employeeObj,
+    ...relativePatientObj,
   } as FBUser
 }
 

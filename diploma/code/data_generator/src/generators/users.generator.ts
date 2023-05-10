@@ -1,9 +1,8 @@
-import type { Medication, User } from '../types/collections.types'
-import type { UserInfo } from '../types/collections.types'
+import type { Medication, User, UserInfo } from '../types/collections.types'
+import { Role } from '../types/collections.types'
 
 import moment from 'moment'
 import { faker } from '@faker-js/faker'
-import { Role } from '../types/collections.types'
 
 import { generateDocId, getUserInfoFromUser } from '../helpers'
 import { generateDiaries, generateEmployeeReviews } from '../generators'
@@ -45,10 +44,20 @@ const addFields = (users: User[], medications: Medication[]): User[] => {
       }
     }
     
+    const patients = users.filter((_user) => _user.role === Role.PATIENT)
+    
+    let relativePatientObj = {}
+    if (role === Role.RELATIVE) {
+      relativePatientObj = {
+        relativePatient: getUserInfoFromUser(faker.helpers.arrayElement(patients)),
+      }
+    }
+    
     return {
       ...user,
       ...diaryObj,
       ...employeeObj,
+      ...relativePatientObj,
     }
   })
 }

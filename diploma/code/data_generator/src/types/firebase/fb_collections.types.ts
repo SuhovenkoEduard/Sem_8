@@ -11,10 +11,11 @@ import {
 export type FBMedication = Medication;
 export type FBUserId = string;
 
-export type FBUser = Omit<User, 'employee'> & {
+export type FBUser = Omit<User, 'employee' | 'relativePatient'> & {
   employee?: Omit<Pick<User, 'employee'>, 'reviews'> & {
     reviews: FBEmployeeReview[];
-  }
+  };
+  relativePatient: FBUserId;
 }
 
 export type FBThematicMaterial = Omit<ThematicMaterial, 'author' | 'comments'> & {

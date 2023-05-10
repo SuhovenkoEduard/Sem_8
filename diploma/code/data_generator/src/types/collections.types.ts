@@ -21,10 +21,11 @@ export type User = FirebaseDocId & {
     hiredAt: Timestamp;
     reviews: EmployeeReview[];
     salary: number;
-  }
+  };
+  relativePatient?: UserInfo;
 }
 
-export type UserInfo = Omit<User, 'fbUId' | 'diary' | 'employee'>;
+export type UserInfo = Omit<User, 'fbUId' | 'diary' | 'employee' | 'relativePatient'>;
 
 export type Medication = FirebaseDocId & {
   imageUrl: string;

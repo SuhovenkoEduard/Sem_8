@@ -127,4 +127,5 @@ export const fBUserSchema = firebaseDocIdSchema.extend({
     })
     .strict()
     .optional(),
+  relativePatient: fbUserIdSchema.optional(),
 }).strict()

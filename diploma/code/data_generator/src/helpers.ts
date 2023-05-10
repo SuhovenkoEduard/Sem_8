@@ -9,5 +9,6 @@ export const getUserInfoFromUser = (user: User): UserInfo => {
   clonedUser.fbUId = undefined
   clonedUser.diary = undefined
   clonedUser.employee = undefined
+  clonedUser.relativePatient = undefined
   return JSON.parse(JSON.stringify(clonedUser))
 }

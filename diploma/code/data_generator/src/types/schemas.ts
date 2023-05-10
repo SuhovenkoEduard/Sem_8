@@ -150,5 +150,5 @@ export const userSchema = firebaseDocIdSchema.extend({
   })
     .strict()
     .optional(),
+  relativePatient: userInfoSchema.optional(),
 }).strict()
-
