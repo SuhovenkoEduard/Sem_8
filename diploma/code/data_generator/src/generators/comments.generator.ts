@@ -1,8 +1,8 @@
-import type { Comment, UserInfo } from "../types/utils.types";
+import type { Comment, UserInfo } from '../types/collections.types'
 
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker'
 
-import { generateMessages } from "../generators";
+import { generateMessages } from '../generators'
 
 
 export const generateComments = (count: number, minDate: number, maxDate: number, commenters: UserInfo[]): Comment[] => {
@@ -10,6 +10,6 @@ export const generateComments = (count: number, minDate: number, maxDate: number
     .fill(null)
     .map((): Comment => ({
       message: generateMessages(1, minDate, maxDate, [faker.helpers.arrayElement(commenters)])[0],
-      score: faker.datatype.number({ min: -10, max: 10 })
+      score: faker.datatype.number({ min: -5, max: 10 }),
     }))
 }

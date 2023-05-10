@@ -1,10 +1,10 @@
-import type { Goal } from "../types/utils.types";
+import type { Goal } from '../types/collections.types'
 
-import moment from "moment";
-import { faker } from "@faker-js/faker";
-import { GoalCategory, GoalStatus } from "../types/utils.types";
+import moment from 'moment'
+import { faker } from '@faker-js/faker'
+import { GoalCategory, GoalStatus } from '../types/collections.types'
 
-import { generateNotes } from "../generators";
+import { generateNotes } from '../generators'
 
 
 export const generateGoals = (count: number): Goal[] => {
@@ -12,18 +12,18 @@ export const generateGoals = (count: number): Goal[] => {
     .fill(null)
     .map((): Goal => {
       const createdAt = faker.datatype.datetime({ min: +moment().startOf('year').subtract(1, 'year').toDate(), max: +moment().subtract(4, 'month').toDate() })
-      let deadline;
+      let deadline
       
       if (faker.datatype.boolean()) {
         deadline = faker.datatype.datetime({ min: +moment().add(2, 'months').toDate(), max: +moment().add(4, 'months').toDate() })
       } else {
-        deadline = faker.datatype.datetime({ min: +moment(createdAt).add(1, "week").toDate(), max: +moment(createdAt).add(3, 'months').toDate() })
+        deadline = faker.datatype.datetime({ min: +moment(createdAt).add(1, 'week').toDate(), max: +moment(createdAt).add(3, 'months').toDate() })
       }
       
-      let status;
+      let status
       
       if (+deadline > +new Date()) {
-        status = faker.helpers.arrayElement(Object.values(GoalStatus));
+        status = faker.helpers.arrayElement(Object.values(GoalStatus))
       } else {
         status = faker.helpers.arrayElement(Object.values([GoalStatus.COMPLETED, GoalStatus.CANCELLED]))
       }
@@ -44,14 +44,14 @@ export const generateGoals = (count: number): Goal[] => {
       }
 
       return {
-        title: faker.lorem.sentence(faker.datatype.number({min: 5, max: 15})),
-        description: faker.lorem.sentences(faker.datatype.number({min: 2, max: 5}), " "),
-        notes: generateNotes(faker.datatype.number({min: 0, max: 5}), Math.min(+new Date(), +moment(createdAt).add("1", "hour").toDate()), +moment(deadline).toDate()),
+        title: faker.lorem.sentence(faker.datatype.number({ min: 5, max: 15 })),
+        description: faker.lorem.sentences(faker.datatype.number({ min: 2, max: 5 }), ' '),
+        notes: generateNotes(faker.datatype.number({ min: 0, max: 5 }), Math.min(+new Date(), +moment(createdAt).add('1', 'hour').toDate()), +moment(deadline).toDate()),
         createdAt: createdAt.toString(),
         deadline: deadline.toString(),
         category: faker.helpers.arrayElement(Object.values(GoalCategory)),
         status,
-        progress
-      };
+        progress,
+      }
     })
 }

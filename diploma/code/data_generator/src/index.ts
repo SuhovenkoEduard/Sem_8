@@ -1,47 +1,82 @@
-import fs from "fs";
-import { generateUsers } from "./generators";
-import { BASE_FILE_PATH, COLLECTION_SIZES, CollectionNames } from "./constants";
-import { Dialog, Medication, ThematicMaterial, User } from "./types/collections.types";
-import { Role, UserInfo } from "./types/utils.types";
-import { getUserInfoFromUser } from "./helpers";
+import { faker } from '@faker-js/faker'
 import {
-  generateMedication,
-  generateThematicMaterial,
-  generateDialogs
-} from "./generators";
+  generate,
+  GeneratorResults,
+  readFromFiles,
+} from './generate'
+import {
+  getFirestore,
+  doc,
+  getDocs,
+  collection,
+  setDoc,
+  deleteDoc,
+  Firestore,
+  DocumentData,
+} from 'firebase/firestore'
+import { firebaseApp } from './firebase_config'
+import { CollectionNames } from './constants'
 
-const getUsersInfoByRoles = ({ users , roles }: {
-  users: User[],
-  roles: Role[]
-}): UserInfo[] =>
-  users
-    .filter(user => roles.includes(user.role))
-    .map(getUserInfoFromUser)
+faker.setLocale('ru')
 
-const writeToFile = <T>({ collectionName, collection }:{
-  collectionName: string,
-  collection: T[]
-}) => {
-  fs.writeFileSync(`${BASE_FILE_PATH}/${collectionName}.json`, JSON.stringify(collection, null, '  '));
+const getCollectionDocs = async (db: Firestore, collectionName: CollectionNames) => {
+  const docsSnap = await getDocs(collection(db, collectionName))
+  return docsSnap.docs.map(document => document.data())
 }
 
-const medications: Medication[] = generateMedication(COLLECTION_SIZES.Medications);
-const users: User[] = generateUsers(COLLECTION_SIZES.Users, medications);
+const removeDocs = async (db: Firestore, collectionName: CollectionNames, docs: DocumentData[]) => {
+  return Promise.all(docs.map(document => deleteDoc(doc(db, collectionName, document.docId))))
+}
 
-const users_patients: UserInfo[] = getUsersInfoByRoles({ users, roles: [Role.PATIENT] })
-const users_doctors: UserInfo[] = getUsersInfoByRoles({ users, roles: [Role.DOCTOR] })
-const users_authors: UserInfo[] = getUsersInfoByRoles({ users, roles: [Role.CONTENT_MAKER] })
+const removeCollection = async (db: Firestore, collectionName: CollectionNames) => {
+  const documents = await getCollectionDocs(db, collectionName)
+  await removeDocs(db, collectionName, documents)
+}
 
+const writeToDB = async (results: GeneratorResults) => {
+  const { firebase } = results
+  const { users, medications, thematicMaterials, dialogs } = firebase
+  
+  const db = getFirestore(firebaseApp)
+  
+  await Promise.all(Object.values(CollectionNames).map(collectionName => removeCollection(db, collectionName)))
+  console.log('All collections are removed!')
+  
+  await Promise.all(users.map((user) => setDoc(doc(db, 'users', user.docId), user)))
+  console.log('Users added!')
+  await Promise.all(medications.map((medication) => setDoc(doc(db, 'medications', medication.docId), medication)))
+  console.log('Medications added!')
+  await Promise.all(thematicMaterials.map((thematicMaterial) => setDoc(doc(db, 'thematicMaterials', thematicMaterial.docId), thematicMaterial)))
+  console.log('ThematicMaterials added!')
+  await Promise.all(dialogs.map((dialog) => setDoc(doc(db, 'dialogs', dialog.docId), dialog)))
+  console.log('Dialogs added!')
+}
 
-const thematicMaterials: ThematicMaterial[] = generateThematicMaterial(
-  COLLECTION_SIZES.ThematicMaterials,
-  users_authors,
-  users_patients
-)
+const main = async () => {
+  const results = readFromFiles()
+  
+  // await writeToDB(results)
+  console.log('End of the main function!')
+}
 
-const dialogs: Dialog[] = generateDialogs(users_patients, users_doctors)
+main()
 
-writeToFile<User>({ collectionName: CollectionNames.USERS, collection: users });
-writeToFile<Medication>({ collectionName: CollectionNames.MEDICATIONS, collection: medications });
-writeToFile<ThematicMaterial>({ collectionName: CollectionNames.THEMATIC_MATERIALS, collection: thematicMaterials });
-writeToFile<Dialog>({ collectionName: CollectionNames.DIALOGS, collection: dialogs });
+// const docId = 'fdfdgdgdf2'
+// const collectionName = 'Diaries'
+//
+// // await deleteDoc(doc(db, collectionName, docId))
+//
+// const docSnap = await getDoc(doc(db, collectionName, docId))
+// if (docSnap.exists()) {
+//   console.log('Document exists!')
+// } else {
+//   console.log('Document doesn\'t exist! We will add it.')
+//   await setDoc(doc(db, collectionName, 'fdfdgdgdf2'), { example: '123' })
+//   const docSnapAfterAdding = await getDoc(doc(db, collectionName, docId))
+//   console.log('After adding:', docSnapAfterAdding.data())
+// }
+//
+// const collectionRef = collection(db, collectionName)
+//
+// const docsSnap = await getDocs(collectionRef)
+// console.log('All docs:', docsSnap.docs.map(d => d.data()))
