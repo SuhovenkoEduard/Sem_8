@@ -17,7 +17,7 @@ import { FormHelperText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { successfulAuth } from "helpers/auth.helpers.tmp";
+import { successfulAuth, successfulSignUp } from "helpers/auth.helpers.tmp";
 import { Copyright } from "components/pages/auth";
 
 export const SignUp = () => {
@@ -46,6 +46,7 @@ export const SignUp = () => {
 
     if (userCredential) {
       await successfulAuth(userCredential, navigate);
+      await successfulSignUp({ firstName, lastName, userCredential });
     }
 
     console.log({

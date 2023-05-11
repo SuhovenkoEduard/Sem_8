@@ -15,7 +15,7 @@ export type FBUser = Omit<User, 'employee' | 'relativePatient'> & {
   employee?: Omit<Pick<User, 'employee'>, 'reviews'> & {
     reviews: FBEmployeeReview[];
   };
-  relativePatient: FBUserId;
+  relativePatient?: FBUserId;
 }
 
 export type FBThematicMaterial = Omit<ThematicMaterial, 'author' | 'comments'> & {
