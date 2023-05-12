@@ -7,11 +7,11 @@ import {
   Role,
 } from "./collections.types";
 
-export const fbAuthUserIdSchema = z.string();
+export const authUserIdSchema = z.string();
 
 export const firebaseDocIdSchema = z
   .object({
-    docId: fbAuthUserIdSchema,
+    docId: authUserIdSchema,
   })
   .strict();
 
@@ -27,18 +27,18 @@ export const medicationRouteSchema = z.nativeEnum(MedicationRoute);
 
 export const employeeReviewRateSchema = z.nativeEnum(EmployeeReviewRate);
 
-export const fBNoteSchema = z
+export const noteSchema = z
   .object({
     createdAt: timestampSchema,
     content: z.string(),
   })
   .strict();
 
-export const fBGoalSchema = z
+export const goalSchema = z
   .object({
     title: z.string(),
     description: z.string(),
-    notes: z.array(fBNoteSchema),
+    notes: z.array(noteSchema),
     createdAt: timestampSchema,
     deadline: timestampSchema,
     category: goalCategorySchema,
@@ -47,7 +47,7 @@ export const fBGoalSchema = z
   })
   .strict();
 
-export const fBMedicationSchema = firebaseDocIdSchema
+export const medicationSchema = firebaseDocIdSchema
   .extend({
     imageUrl: z.string(),
     title: z.string(),
@@ -57,43 +57,43 @@ export const fBMedicationSchema = firebaseDocIdSchema
   })
   .strict();
 
-export const fBTakenMedicationSchema = z
+export const takenMedicationSchema = z
   .object({
-    medication: fBMedicationSchema,
+    medication: medicationSchema,
     time: timestampSchema,
     dosage: z.number(),
   })
   .strict();
 
-export const fBMessageSchema = z
+export const messageSchema = z
   .object({
     createdAt: timestampSchema,
     content: z.string(),
-    sender: fbAuthUserIdSchema,
+    sender: authUserIdSchema,
   })
   .strict();
 
-export const fBEmployeeReviewSchema = z
+export const employeeReviewSchema = z
   .object({
     createdAt: timestampSchema,
     rate: employeeReviewRateSchema,
     content: z.string(),
-    reviewer: fbAuthUserIdSchema,
+    reviewer: authUserIdSchema,
   })
   .strict();
 
-export const fBDialogSchema = firebaseDocIdSchema
+export const dialogSchema = firebaseDocIdSchema
   .extend({
-    doctor: fbAuthUserIdSchema,
-    patient: fbAuthUserIdSchema,
-    messages: z.array(fBMessageSchema),
+    doctor: authUserIdSchema,
+    patient: authUserIdSchema,
+    messages: z.array(messageSchema),
   })
   .strict();
 
-export const fBDailyLogSchema = z
+export const dailyLogSchema = z
   .object({
     createdAt: timestampSchema,
-    takenMedications: z.array(fBTakenMedicationSchema),
+    takenMedications: z.array(takenMedicationSchema),
     blood: z
       .object({
         sugarLevel: z.number(),
@@ -116,37 +116,37 @@ export const fBDailyLogSchema = z
       .optional(),
     temperature: z.number().optional(),
     weight: z.number().optional(),
-    notes: z.array(fBNoteSchema),
+    notes: z.array(noteSchema),
   })
   .strict();
 
-export const fBCommentSchema = z
+export const commentSchema = z
   .object({
-    message: fBMessageSchema,
+    message: messageSchema,
     score: z.number(),
   })
   .strict();
 
-export const fBThematicMaterialSchema = firebaseDocIdSchema
+export const thematicMaterialSchema = firebaseDocIdSchema
   .extend({
     imageUrl: z.string(),
     docUrl: z.string(),
     createdAt: timestampSchema,
     title: z.string(),
     description: z.string(),
-    author: fbAuthUserIdSchema,
-    comments: z.array(fBCommentSchema),
+    author: authUserIdSchema,
+    comments: z.array(commentSchema),
   })
   .strict();
 
-export const fBDiarySchema = z
+export const diarySchema = z
   .object({
-    dailyLogs: z.array(fBDailyLogSchema),
-    goals: z.array(fBGoalSchema),
+    dailyLogs: z.array(dailyLogSchema),
+    goals: z.array(goalSchema),
   })
   .strict();
 
-export const fBUserSchema = firebaseDocIdSchema
+export const userSchema = firebaseDocIdSchema
   .extend({
     email: z.string(),
     imageUrl: z.string(),
@@ -159,15 +159,15 @@ export const fBUserSchema = firebaseDocIdSchema
     address: z.string(),
     phone: z.string(),
     role: roleSchema,
-    diary: fBDiarySchema.optional(),
+    diary: diarySchema.optional(),
     employee: z
       .object({
         hiredAt: timestampSchema,
-        reviews: z.array(fBEmployeeReviewSchema),
+        reviews: z.array(employeeReviewSchema),
         salary: z.number(),
       })
       .strict()
       .optional(),
-    relativePatient: fbAuthUserIdSchema.optional(),
+    relativePatient: authUserIdSchema.optional(),
   })
   .strict();

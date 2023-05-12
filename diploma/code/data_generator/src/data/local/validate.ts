@@ -1,9 +1,9 @@
 import { GeneratorResults } from "../../types/generator.types";
 import {
-  fBDialogSchema,
-  fBMedicationSchema,
-  fBThematicMaterialSchema,
-  fBUserSchema,
+  dialogSchema,
+  medicationSchema,
+  thematicMaterialSchema,
+  userSchema,
 } from "../../types/schemas";
 
 export const validate = ({
@@ -12,10 +12,10 @@ export const validate = ({
   thematicMaterials,
   dialogs,
 }: GeneratorResults) => {
-  users.forEach((fbUser) => fBUserSchema.parse(fbUser));
-  medications.forEach((fbMedication) => fBMedicationSchema.parse(fbMedication));
+  users.forEach((fbUser) => userSchema.parse(fbUser));
+  medications.forEach((fbMedication) => medicationSchema.parse(fbMedication));
   thematicMaterials.forEach((fbThematicMaterial) =>
-    fBThematicMaterialSchema.parse(fbThematicMaterial)
+    thematicMaterialSchema.parse(fbThematicMaterial)
   );
-  dialogs.forEach((fbDialog) => fBDialogSchema.parse(fbDialog));
+  dialogs.forEach((fbDialog) => dialogSchema.parse(fbDialog));
 };
