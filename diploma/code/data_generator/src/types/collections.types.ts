@@ -1,12 +1,11 @@
 export type Timestamp = string;
-export type FBAuthUserId = string;
+export type AuthUserId = string;
 
 export type FirebaseDocId = {
-  docId: string;
-}
+  docId: AuthUserId;
+};
 
 export type User = FirebaseDocId & {
-  fbUId: FBAuthUserId;
   email: string;
   imageUrl: string;
   name: {
@@ -22,10 +21,10 @@ export type User = FirebaseDocId & {
     reviews: EmployeeReview[];
     salary: number;
   };
-  relativePatient?: UserInfo;
-}
+  relativePatient?: AuthUserId;
+};
 
-export type UserInfo = Omit<User, 'fbUId' | 'diary' | 'employee' | 'relativePatient'>;
+export type UserInfo = Omit<User, "diary" | "employee" | "relativePatient">;
 
 export type Medication = FirebaseDocId & {
   imageUrl: string;
@@ -33,7 +32,7 @@ export type Medication = FirebaseDocId & {
   description: string;
   instruction: string;
   medicationRoute: MedicationRoute;
-}
+};
 
 export type ThematicMaterial = FirebaseDocId & {
   imageUrl: string;
@@ -41,50 +40,50 @@ export type ThematicMaterial = FirebaseDocId & {
   createdAt: Timestamp;
   title: string;
   description: string;
-  author: UserInfo;
+  author: AuthUserId;
   comments: Comment[];
-}
+};
 
 export type Dialog = FirebaseDocId & {
-  doctor: UserInfo;
-  patient: UserInfo;
+  doctor: AuthUserId;
+  patient: AuthUserId;
   messages: Message[];
-}
+};
 
 export enum Role {
-  PATIENT = 'patient',
-  RELATIVE = 'relative',
-  DOCTOR = 'doctor',
-  CONTENT_MAKER = 'content maker',
-  MODERATOR = 'moderator',
-  ADMIN = 'admin',
+  PATIENT = "patient",
+  RELATIVE = "relative",
+  DOCTOR = "doctor",
+  CONTENT_MAKER = "content maker",
+  MODERATOR = "moderator",
+  ADMIN = "admin",
 }
 
 export enum GoalCategory {
-  EDUCATION = 'education',
-  FITNESS = 'fitness',
-  CAREER = 'career',
-  OTHER = 'other',
+  EDUCATION = "education",
+  FITNESS = "fitness",
+  CAREER = "career",
+  OTHER = "other",
 }
 
 export enum GoalStatus {
-  COMPLETED = 'completed',
-  IN_PROGRESS = 'in progress',
-  PENDING = 'pending',
-  CANCELLED = 'cancelled',
+  COMPLETED = "completed",
+  IN_PROGRESS = "in progress",
+  PENDING = "pending",
+  CANCELLED = "cancelled",
 }
 
 export enum MedicationRoute {
-  ORAL = 'oral',
-  TOPICAL = 'topical',
-  INJECTION = 'injection',
+  ORAL = "oral",
+  TOPICAL = "topical",
+  INJECTION = "injection",
 }
 
 export enum EmployeeReviewRate {
-  GREAT = 'great',
-  ACCEPTABLE = 'acceptable',
-  BAD = 'bad',
-  TERRIBLE = 'terrible',
+  GREAT = "great",
+  ACCEPTABLE = "acceptable",
+  BAD = "bad",
+  TERRIBLE = "terrible",
 }
 
 export type Diary = {
@@ -142,12 +141,12 @@ export type Comment = {
 export type Message = {
   createdAt: Timestamp;
   content: string;
-  sender: UserInfo;
+  sender: AuthUserId;
 };
 
 export type EmployeeReview = {
   createdAt: Timestamp;
   rate: EmployeeReviewRate;
   content: string;
-  reviewer: UserInfo;
+  reviewer: AuthUserId;
 };
