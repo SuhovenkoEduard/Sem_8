@@ -1,45 +1,42 @@
+import { Repository } from "firestore/data/repositories/repositories";
 import {
-  IRepository,
-  Repository,
-} from "firestore/data/repositories/repositories";
-import {
-  FBDialog,
-  FBMedication,
-  FBThematicMaterial,
-  FBUser,
-} from "firestore/types/firebase/fb_collections.types";
+  Dialog,
+  Medication,
+  ThematicMaterial,
+  User,
+} from "firestore/types/collections.types";
 import { CollectionNames } from "firestore/constants";
 import {
-  fBDialogSchema,
-  fBMedicationSchema,
-  fBThematicMaterialSchema,
-  fBUserSchema,
-} from "firestore/types/firebase/fb_schemas";
+  dialogSchema,
+  medicationSchema,
+  thematicMaterialSchema,
+  userSchema,
+} from "firestore/types/schemas";
 
-const fbUsersRepository: IRepository<FBUser> = new Repository<FBUser>(
+const usersRepository: Repository<User> = new Repository<User>(
   CollectionNames.USERS,
-  fBUserSchema
+  userSchema
 );
 
-const fbDialogsRepository: IRepository<FBDialog> = new Repository<FBDialog>(
+const dialogsRepository: Repository<Dialog> = new Repository<Dialog>(
   CollectionNames.DIALOGS,
-  fBDialogSchema
+  dialogSchema
 );
 
-const fbThematicMaterialsRepository: IRepository<FBThematicMaterial> =
-  new Repository<FBThematicMaterial>(
+const thematicMaterialsRepository: Repository<ThematicMaterial> =
+  new Repository<ThematicMaterial>(
     CollectionNames.THEMATIC_MATERIALS,
-    fBThematicMaterialSchema
+    thematicMaterialSchema
   );
 
-const fbMedicationsRepository: IRepository<FBMedication> =
-  new Repository<FBMedication>(CollectionNames.MEDICATIONS, fBMedicationSchema);
+const medicationsRepository: Repository<Medication> =
+  new Repository<Medication>(CollectionNames.MEDICATIONS, medicationSchema);
 
 export const firebaseRepositories = {
-  [CollectionNames.USERS]: fbUsersRepository,
-  [CollectionNames.DIALOGS]: fbDialogsRepository,
-  [CollectionNames.THEMATIC_MATERIALS]: fbThematicMaterialsRepository,
-  [CollectionNames.MEDICATIONS]: fbMedicationsRepository,
+  [CollectionNames.USERS]: usersRepository,
+  [CollectionNames.DIALOGS]: dialogsRepository,
+  [CollectionNames.THEMATIC_MATERIALS]: thematicMaterialsRepository,
+  [CollectionNames.MEDICATIONS]: medicationsRepository,
 };
 
 export { Repository } from "./repositories";

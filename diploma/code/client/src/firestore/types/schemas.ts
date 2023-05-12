@@ -1,20 +1,21 @@
 import { z } from "zod";
 import {
-  Role,
+  EmployeeReviewRate,
   GoalCategory,
   GoalStatus,
   MedicationRoute,
-  EmployeeReviewRate,
-} from "../types/collections.types";
+  Role,
+} from "./collections.types";
 
-export const timestampSchema = z.string();
-export const fbAuthUserIdSchema = z.string();
+export const authUserIdSchema = z.string();
 
 export const firebaseDocIdSchema = z
   .object({
-    docId: z.string(),
+    docId: authUserIdSchema,
   })
   .strict();
+
+export const timestampSchema = z.string();
 
 export const roleSchema = z.nativeEnum(Role);
 
@@ -56,22 +57,6 @@ export const medicationSchema = firebaseDocIdSchema
   })
   .strict();
 
-export const userInfoSchema = firebaseDocIdSchema
-  .extend({
-    email: z.string(),
-    imageUrl: z.string(),
-    name: z
-      .object({
-        first: z.string(),
-        last: z.string(),
-      })
-      .strict(),
-    address: z.string(),
-    phone: z.string(),
-    role: roleSchema,
-  })
-  .strict();
-
 export const takenMedicationSchema = z
   .object({
     medication: medicationSchema,
@@ -84,7 +69,7 @@ export const messageSchema = z
   .object({
     createdAt: timestampSchema,
     content: z.string(),
-    sender: userInfoSchema,
+    sender: authUserIdSchema,
   })
   .strict();
 
@@ -93,14 +78,14 @@ export const employeeReviewSchema = z
     createdAt: timestampSchema,
     rate: employeeReviewRateSchema,
     content: z.string(),
-    reviewer: userInfoSchema,
+    reviewer: authUserIdSchema,
   })
   .strict();
 
 export const dialogSchema = firebaseDocIdSchema
   .extend({
-    doctor: userInfoSchema,
-    patient: userInfoSchema,
+    doctor: authUserIdSchema,
+    patient: authUserIdSchema,
     messages: z.array(messageSchema),
   })
   .strict();
@@ -149,7 +134,7 @@ export const thematicMaterialSchema = firebaseDocIdSchema
     createdAt: timestampSchema,
     title: z.string(),
     description: z.string(),
-    author: userInfoSchema,
+    author: authUserIdSchema,
     comments: z.array(commentSchema),
   })
   .strict();
@@ -163,7 +148,6 @@ export const diarySchema = z
 
 export const userSchema = firebaseDocIdSchema
   .extend({
-    fbUId: fbAuthUserIdSchema,
     email: z.string(),
     imageUrl: z.string(),
     name: z
@@ -184,6 +168,6 @@ export const userSchema = firebaseDocIdSchema
       })
       .strict()
       .optional(),
-    relativePatient: userInfoSchema.optional(),
+    relativePatient: authUserIdSchema.optional(),
   })
   .strict();

@@ -11,13 +11,23 @@ import {
   DocumentReference,
   setDoc,
   deleteDoc,
+  QueryFieldFilterConstraint,
+  query,
+  Query,
+  QueryCompositeFilterConstraint,
+  or,
 } from "firebase/firestore";
 import { firebaseApp } from "firebase_config";
 import { z } from "zod";
 import { tryToExecute } from "firestore/data/helpers";
 
+export type QueryFilter =
+  | QueryFieldFilterConstraint
+  | QueryCompositeFilterConstraint
+  | null;
+
 export interface IRepository<T extends FirebaseDocId> {
-  getDocs: () => Promise<T[]>;
+  getDocs: (queryFilter: QueryFilter) => Promise<T[]>;
   getDocById: (docId: string) => Promise<T | null>;
   updateDoc: (document: T) => Promise<void>;
   deleteDocById: (docId: string) => Promise<void>;
@@ -42,8 +52,13 @@ export class Repository<T extends FirebaseDocId> implements IRepository<T> {
     ) as CollectionReference<T>;
   }
 
-  getDocs = async (): Promise<T[]> => {
-    const docsSnapshot = await getDocs<T>(this.collectionRef);
+  getDocs = async (queryFilter: QueryFilter = null): Promise<T[]> => {
+    const docsQuery: Query<T> =
+      queryFilter !== null
+        ? query(this.collectionRef, or(queryFilter))
+        : this.collectionRef;
+
+    const docsSnapshot = await getDocs<T>(docsQuery);
     const docs = docsSnapshot.docs.map((docSnapshot) => docSnapshot.data());
 
     return tryToExecute<T[], []>({

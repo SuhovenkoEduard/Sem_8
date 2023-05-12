@@ -3,17 +3,26 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { APP_ROUTES } from "components/routing";
 import { useNavigate } from "react-router-dom";
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { useAppDispatch } from "store/store";
+import { GlobalState, useAppDispatch } from "store";
 import { ACTION_NAMES } from "store/reducers/user/constants";
+import { useSelector } from "react-redux";
+import { User } from "firestore/types/collections.types";
+import { getUserInfoFromUser } from "firestore/helpers";
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
+
+  const user = useSelector<GlobalState, User>(
+    (state) => state.currentUser.user as User
+  );
+
+  const userInfo = getUserInfoFromUser(user);
+
   const [signOut, loading, error] = useSignOut(auth);
 
   const onSignOut = async () => {
@@ -43,7 +52,7 @@ export const Profile = () => {
           <Grid>
             <Typography variant="h1">User Profile</Typography>
             <Typography variant="h6">
-              {JSON.stringify(user, null, "  ")}
+              {JSON.stringify(userInfo, null, "  ")}
             </Typography>
             <Button
               sx={{ mt: 3, mb: 2 }}

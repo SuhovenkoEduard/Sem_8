@@ -2,7 +2,6 @@ import { UserCredential } from "firebase/auth";
 import { NavigateFunction } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { APP_ROUTES } from "components/routing";
-import { firebaseAdapters } from "firestore/data/adapters";
 import { generateDocId } from "firestore/helpers";
 import { Role } from "firestore/types/collections.types";
 import { firebaseRepositories } from "firestore/data/repositories";
@@ -15,22 +14,24 @@ export const successfulAuth = async (
   NotificationManager.success("Successful authentication!");
   navigate(APP_ROUTES.profile);
   const { uid } = userCredential.user;
-  console.log({ uid, userCredential });
+  // console.log({ uid, userCredential });
 
-  const users = await firebaseAdapters.users.getDocs();
-  // const dialogs = await firebaseAdapters.dialogs.getDocs();
-  // const thematicMaterials = await firebaseAdapters.thematicMaterials.getDocs();
-  // const medications = await firebaseAdapters.medications.getDocs();
+  // const users = await firebaseRepositories.users.getDocs();
+  // const dialogs = await firebaseRepositories.dialogs.getDocs();
+  // const thematicMaterials = await firebaseRepositories.thematicMaterials.getDocs();
+  // const medications = await firebaseRepositories.medications.getDocs();
 
-  const currentUser = users.find((user) => user.fbUId === uid);
+  // const currentUser = await firebaseRepositories.users.getDocById(uid);
 
-  console.log({
-    users,
-    // dialogs,
-    // thematicMaterials,
-    // medications,
-    currentUser,
-  });
+  // console.log({
+  //   // users,
+  //   // patientsAndDoctors,
+  //   // patients,
+  //   // dialogs,
+  //   // thematicMaterials,
+  //   // medications,
+  //   // currentUser,
+  // });
 };
 
 export const successfulSignUp = async ({
@@ -48,16 +49,18 @@ export const successfulSignUp = async ({
     (user) => user.role === Role.DOCTOR
   );
 
-  const newUserId = generateDocId();
   await firebaseRepositories.users.updateDoc({
-    fbUId: uid,
-    docId: newUserId,
+    docId: uid,
     address: "",
     email: "",
     imageUrl: "",
     name: { first: firstName, last: lastName },
     phone: "",
     role: Role.PATIENT,
+    diary: {
+      dailyLogs: [],
+      goals: [],
+    },
   });
 
   const assignedDoctor = faker.helpers.arrayElement(doctors);
@@ -65,7 +68,7 @@ export const successfulSignUp = async ({
   await firebaseRepositories.dialogs.updateDoc({
     docId: newDialogId,
     doctor: assignedDoctor.docId,
-    patient: newUserId,
+    patient: uid,
     messages: [],
   });
 };

@@ -1,12 +1,11 @@
 export type Timestamp = string;
-export type FBAuthUserId = string;
+export type AuthUserId = string;
 
 export type FirebaseDocId = {
-  docId: string;
+  docId: AuthUserId;
 };
 
 export type User = FirebaseDocId & {
-  fbUId: FBAuthUserId;
   email: string;
   imageUrl: string;
   name: {
@@ -22,13 +21,10 @@ export type User = FirebaseDocId & {
     reviews: EmployeeReview[];
     salary: number;
   };
-  relativePatient?: UserInfo;
+  relativePatient?: AuthUserId;
 };
 
-export type UserInfo = Omit<
-  User,
-  "fbUId" | "diary" | "employee" | "relativePatient"
->;
+export type UserInfo = Omit<User, "diary" | "employee" | "relativePatient">;
 
 export type Medication = FirebaseDocId & {
   imageUrl: string;
@@ -44,13 +40,13 @@ export type ThematicMaterial = FirebaseDocId & {
   createdAt: Timestamp;
   title: string;
   description: string;
-  author: UserInfo;
+  author: AuthUserId;
   comments: Comment[];
 };
 
 export type Dialog = FirebaseDocId & {
-  doctor: UserInfo;
-  patient: UserInfo;
+  doctor: AuthUserId;
+  patient: AuthUserId;
   messages: Message[];
 };
 
@@ -145,12 +141,12 @@ export type Comment = {
 export type Message = {
   createdAt: Timestamp;
   content: string;
-  sender: UserInfo;
+  sender: AuthUserId;
 };
 
 export type EmployeeReview = {
   createdAt: Timestamp;
   rate: EmployeeReviewRate;
   content: string;
-  reviewer: UserInfo;
+  reviewer: AuthUserId;
 };

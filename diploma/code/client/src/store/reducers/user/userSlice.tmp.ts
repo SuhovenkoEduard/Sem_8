@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User as FirebaseUser } from "firebase/auth";
+import { User } from "firestore/types/collections.types";
 
 // todo change state of user slice from UserCredential to UserInfo (firestore)
 
 export const MODULE_NAME_USER = "currentUser";
 
 export type UserSliceState = {
-  user: FirebaseUser | null;
+  user: User | null;
   isPending: boolean;
 };
 
@@ -19,6 +19,9 @@ const userSliceTmp = createSlice({
   name: MODULE_NAME_USER,
   initialState,
   reducers: {
+    setIsPending: (state, action) => {
+      state.isPending = action.payload;
+    },
     setUser: (state, action) => {
       state.user = action.payload;
     },
@@ -72,4 +75,4 @@ const userSliceTmp = createSlice({
 });
 
 export const userReducer = userSliceTmp.reducer;
-export const { setUser } = userSliceTmp.actions;
+export const { setIsPending, setUser } = userSliceTmp.actions;
