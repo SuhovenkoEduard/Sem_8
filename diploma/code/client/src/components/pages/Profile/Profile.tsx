@@ -1,88 +1,309 @@
-import React, { useEffect } from "react";
-import { Box, Button, Container, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import { APP_ROUTES } from "components/routing";
-import { useNavigate } from "react-router-dom";
-import { useSignOut } from "react-firebase-hooks/auth";
-import { auth } from "firebase_config";
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  TextField,
+  Button,
+  Typography,
+  Card,
+  CardMedia,
+  IconButton,
+} from "@mui/material";
+import { useSelector } from "react-redux";
+import { GlobalState, useAppDispatch } from "store";
+import { User } from "firestore/types/collections.types";
+import {
+  convertRoleToRussian,
+  convertUserDataToUserInfo,
+  convertUserInfoToUserData,
+  convertUserToUserInfo,
+} from "firestore/helpers";
+import { PageContainer } from "components/layout";
+import { isMobile } from "react-device-detect";
+import { ProfileErrors, UserData } from "firestore/types/client.types";
+import { deepCopy } from "deep-copy-ts";
+import { ImageUploader } from "./ImageUploader";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "firebase_config";
+import { firebaseRepositories } from "firestore/data/repositories";
+import { fetchUser } from "store/reducers/user/actions";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { GlobalState, useAppDispatch } from "store";
-import { ACTION_NAMES } from "store/reducers/user/constants";
-import { useSelector } from "react-redux";
-import { User } from "firestore/types/collections.types";
-import { getUserInfoFromUser } from "firestore/helpers";
+import { setUser } from "store/reducers/user/userSlice.tmp";
+import { deepEqual } from "ts-deep-equal";
+import { ReactComponent as EditIcon } from "icons/edit-icon.svg";
 
-export const Profile = () => {
+import "./profile-page.scss";
+
+const validationObj: {
+  [key: string]: (s: string) => string;
+} = {
+  address: (address: string) => {
+    const addressRegex = /[A-Za-zА-Яа-я]{5,}/;
+    const errorMessage = "Адрес должен содержать хотя бы 5 символов";
+    return addressRegex.test(address) ? "" : errorMessage;
+  },
+  firstName: (firstName: string) => {
+    const nameRegex = /\S+/;
+    const errorMessage = "Имя должно содержать хотя бы 1 символ";
+    return nameRegex.test(firstName) ? "" : errorMessage;
+  },
+  lastName: (lastName: string) => {
+    const nameRegex = /\S+/;
+    const errorMessage = "Фамилия должна содержать хотя бы 1 символ";
+    return nameRegex.test(lastName) ? "" : errorMessage;
+  },
+  phone: (phone: string) => {
+    const phoneRegex = /^\+375-\d{2}-\d{7}$/;
+    const errorMessage = "Номер должен быть формата +375-XX-XXXXXXX";
+    return phoneRegex.test(phone) ? "" : errorMessage;
+  },
+};
+
+const emptyErrors: ProfileErrors = {
+  firstName: "",
+  lastName: "",
+  address: "",
+  phone: "",
+};
+
+export const Profile: React.FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
+  // redux state
   const user = useSelector<GlobalState, User>(
     (state) => state.currentUser.user as User
   );
+  const originalUserInfo = useMemo(() => convertUserToUserInfo(user), [user]);
 
-  const userInfo = getUserInfoFromUser(user);
+  // local state
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [userData, setUserData] = useState<UserData>(
+    convertUserInfoToUserData(originalUserInfo)
+  );
+  const [errors, setErrors] = useState<ProfileErrors>(deepCopy(emptyErrors));
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
+  const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
+  const [isFormSaving, setIsFormSaving] = useState<boolean>(false);
 
-  const [signOut, loading, error] = useSignOut(auth);
-
-  const onSignOut = async () => {
-    await signOut();
-    dispatch({ type: ACTION_NAMES.userSignOut });
-    NotificationManager.success("Sign out successful!");
-    navigate(APP_ROUTES.auth);
-  };
+  // effects
+  useEffect(
+    () => setUserData(convertUserInfoToUserData(originalUserInfo)),
+    [originalUserInfo]
+  );
 
   useEffect(() => {
-    if (error) {
-      NotificationManager.error(error?.name, error?.message);
+    const newErrors = Object.fromEntries(
+      Object.keys(validationObj).map((key) => [
+        key,
+        validationObj[key](userData[key as keyof UserData]),
+      ])
+    ) as unknown as ProfileErrors;
+    setErrors(newErrors);
+    setIsSubmitDisabled(
+      Object.values(newErrors).some((value) => !!value) ||
+        deepEqual(userData, convertUserInfoToUserData(originalUserInfo))
+    );
+  }, [userData, originalUserInfo]);
+
+  const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleEditButtonClick = () => {
+    setIsEditMode(true);
+  };
+
+  const handleCancelButtonClick = () => {
+    setUserData(convertUserInfoToUserData(originalUserInfo));
+    setIsEditMode(false);
+  };
+
+  const onImageUpload = async (pictureFiles: File[]) => {
+    if (!pictureFiles.length) {
+      return;
     }
-  }, [error]);
+
+    try {
+      setIsImageLoading(true);
+      const [image] = pictureFiles;
+      const fileRef = ref(storage, image.name);
+      const snapshot = await uploadBytes(fileRef, image);
+      const imageUrl = await getDownloadURL(snapshot.ref);
+
+      const newUser = deepCopy(user);
+      newUser.imageUrl = imageUrl;
+      await firebaseRepositories.users.updateDoc(newUser);
+      await dispatch(fetchUser(newUser.docId));
+    } catch (e) {
+      console.log(e);
+      NotificationManager.error("Couldn't upload an image", "[IMAGE UPLOAD]");
+    } finally {
+      setIsImageLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setIsFormSaving(true);
+
+      const newUser = {
+        ...user,
+        ...convertUserDataToUserInfo(userData),
+      };
+      await firebaseRepositories.users.updateDoc(newUser);
+      await dispatch(fetchUser(newUser.docId));
+    } catch (err) {
+      dispatch(
+        setUser({
+          ...user,
+          ...originalUserInfo,
+        })
+      );
+      console.log(err);
+      NotificationManager.error("Couldn't save profile data", "[PROFILE SAVE]");
+    } finally {
+      setIsFormSaving(false);
+      setIsEditMode(false);
+    }
+  };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <Container sx={{ p: 10 }}>
-        <Grid container spacing={2}>
-          <Grid>
-            <Typography variant="h1">User Profile</Typography>
-            <Typography variant="h6">
-              {JSON.stringify(userInfo, null, "  ")}
-            </Typography>
-            <Button
-              sx={{ mt: 3, mb: 2 }}
-              variant="contained"
-              onClick={() => navigate(APP_ROUTES.home)}
+    <PageContainer>
+      <div className="profile-page">
+        <Typography variant="h4">Профиль</Typography>
+        <div
+          className="profile-page-content"
+          style={{ flexWrap: isMobile ? "wrap" : undefined }}
+        >
+          <div className="profile-image-container">
+            <Card
+              className="profile-image-card"
+              style={{ width: "300px", height: "250px" }}
             >
-              Back Home
-            </Button>
-            {loading ? (
-              <LoadingSpinner />
+              <CardMedia
+                component="img"
+                height="100%"
+                width="100%"
+                sx={{ objectFit: "cover" }}
+                image={userData.imageUrl}
+                alt="Profile Image"
+              />
+            </Card>
+            {isImageLoading ? (
+              <LoadingSpinner style={{ marginTop: "20px" }} />
             ) : (
-              <Button
-                sx={{ mt: 3, mb: 2 }}
-                variant="contained"
-                onClick={onSignOut}
-              >
-                Sign out
-              </Button>
+              <ImageUploader onDrop={onImageUpload} />
             )}
-          </Grid>
-          <Grid>
-            <img
-              src="https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg"
-              alt=""
-              width={500}
-              height={250}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+          </div>
+          {!isEditMode ? (
+            <Card className="profile-info-container">
+              <div className="profile-info-container__title">
+                <h2>{`${userData.firstName} ${userData.lastName}`}</h2>
+                {!isEditMode && (
+                  <IconButton
+                    className="edit-button-container"
+                    onClick={handleEditButtonClick}
+                  >
+                    <EditIcon className="edit-button-icon" />
+                  </IconButton>
+                )}
+              </div>
+              <p>Эл. почта: {userData.email}</p>
+              <p>Телефон: {userData.phone}</p>
+              <p>Адрес: {userData.address}</p>
+              <p>Тип учётной записи: {convertRoleToRussian(userData.role)}</p>
+              <p className="role-logo-container">
+                <img src={`/images/logos/${userData.role}-logo.png`} alt="" />
+              </p>
+            </Card>
+          ) : (
+            <Card className="edit-form-container">
+              <form className="edit-form" onSubmit={handleSubmit}>
+                <TextField
+                  label="Имя"
+                  name="firstName"
+                  value={userData.firstName}
+                  onChange={handleFieldChange}
+                  fullWidth
+                  margin="normal"
+                  error={!!errors.firstName}
+                  helperText={errors.firstName}
+                  disabled={isFormSaving}
+                />
+                <TextField
+                  label="Фамилия"
+                  name="lastName"
+                  value={userData.lastName}
+                  onChange={handleFieldChange}
+                  fullWidth
+                  margin="normal"
+                  error={!!errors.lastName}
+                  helperText={errors.lastName}
+                  disabled={isFormSaving}
+                />
+                <TextField
+                  label="Телефон"
+                  name="phone"
+                  value={userData.phone}
+                  onChange={handleFieldChange}
+                  fullWidth
+                  margin="normal"
+                  error={!!errors.phone}
+                  helperText={errors.phone}
+                  disabled={isFormSaving}
+                />
+                <TextField
+                  label="Эл. почта"
+                  name="email"
+                  value={userData.email}
+                  onChange={handleFieldChange}
+                  fullWidth
+                  margin="normal"
+                  disabled={true}
+                />
+                <TextField
+                  label="Адрес"
+                  name="address"
+                  value={userData.address}
+                  onChange={handleFieldChange}
+                  fullWidth
+                  margin="normal"
+                  error={!!errors.address}
+                  helperText={errors.address}
+                  disabled={isFormSaving}
+                />
+                {isEditMode &&
+                  (isFormSaving ? (
+                    <LoadingSpinner style={{ marginTop: "20px" }} />
+                  ) : (
+                    <div className="form-controls-container">
+                      <Button
+                        className="cancel-button"
+                        variant="contained"
+                        onClick={handleCancelButtonClick}
+                      >
+                        Отмена
+                      </Button>
+                      <Button
+                        className="save-button"
+                        type="submit"
+                        variant="contained"
+                        disabled={isSubmitDisabled}
+                      >
+                        Сохранить
+                      </Button>
+                    </div>
+                  ))}
+              </form>
+            </Card>
+          )}
+        </div>
+      </div>
+    </PageContainer>
   );
 };

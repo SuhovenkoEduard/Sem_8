@@ -1,18 +1,14 @@
 import React, { useEffect } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { APP_ROUTES } from "components/routing/constants";
-import { CircularProgress } from "@mui/material";
+import { Navigate } from "react-router-dom";
+import { Routes } from "components/routing/constants";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { GlobalState, useAppDispatch } from "store";
-import {
-  setIsPending,
-  setUser,
-  UserSliceState,
-} from "store/reducers/user/userSlice.tmp";
-import { firebaseRepositories } from "firestore/data/repositories";
+import { setUser, UserSliceState } from "store/reducers/user/userSlice.tmp";
 import { useSelector } from "react-redux";
-import { NotificationManager } from "react-notifications";
+import { Layout } from "components/layout/Layout";
+import { LoadingSpinner } from "components/ui/LoadingSpinner";
+import { fetchUser } from "store/reducers/user/actions";
 
 export const ProtectedRoutes = () => {
   const [authUser, loading] = useAuthState(auth);
@@ -25,20 +21,7 @@ export const ProtectedRoutes = () => {
   useEffect(() => {
     return auth.onAuthStateChanged(async (userCredential) => {
       if (userCredential) {
-        try {
-          dispatch(setIsPending(true));
-          const user = await firebaseRepositories.users.getDocById(
-            userCredential.uid
-          );
-          dispatch(setUser(user));
-        } catch (e) {
-          dispatch(setIsPending(false));
-          console.log(e);
-          NotificationManager.error(
-            "Error while loading user from firestore!",
-            "Firestore error"
-          );
-        }
+        await dispatch(fetchUser(userCredential.uid));
       } else {
         dispatch(setUser(null));
       }
@@ -46,12 +29,12 @@ export const ProtectedRoutes = () => {
   }, [dispatch]);
 
   if (loading || (authUser && !currentUser.user)) {
-    return <CircularProgress />;
+    return <LoadingSpinner />;
   }
 
   return authUser && currentUser.user ? (
-    <Outlet />
+    <Layout />
   ) : (
-    <Navigate replace to={APP_ROUTES.auth} />
+    <Navigate replace to={Routes.auth} />
   );
 };

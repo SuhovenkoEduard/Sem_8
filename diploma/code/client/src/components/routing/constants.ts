@@ -1,9 +1,18 @@
-export const APP_ROUTES = {
-  any: "*",
-  default: "/",
-  home: "/home",
-  auth: "/auth",
-  signIn: "/auth/sign-in",
-  signUp: "/auth/sign-up",
-  profile: "/profile",
-};
+export enum Routes {
+  any = "*",
+  default = "/",
+  home = "/home",
+  auth = "/auth",
+  signIn = "/auth/sign-in",
+  signUp = "/auth/sign-up",
+  signOut = "/auth/sign-out",
+  profile = "/profile",
+  diary = "/patient/diary",
+  goals = "/patient/goals",
+  statistics = "statistics",
+  chats = "/chats",
+  patientRelative = "/patient/relative",
+  thematicMaterials = "/thematic-materials",
+  patientsStatistics = "/doctor/patients-statistics",
+  employees = "/admin/employees",
+}

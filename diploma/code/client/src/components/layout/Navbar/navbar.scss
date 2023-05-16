@@ -1,0 +1,15 @@
+.navbar-container {
+  .item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+  }
+  .item-text {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    letter-spacing: 0;
+    font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 500;
+  }
+}

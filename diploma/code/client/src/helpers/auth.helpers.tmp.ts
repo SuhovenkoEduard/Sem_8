@@ -1,7 +1,7 @@
 import { UserCredential } from "firebase/auth";
 import { NavigateFunction } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
-import { APP_ROUTES } from "components/routing";
+import { Routes } from "components/routing";
 import { generateDocId } from "firestore/helpers";
 import { Role } from "firestore/types/collections.types";
 import { firebaseRepositories } from "firestore/data/repositories";
@@ -12,8 +12,8 @@ export const successfulAuth = async (
   navigate: NavigateFunction
 ) => {
   NotificationManager.success("Successful authentication!");
-  navigate(APP_ROUTES.profile);
-  const { uid } = userCredential.user;
+  navigate(Routes.profile);
+  // const { uid } = userCredential.user;
   // console.log({ uid, userCredential });
 
   // const users = await firebaseRepositories.users.getDocs();

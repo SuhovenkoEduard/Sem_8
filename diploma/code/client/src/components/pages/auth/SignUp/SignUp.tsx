@@ -8,11 +8,10 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { APP_ROUTES } from "components/routing";
+import { Routes } from "components/routing";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { useEffect, useRef, useState } from "react";
-import { FormHelperText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
@@ -47,13 +46,6 @@ export const SignUp = () => {
       await successfulAuth(userCredential, navigate);
       await successfulSignUp({ firstName, lastName, userCredential });
     }
-
-    console.log({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
   };
 
   useEffect(() => {
@@ -62,12 +54,22 @@ export const SignUp = () => {
     }
   }, [error]);
 
+  const [isSignUpDisabled, setIsSignUpDisabled] = useState<boolean>(true);
+
   const [arePasswordsEqual, setArePasswordsEqual] = useState<boolean>(true);
 
-  const onRepeatedPasswordChange = () => {
+  const updateUpSignInDisabled = () => {
+    const email = getFormField("email");
+    const firstName = getFormField("firstName");
+    const lastName = getFormField("lastName");
     const password = getFormField("password");
-    const repeatedPassword = getFormField("password2");
-    setArePasswordsEqual(password === repeatedPassword);
+    const password2 = getFormField("password2");
+    setArePasswordsEqual(password === password2);
+    setIsSignUpDisabled(
+      [email, firstName, lastName, password, password2]
+        .map(Boolean)
+        .some((value) => !value) || password != password2
+    );
   };
 
   return (
@@ -78,7 +80,7 @@ export const SignUp = () => {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(../images/sign-up-background.jpg)",
+          backgroundImage: "url(/images/sign-up-background-min.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -110,7 +112,7 @@ export const SignUp = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Регистрация
           </Typography>
           <Box
             ref={formRef}
@@ -127,8 +129,9 @@ export const SignUp = () => {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="Имя"
                   autoFocus
+                  onChange={updateUpSignInDisabled}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -136,9 +139,10 @@ export const SignUp = () => {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Фамилия"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={updateUpSignInDisabled}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -146,9 +150,10 @@ export const SignUp = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Электронная почта"
                   name="email"
                   autoComplete="email"
+                  onChange={updateUpSignInDisabled}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -156,10 +161,11 @@ export const SignUp = () => {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Пароль"
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={updateUpSignInDisabled}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -168,38 +174,32 @@ export const SignUp = () => {
                   fullWidth
                   error={!arePasswordsEqual}
                   name="password2"
-                  label="Repeated password"
+                  label="Повторённый пароль"
                   type="password"
                   id="password2"
                   autoComplete="repeat-password"
-                  onChange={onRepeatedPasswordChange}
+                  onChange={updateUpSignInDisabled}
+                  helperText={!arePasswordsEqual && "Пароли должны совпадать!"}
                 />
-                {!arePasswordsEqual && (
-                  <FormHelperText>Passwords must be equal!</FormHelperText>
-                )}
               </Grid>
             </Grid>
             {loading ? (
               <LoadingSpinner />
             ) : (
               <Button
-                disabled={
-                  !arePasswordsEqual ||
-                  !getFormField("password") ||
-                  !getFormField("password2")
-                }
+                disabled={isSignUpDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign Up
+                Зарегистрироваться
               </Button>
             )}
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href={APP_ROUTES.signIn} variant="body2">
-                  Already have an account? Sign in
+                <Link href={Routes.signIn} variant="body2">
+                  Уже есть аккаунт? Войдите
                 </Link>
               </Grid>
             </Grid>

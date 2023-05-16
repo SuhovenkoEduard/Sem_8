@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Container, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { APP_ROUTES } from "components/routing";
+import { Routes } from "components/routing";
 import { useNavigate } from "react-router-dom";
 
 export const NotFound = () => {
@@ -25,7 +25,7 @@ export const NotFound = () => {
             <Button
               sx={{ mt: 3, mb: 2 }}
               variant="contained"
-              onClick={() => navigate(APP_ROUTES.home)}
+              onClick={() => navigate(Routes.home)}
             >
               Back Home
             </Button>

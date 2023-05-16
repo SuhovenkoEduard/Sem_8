@@ -5,6 +5,7 @@ import {
   getAuth,
   setPersistence,
 } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,6 +24,9 @@ const firebaseConfig = {
 // Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
+
+export const storage = getStorage(firebaseApp);
+
 (async () => {
   await setPersistence(auth, browserSessionPersistence);
 })();

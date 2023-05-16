@@ -28,6 +28,7 @@
   ],
   "files": [
     "./.eslintrc.js",
-    "./src/definitions/notifications.d.ts"
+    "./src/definitions/notifications.d.ts",
+    "./src/definitions/svg.d.ts"
   ]
 }

@@ -1,0 +1,116 @@
+.profile-page {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .profile-page-content {
+    padding: 10px;
+
+    gap: 20px;
+    display: flex;
+
+    .profile-image-container {
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      .profile-image-card {
+        margin-top: 20px;
+        min-width: 300px;
+        min-height: 250px;
+        width: 300px;
+        height: 250px;
+      }
+      .fileUploader .fileContainer {
+        box-shadow:
+                0 2px 1px -1px rgba(0, 0, 0, 0.2),
+                0 1px 1px 0 rgba(0, 0, 0, 0.14),
+                0 1px 3px 0 rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    .profile-info-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 360px;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      margin-top: 20px;
+      text-overflow: ellipsis;
+      margin-bottom: 10px;
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 24px;
+        color: #333;
+      }
+
+      p {
+        margin-bottom: 5px;
+        font-size: 12pt;
+        color: #555;
+      }
+
+      .role-logo-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 120px;
+          aspect-ratio: 1 / 1;
+          object-fit: fill;
+        }
+      }
+
+      &__title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .edit-button-container {
+          .edit-button-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: fill;
+            color: blue;
+          }
+        }
+      }
+    }
+
+    .edit-form-container {
+      display: flex;
+      padding: 10px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      .edit-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        input,
+        textarea {
+          max-width: 320px;
+          width: 320px;
+          padding: 10px;
+        }
+
+        .form-controls-container {
+          display: flex;
+          gap: 20px;
+          .cancel-button, .save-button {
+            margin-top: 20px;
+          }
+        }
+      }
+    }
+
+  }
+}

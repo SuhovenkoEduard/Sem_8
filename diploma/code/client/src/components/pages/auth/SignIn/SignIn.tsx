@@ -8,12 +8,12 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { APP_ROUTES } from "components/routing";
+import { Routes } from "components/routing";
 import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { auth } from "firebase_config";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import { successfulAuth } from "helpers/auth.helpers.tmp";
 import { Copyright } from "components/pages/auth";
@@ -38,10 +38,6 @@ export const SignIn = () => {
     if (userCredential) {
       await successfulAuth(userCredential, navigate);
     }
-    console.log({
-      email,
-      password,
-    });
   };
 
   useEffect(() => {
@@ -49,6 +45,12 @@ export const SignIn = () => {
       NotificationManager.error(error?.name, error?.message);
     }
   }, [error]);
+
+  const [isSignInDisabled, setIsSignInDisabled] = useState<boolean>(false);
+
+  const updateIsSignInDisabled = () => {
+    setIsSignInDisabled(!getFormField("email") || !getFormField("password"));
+  };
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -58,7 +60,7 @@ export const SignIn = () => {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: "url(../images/sign-in-background.jpg)",
+          backgroundImage: "url(/images/sign-in-background-min.jpg)",
           backgroundRepeat: "no-repeat",
           backgroundColor: (t) =>
             t.palette.mode === "light"
@@ -82,7 +84,7 @@ export const SignIn = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Вход
           </Typography>
           <Box
             component="form"
@@ -96,37 +98,40 @@ export const SignIn = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Электронная почта"
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={updateIsSignInDisabled}
             />
             <TextField
               margin="normal"
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Пароль"
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={updateIsSignInDisabled}
             />
             {loading ? (
               <LoadingSpinner />
             ) : (
               <Button
+                disabled={isSignInDisabled}
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                Войти
               </Button>
             )}
-            <Grid container>
+            <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href={APP_ROUTES.signUp} variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href={Routes.signUp} variant="body2">
+                  {"Нет аккаунта? Зарегистрируйтесь"}
                 </Link>
               </Grid>
             </Grid>
