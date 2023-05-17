@@ -1,6 +1,7 @@
 export enum Routes {
   any = "*",
   default = "/",
+  notFound = "/not-found",
   home = "/home",
   auth = "/auth",
   signIn = "/auth/sign-in",

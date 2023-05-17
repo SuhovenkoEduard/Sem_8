@@ -12,7 +12,10 @@ import {
   SignUp,
   SignOut,
   DiaryPage,
+  Chats,
 } from "components/pages";
+import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
+import { Role } from "firestore/types/collections.types";
 
 // const Home = React.lazy(() => import("components/pages/Home"));
 
@@ -26,8 +29,17 @@ export const AppRoutes = () => {
             path={Routes.default}
             element={<Navigate replace to={Routes.profile} />}
           />
-          <Route path={Routes.profile} element={<Profile />} />
-          <Route path={Routes.diary} element={<DiaryPage />} />
+          <Route element={<RolesCheckRoutes roles={Object.values(Role)} />}>
+            <Route path={Routes.profile} element={<Profile />} />
+          </Route>
+          <Route element={<RolesCheckRoutes roles={[Role.PATIENT]} />}>
+            <Route path={Routes.diary} element={<DiaryPage />} />
+          </Route>
+          <Route
+            element={<RolesCheckRoutes roles={[Role.PATIENT, Role.DOCTOR]} />}
+          >
+            <Route path={Routes.chats} element={<Chats />} />
+          </Route>
         </Route>
         {/* Home */}
         <Route path={Routes.home} element={<Home />} />
@@ -42,6 +54,8 @@ export const AppRoutes = () => {
         </Route>
         {/* Sign out */}
         <Route path={Routes.signOut} element={<SignOut />} />
+        {/* not found */}
+        <Route path={Routes.notFound} element={<NotFound />} />
         {/* any */}
         <Route path={Routes.any} element={<NotFound />} />
       </RoutesContainer>
