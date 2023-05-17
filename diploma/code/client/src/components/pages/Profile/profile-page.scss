@@ -1,27 +1,32 @@
 .profile-page {
-  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  .profile-page-title {
+    margin: 20px auto;
+  }
+
   .profile-page-content {
     padding: 10px;
 
-    gap: 20px;
     display: flex;
+    gap: 20px;
+    justify-content: center;
 
     .profile-image-container {
       margin: auto;
       display: flex;
       flex-direction: column;
+      gap: 20px;
       .profile-image-card {
-        margin-top: 20px;
         min-width: 300px;
         min-height: 250px;
         width: 300px;
         height: 250px;
       }
       .fileUploader .fileContainer {
+        margin: 0;
         box-shadow:
                 0 2px 1px -1px rgba(0, 0, 0, 0.2),
                 0 1px 1px 0 rgba(0, 0, 0, 0.14),
@@ -38,9 +43,7 @@
       padding: 20px;
       border-radius: 8px;
       border: 1px solid rgba(0, 0, 0, 0.12);
-      margin-top: 20px;
       text-overflow: ellipsis;
-      margin-bottom: 10px;
 
       h2 {
         margin-top: 0;
@@ -70,24 +73,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .edit-button-container {
-          .edit-button-icon {
-            width: 20px;
-            height: 20px;
-            object-fit: fill;
-            color: blue;
-          }
-        }
       }
     }
 
     .edit-form-container {
       display: flex;
       padding: 10px;
-      margin-top: 20px;
       width: 100%;
       max-width: 360px;
-      margin-bottom: 10px;
       border-radius: 8px;
       border: 1px solid rgba(0, 0, 0, 0.12);
       .edit-form {
@@ -106,11 +99,10 @@
           display: flex;
           gap: 20px;
           .cancel-button, .save-button {
-            margin-top: 20px;
+            margin-top: 10px;
           }
         }
       }
     }
-
   }
 }

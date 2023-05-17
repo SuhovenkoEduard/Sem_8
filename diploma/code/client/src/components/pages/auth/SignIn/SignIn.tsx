@@ -15,7 +15,7 @@ import { auth } from "firebase_config";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useRef, useState } from "react";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { successfulAuth } from "helpers/auth.helpers.tmp";
+import { successfulAuth } from "helpers/auth.helpers";
 import { Copyright } from "components/pages/auth";
 
 export const SignIn = () => {

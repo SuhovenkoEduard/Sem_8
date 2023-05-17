@@ -1,0 +1,18 @@
+.diary-page-content__info-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  p {
+    margin-bottom: 5px;
+    font-size: 12pt;
+    color: #555;
+  }
+
+  &__title {
+    min-width: 250px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

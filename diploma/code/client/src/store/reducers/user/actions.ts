@@ -1,4 +1,4 @@
-import { setIsPending, setUser } from "store/reducers/user/userSlice.tmp";
+import { setIsPending, setUser } from "store/reducers/user/userSlice";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { NotificationManager } from "react-notifications";
 import { AppDispatch } from "store/store";

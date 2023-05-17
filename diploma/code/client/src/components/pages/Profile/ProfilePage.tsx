@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import {
-  TextField,
-  Button,
-  Typography,
-  Card,
-  CardMedia,
-  IconButton,
-} from "@mui/material";
+import { TextField, Button, Typography, Card, CardMedia } from "@mui/material";
 import { useSelector } from "react-redux";
 import { GlobalState, useAppDispatch } from "store";
 import { User } from "firestore/types/collections.types";
@@ -15,10 +8,11 @@ import {
   convertUserDataToUserInfo,
   convertUserInfoToUserData,
   convertUserToUserInfo,
-} from "firestore/helpers";
+  UserData,
+} from "firestore/converters";
 import { PageContainer } from "components/layout";
 import { isMobile } from "react-device-detect";
-import { ProfileErrors, UserData } from "firestore/types/client.types";
+import { ProfileFormErrors } from "firestore/types/client.types";
 import { deepCopy } from "deep-copy-ts";
 import { ImageUploader } from "./ImageUploader";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -27,45 +21,45 @@ import { firebaseRepositories } from "firestore/data/repositories";
 import { fetchUser } from "store/reducers/user/actions";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { setUser } from "store/reducers/user/userSlice.tmp";
+import { setUser } from "store/reducers/user/userSlice";
 import { deepEqual } from "ts-deep-equal";
-import { ReactComponent as EditIcon } from "icons/edit-icon.svg";
+import { EditButton } from "components/ui/EditButton";
 
 import "./profile-page.scss";
 
 const validationObj: {
-  [key: string]: (s: string) => string;
+  [key: string]: (s: string) => string | null;
 } = {
   address: (address: string) => {
     const addressRegex = /[A-Za-zА-Яа-я]{5,}/;
     const errorMessage = "Адрес должен содержать хотя бы 5 символов";
-    return addressRegex.test(address) ? "" : errorMessage;
+    return addressRegex.test(address) ? null : errorMessage;
   },
   firstName: (firstName: string) => {
     const nameRegex = /\S+/;
     const errorMessage = "Имя должно содержать хотя бы 1 символ";
-    return nameRegex.test(firstName) ? "" : errorMessage;
+    return nameRegex.test(firstName) ? null : errorMessage;
   },
   lastName: (lastName: string) => {
     const nameRegex = /\S+/;
     const errorMessage = "Фамилия должна содержать хотя бы 1 символ";
-    return nameRegex.test(lastName) ? "" : errorMessage;
+    return nameRegex.test(lastName) ? null : errorMessage;
   },
   phone: (phone: string) => {
     const phoneRegex = /^\+375-\d{2}-\d{7}$/;
     const errorMessage = "Номер должен быть формата +375-XX-XXXXXXX";
-    return phoneRegex.test(phone) ? "" : errorMessage;
+    return phoneRegex.test(phone) ? null : errorMessage;
   },
 };
 
-const emptyErrors: ProfileErrors = {
-  firstName: "",
-  lastName: "",
-  address: "",
-  phone: "",
+const emptyErrors: ProfileFormErrors = {
+  firstName: null,
+  lastName: null,
+  address: null,
+  phone: null,
 };
 
-export const Profile: React.FC = () => {
+export const ProfilePage: React.FC = () => {
   const dispatch = useAppDispatch();
 
   // redux state
@@ -79,7 +73,9 @@ export const Profile: React.FC = () => {
   const [userData, setUserData] = useState<UserData>(
     convertUserInfoToUserData(originalUserInfo)
   );
-  const [errors, setErrors] = useState<ProfileErrors>(deepCopy(emptyErrors));
+  const [errors, setErrors] = useState<ProfileFormErrors>(
+    deepCopy(emptyErrors)
+  );
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
   const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
   const [isFormSaving, setIsFormSaving] = useState<boolean>(false);
@@ -96,7 +92,7 @@ export const Profile: React.FC = () => {
         key,
         validationObj[key](userData[key as keyof UserData]),
       ])
-    ) as unknown as ProfileErrors;
+    ) as unknown as ProfileFormErrors;
     setErrors(newErrors);
     setIsSubmitDisabled(
       Object.values(newErrors).some((value) => !!value) ||
@@ -175,7 +171,9 @@ export const Profile: React.FC = () => {
   return (
     <PageContainer>
       <div className="profile-page">
-        <Typography variant="h4">Профиль</Typography>
+        <Typography variant="h4" className="profile-page-title">
+          Профиль
+        </Typography>
         <div
           className="profile-page-content"
           style={{ flexWrap: isMobile ? "wrap" : undefined }}
@@ -204,14 +202,7 @@ export const Profile: React.FC = () => {
             <Card className="profile-info-container">
               <div className="profile-info-container__title">
                 <h2>{`${userData.firstName} ${userData.lastName}`}</h2>
-                {!isEditMode && (
-                  <IconButton
-                    className="edit-button-container"
-                    onClick={handleEditButtonClick}
-                  >
-                    <EditIcon className="edit-button-icon" />
-                  </IconButton>
-                )}
+                <EditButton onClick={handleEditButtonClick} />
               </div>
               <p>Эл. почта: {userData.email}</p>
               <p>Телефон: {userData.phone}</p>
@@ -277,28 +268,27 @@ export const Profile: React.FC = () => {
                   helperText={errors.address}
                   disabled={isFormSaving}
                 />
-                {isEditMode &&
-                  (isFormSaving ? (
-                    <LoadingSpinner style={{ marginTop: "20px" }} />
-                  ) : (
-                    <div className="form-controls-container">
-                      <Button
-                        className="cancel-button"
-                        variant="contained"
-                        onClick={handleCancelButtonClick}
-                      >
-                        Отмена
-                      </Button>
-                      <Button
-                        className="save-button"
-                        type="submit"
-                        variant="contained"
-                        disabled={isSubmitDisabled}
-                      >
-                        Сохранить
-                      </Button>
-                    </div>
-                  ))}
+                {isFormSaving ? (
+                  <LoadingSpinner style={{ marginTop: "20px" }} />
+                ) : (
+                  <div className="form-controls-container">
+                    <Button
+                      className="cancel-button"
+                      variant="contained"
+                      onClick={handleCancelButtonClick}
+                    >
+                      Отмена
+                    </Button>
+                    <Button
+                      className="save-button"
+                      type="submit"
+                      variant="contained"
+                      disabled={isSubmitDisabled}
+                    >
+                      Сохранить
+                    </Button>
+                  </div>
+                )}
               </form>
             </Card>
           )}

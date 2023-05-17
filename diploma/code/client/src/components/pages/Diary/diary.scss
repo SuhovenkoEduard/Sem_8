@@ -1,0 +1,53 @@
+.diary-page-container {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center;
+
+  .page-title {
+    margin: 20px auto;
+  }
+
+  .diary-page-content {
+    display: flex;
+    justify-content: center;
+    //align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .calendar-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edit-form-container {
+      display: flex;
+      padding: 10px;
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      .edit-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        input,
+        textarea {
+          max-width: 320px;
+          width: 320px;
+          padding: 10px;
+        }
+
+        .form-controls-container {
+          display: flex;
+          gap: 20px;
+          .cancel-button, .save-button {
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+}

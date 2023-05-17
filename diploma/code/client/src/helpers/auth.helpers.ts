@@ -13,25 +13,6 @@ export const successfulAuth = async (
 ) => {
   NotificationManager.success("Successful authentication!");
   navigate(Routes.profile);
-  // const { uid } = userCredential.user;
-  // console.log({ uid, userCredential });
-
-  // const users = await firebaseRepositories.users.getDocs();
-  // const dialogs = await firebaseRepositories.dialogs.getDocs();
-  // const thematicMaterials = await firebaseRepositories.thematicMaterials.getDocs();
-  // const medications = await firebaseRepositories.medications.getDocs();
-
-  // const currentUser = await firebaseRepositories.users.getDocById(uid);
-
-  // console.log({
-  //   // users,
-  //   // patientsAndDoctors,
-  //   // patients,
-  //   // dialogs,
-  //   // thematicMaterials,
-  //   // medications,
-  //   // currentUser,
-  // });
 };
 
 export const successfulSignUp = async ({

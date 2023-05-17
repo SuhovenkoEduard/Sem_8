@@ -4,7 +4,7 @@ import { Routes } from "components/routing/constants";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { GlobalState, useAppDispatch } from "store";
-import { setUser, UserSliceState } from "store/reducers/user/userSlice.tmp";
+import { setUser, UserSliceState } from "store/reducers/user/userSlice";
 import { useSelector } from "react-redux";
 import { Layout } from "components/layout/Layout";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";

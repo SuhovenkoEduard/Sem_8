@@ -3,7 +3,7 @@ import {
   MODULE_NAME_USER,
   userReducer,
   UserSliceState,
-} from "store/reducers/user/userSlice.tmp";
+} from "store/reducers/user/userSlice";
 import { useDispatch } from "react-redux";
 import { ACTION_NAMES } from "store/reducers/user/constants";
 

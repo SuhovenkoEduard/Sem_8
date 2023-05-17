@@ -11,7 +11,7 @@ import {
   SignIn,
   SignUp,
   SignOut,
-  Diary,
+  DiaryPage,
 } from "components/pages";
 
 // const Home = React.lazy(() => import("components/pages/Home"));
@@ -27,7 +27,7 @@ export const AppRoutes = () => {
             element={<Navigate replace to={Routes.profile} />}
           />
           <Route path={Routes.profile} element={<Profile />} />
-          <Route path={Routes.diary} element={<Diary />} />
+          <Route path={Routes.diary} element={<DiaryPage />} />
         </Route>
         {/* Home */}
         <Route path={Routes.home} element={<Home />} />

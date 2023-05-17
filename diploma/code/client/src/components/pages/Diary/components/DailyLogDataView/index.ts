@@ -1,0 +1,1 @@
+export { DailyLogDataView } from "./DailyLogDataView";

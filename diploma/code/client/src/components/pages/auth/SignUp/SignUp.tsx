@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { successfulAuth, successfulSignUp } from "helpers/auth.helpers.tmp";
+import { successfulAuth, successfulSignUp } from "helpers/auth.helpers";
 import { Copyright } from "components/pages/auth";
 
 export const SignUp = () => {
