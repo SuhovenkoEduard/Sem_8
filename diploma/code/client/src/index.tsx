@@ -33,7 +33,7 @@ root.render(
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register(`https://diabeticdiary-fedb9.firebaseapp.com/service-worker.js`)
+    .register(`https://diabeticdiary-fedb9.web.app/service-worker.js`)
     .then(
       (registration) => {
         console.log("Service worker registration succeeded:", registration);
