@@ -13,6 +13,7 @@ import {
   SignOut,
   DiaryPage,
   Dialogs,
+  Statistics,
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
@@ -39,6 +40,11 @@ export const AppRoutes = () => {
             element={<RolesCheckRoutes roles={[Role.PATIENT, Role.DOCTOR]} />}
           >
             <Route path={Routes.dialogs} element={<Dialogs />} />
+          </Route>
+          <Route
+            element={<RolesCheckRoutes roles={[Role.PATIENT, Role.RELATIVE]} />}
+          >
+            <Route path={Routes.statistics} element={<Statistics />} />
           </Route>
         </Route>
         {/* Home */}

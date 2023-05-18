@@ -1,0 +1,36 @@
+.statistics-page-container {
+  display: flex;
+  position: relative;
+  flex-direction: column !important;
+  align-items: center;
+  min-height: 100vh;
+
+  .statistics-page-title {
+    margin: 20px auto;
+  }
+
+  .statistics-page-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+
+    .controls {
+      display: flex;
+      gap: 20px;
+      .mobile-date-picker svg {
+        display: none;
+      }
+    }
+    .charts {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      .chart-card-container {
+        padding: 10px 10px 0;
+      }
+    }
+  }
+}

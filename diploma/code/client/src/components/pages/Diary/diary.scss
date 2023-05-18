@@ -15,9 +15,13 @@
     gap: 20px;
 
     .calendar-container {
+      padding-top: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
+      .mobile-date-picker fieldset {
+        border: none;
+      }
     }
 
     .edit-form-container {

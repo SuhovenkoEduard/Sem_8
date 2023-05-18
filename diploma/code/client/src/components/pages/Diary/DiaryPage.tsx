@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PageContainer } from "components/layout";
 import { DateCalendar } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -23,8 +23,6 @@ import { setDailyLog } from "store/reducers/user/userSlice";
 import { NotificationManager } from "react-notifications";
 import { GlobalState, useAppDispatch } from "store";
 import { useSelector } from "react-redux";
-import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import { isMobile } from "react-device-detect";
 
 import "./diary.scss";
 
@@ -62,10 +60,6 @@ export const DiaryPage = () => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [errors, setErrors] = useState<DiaryFormErrors>(deepCopy(emptyErrors));
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
-  const isEditable = useMemo(
-    () => currentDate.format("l") === dayjs().format("l"),
-    [currentDate]
-  );
   const [isFormSaving, setIsFormSaving] = useState<boolean>(false);
 
   useEffect(() => {
@@ -153,25 +147,17 @@ export const DiaryPage = () => {
       </Typography>
       <div className="diary-page-content">
         <CardContainer className="calendar-container">
-          {isMobile ? (
-            <MobileDatePicker
-              disabled={isEditMode}
-              value={currentDate}
-              onChange={onDatePickerChange}
-            />
-          ) : (
-            <DateCalendar
-              disabled={isEditMode}
-              value={currentDate}
-              onChange={onDatePickerChange}
-            />
-          )}
+          <DateCalendar
+            disabled={isEditMode}
+            value={currentDate}
+            onChange={onDatePickerChange}
+          />
         </CardContainer>
         {!isEditMode ? (
           <DailyLogDataView
             dailyLogData={dailyLogData}
             handleEditButtonClick={handleEditButtonClick}
-            isEditable={isEditable}
+            isEditable
           />
         ) : (
           <div className="edit-form-container">

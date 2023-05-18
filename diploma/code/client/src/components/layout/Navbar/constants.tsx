@@ -59,8 +59,8 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   {
     icon: <FamilyRestroomIcon />,
     label: "Родственник",
-    route: Routes.patientRelative,
-    roles: [Role.PATIENT],
+    route: Routes.relative,
+    roles: [Role.PATIENT, Role.RELATIVE],
   },
   {
     icon: <InsightsIcon />,
