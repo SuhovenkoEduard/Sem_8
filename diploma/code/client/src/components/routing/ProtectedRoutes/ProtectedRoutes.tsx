@@ -35,6 +35,6 @@ export const ProtectedRoutes = () => {
   return authUser && currentUser.user ? (
     <Layout />
   ) : (
-    <Navigate replace to={Routes.auth} />
+    <Navigate replace to={Routes.notFound} />
   );
 };

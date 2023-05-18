@@ -25,11 +25,8 @@ export const AppRoutes = () => {
     <Suspense fallback={<LoadingSpinner />}>
       <RoutesContainer>
         {/* Protected routes */}
-        <Route path={Routes.default} element={<ProtectedRoutes />}>
-          <Route
-            path={Routes.default}
-            element={<Navigate replace to={Routes.profile} />}
-          />
+        <Route element={<ProtectedRoutes />}>
+          {/* Profile */}
           <Route element={<RolesCheckRoutes roles={Object.values(Role)} />}>
             <Route path={Routes.profile} element={<Profile />} />
           </Route>
@@ -46,10 +43,17 @@ export const AppRoutes = () => {
           >
             <Route path={Routes.statistics} element={<Statistics />} />
           </Route>
+          {/* Sign out */}
+          <Route path={Routes.signOut} element={<SignOut />} />
         </Route>
+        {/* Default "/" */}
+        <Route
+          path={Routes.default}
+          element={<Navigate replace to={Routes.home} />}
+        />
         {/* Home */}
         <Route path={Routes.home} element={<Home />} />
-        <Route path={Routes.default} element={<PublicRoutes />}>
+        <Route element={<PublicRoutes />}>
           {/* auth: sign-in, sign-up */}
           <Route
             path={Routes.auth}
@@ -58,8 +62,6 @@ export const AppRoutes = () => {
           <Route path={Routes.signIn} element={<SignIn />} />
           <Route path={Routes.signUp} element={<SignUp />} />
         </Route>
-        {/* Sign out */}
-        <Route path={Routes.signOut} element={<SignOut />} />
         {/* not found */}
         <Route path={Routes.notFound} element={<NotFound />} />
         {/* any */}
