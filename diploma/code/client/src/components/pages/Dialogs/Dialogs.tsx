@@ -153,7 +153,7 @@ export const Dialogs = () => {
           )
         )}
         {selectedDialog &&
-          dialogsUsers.length &&
+          !!dialogsUsers.length &&
           // "!channel" check only because of typescript
           (isLoading || !channel ? (
             <LoadingSpinner />
