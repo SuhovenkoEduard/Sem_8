@@ -1,6 +1,6 @@
 import React from "react";
 import { IconButton } from "@mui/material";
-import { ReactComponent as EditIcon } from "icons/edit-icon.svg";
+import { ReactComponent as EditIcon } from "assets/icons/edit-icon.svg";
 
 import "./edit-button.scss";
 

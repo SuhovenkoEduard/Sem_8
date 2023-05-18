@@ -52,8 +52,8 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   },
   {
     icon: <ChatIcon />,
-    label: "Чат",
-    route: Routes.chats,
+    label: "Диалоги",
+    route: Routes.dialogs,
     roles: [Role.PATIENT, Role.DOCTOR],
   },
   {

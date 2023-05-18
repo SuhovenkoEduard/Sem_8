@@ -7,6 +7,7 @@ import { Routes } from "components/routing";
 import { useAppDispatch } from "store";
 import { Outlet, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
+import { streamClient } from "components/App/App";
 
 export const SignOut = () => {
   const navigate = useNavigate();
@@ -16,6 +17,10 @@ export const SignOut = () => {
 
   const onSignOut = useCallback(async () => {
     await signOut();
+    if (streamClient.user?.online) {
+      await streamClient.disconnectUser();
+    }
+
     dispatch({ type: ACTION_NAMES.userSignOut });
     NotificationManager.success("Sign out successful!");
     navigate(Routes.auth);

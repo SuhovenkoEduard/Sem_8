@@ -11,7 +11,7 @@ export enum Routes {
   diary = "/patient/diary",
   goals = "/patient/goals",
   statistics = "statistics",
-  chats = "/chats",
+  dialogs = "/dialogs",
   patientRelative = "/patient/relative",
   thematicMaterials = "/thematic-materials",
   patientsStatistics = "/doctor/patients-statistics",

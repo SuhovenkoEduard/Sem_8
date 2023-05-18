@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Box,
   Grid,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   SwipeableDrawer,
@@ -15,7 +15,7 @@ import {
   navBarItems,
   bottomNavBarItems,
 } from "components/layout/Navbar/constants";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "firestore/types/collections.types";
 import { GlobalState } from "store";
 import { useSelector } from "react-redux";
@@ -33,16 +33,18 @@ export const Navbar = () => {
     (state) => state.currentUser.user as User
   );
 
+  const location = useLocation();
+
   const navBarComponent = (navBarItem: NavBarItem) => (
-    <ListItem
-      button
+    <ListItemButton
       key={navBarItem.id}
       onClick={() => navigate(navBarItem.route)}
       className="item-container"
+      selected={location.pathname.includes(navBarItem.route)}
     >
       <ListItemIcon className="item-icon">{navBarItem.icon}</ListItemIcon>
       <ListItemText primary={navBarItem.label} className="item-text" />
-    </ListItem>
+    </ListItemButton>
   );
 
   const mapNavBarItems = (items: NavBarItem[]) =>
@@ -56,7 +58,7 @@ export const Navbar = () => {
       role="presentation"
       onClick={() => {}}
       onKeyDown={() => {}}
-      className="navbar-container"
+      className="navbar-items-container"
     >
       {mapNavBarItems(topNavbarItems)}
       {mapNavBarItems(navBarItems)}

@@ -2,8 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 import { DailyLog, User } from "firestore/types/collections.types";
 
-// todo change state of user slice from UserCredential to UserInfo (firestore)
-
 export const MODULE_NAME_USER = "currentUser";
 
 export type UserSliceState = {

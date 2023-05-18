@@ -1,4 +1,4 @@
-.navbar-container {
+.navbar-items-container {
   .item-icon {
     display: flex;
     align-items: center;
@@ -11,5 +11,13 @@
     letter-spacing: 0;
     font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-weight: 500;
+  }
+  .item-container {
+    &.Mui-selected {
+      background-color: #9797f3;
+    }
+    &.Mui-selected:hover {
+      background-color: #b8b8f1;
+    }
   }
 }
