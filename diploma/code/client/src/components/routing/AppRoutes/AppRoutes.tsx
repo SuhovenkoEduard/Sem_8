@@ -1,7 +1,11 @@
 import React, { Suspense } from "react";
-import { Navigate, Route, Routes as RoutesContainer } from "react-router-dom";
+import {
+  Navigate,
+  Route as DomRoute,
+  Routes as RoutesContainer,
+} from "react-router-dom";
 import { ProtectedRoutes } from "components/routing/ProtectedRoutes";
-import { Routes } from "components/routing/constants";
+import { Route } from "components/routing/constants";
 import { PublicRoutes } from "components/routing/PublicRoutes";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import {
@@ -25,47 +29,57 @@ export const AppRoutes = () => {
     <Suspense fallback={<LoadingSpinner />}>
       <RoutesContainer>
         {/* Protected routes */}
-        <Route element={<ProtectedRoutes />}>
+        <DomRoute element={<ProtectedRoutes />}>
           {/* Profile */}
-          <Route element={<RolesCheckRoutes roles={Object.values(Role)} />}>
-            <Route path={Routes.profile} element={<Profile />} />
-          </Route>
-          <Route element={<RolesCheckRoutes roles={[Role.PATIENT]} />}>
-            <Route path={Routes.diary} element={<DiaryPage />} />
-          </Route>
-          <Route
+          <DomRoute element={<RolesCheckRoutes roles={Object.values(Role)} />}>
+            <DomRoute path={Route.profile} element={<Profile />} />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.PATIENT]} />}>
+            <DomRoute path={Route.diary} element={<DiaryPage />} />
+          </DomRoute>
+          <DomRoute
             element={<RolesCheckRoutes roles={[Role.PATIENT, Role.DOCTOR]} />}
           >
-            <Route path={Routes.dialogs} element={<DialogsPage />} />
-          </Route>
-          <Route
-            element={<RolesCheckRoutes roles={[Role.PATIENT, Role.RELATIVE]} />}
-          >
-            <Route path={Routes.statistics} element={<StatisticsPage />} />
-          </Route>
-        </Route>
+            <DomRoute path={Route.dialogs} element={<DialogsPage />} />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.PATIENT]} />}>
+            <DomRoute path={Route.statistics} element={<StatisticsPage />} />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.RELATIVE]} />}>
+            <DomRoute
+              path={Route.relativeStatistics}
+              element={<StatisticsPage />}
+            />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.DOCTOR]} />}>
+            <DomRoute
+              path={Route.patientsStatistics}
+              element={<StatisticsPage />}
+            />
+          </DomRoute>
+        </DomRoute>
         {/* Default "/" */}
-        <Route
-          path={Routes.default}
-          element={<Navigate replace to={Routes.home} />}
+        <DomRoute
+          path={Route.default}
+          element={<Navigate replace to={Route.home} />}
         />
         {/* Home */}
-        <Route path={Routes.home} element={<Home />} />
-        <Route element={<PublicRoutes />}>
+        <DomRoute path={Route.home} element={<Home />} />
+        <DomRoute element={<PublicRoutes />}>
           {/* auth: sign-in, sign-up */}
-          <Route
-            path={Routes.auth}
-            element={<Navigate replace to={Routes.signIn} />}
+          <DomRoute
+            path={Route.auth}
+            element={<Navigate replace to={Route.signIn} />}
           />
-          <Route path={Routes.signIn} element={<SignIn />} />
-          <Route path={Routes.signUp} element={<SignUp />} />
-        </Route>
+          <DomRoute path={Route.signIn} element={<SignIn />} />
+          <DomRoute path={Route.signUp} element={<SignUp />} />
+        </DomRoute>
         {/* Sign out */}
-        <Route path={Routes.signOut} element={<SignOut />} />
+        <DomRoute path={Route.signOut} element={<SignOut />} />
         {/* not found */}
-        <Route path={Routes.notFound} element={<NotFound />} />
+        <DomRoute path={Route.notFound} element={<NotFound />} />
         {/* any */}
-        <Route path={Routes.any} element={<NotFound />} />
+        <DomRoute path={Route.any} element={<NotFound />} />
       </RoutesContainer>
     </Suspense>
   );

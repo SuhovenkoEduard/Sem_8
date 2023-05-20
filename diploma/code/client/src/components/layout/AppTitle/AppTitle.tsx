@@ -11,7 +11,7 @@ import { getUserInfoSelector } from "store/selectors";
 import { getUserFullName } from "firestore/helpers";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-import { Routes } from "components/routing";
+import { Route } from "components/routing";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -41,11 +41,13 @@ export const AppTitle = ({
   const userInfo = useSelector(getUserInfoSelector);
   const navigate = useNavigate();
 
+  const onProfileClick = () => {
+    setIsNavBarOpened(false);
+    navigate(Route.profile);
+  };
+
   return (
-    <AppBar
-      position="absolute"
-      sx={{ width: "100%", height: "60px !important" }}
-    >
+    <AppBar sx={{ width: "100%", height: "60px !important" }}>
       <Toolbar>
         {isMobile && (
           <IconButton
@@ -69,21 +71,23 @@ export const AppTitle = ({
         >
           {title}
         </Typography>
-        <Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          onClick={() => navigate(Routes.profile)}
-          sx={{
-            marginRight: "10px",
-            userSelect: "none",
-            ":hover": { cursor: "pointer" },
-          }}
-        >
-          {isMobile ? userInfo.name.first : getUserFullName(userInfo)}
-        </Typography>
-        <IconButton onClick={() => navigate(Routes.profile)}>
+        {!isMobile && (
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            onClick={onProfileClick}
+            sx={{
+              marginRight: "10px",
+              userSelect: "none",
+              ":hover": { cursor: "pointer" },
+            }}
+          >
+            {getUserFullName(userInfo)}
+          </Typography>
+        )}
+        <IconButton onClick={onProfileClick}>
           <Avatar src={userInfo.imageUrl} alt={getUserFullName(userInfo)} />
         </IconButton>
       </Toolbar>

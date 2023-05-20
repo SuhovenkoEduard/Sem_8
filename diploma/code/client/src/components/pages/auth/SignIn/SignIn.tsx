@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { Routes } from "components/routing";
+import { Route } from "components/routing";
 import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { auth } from "firebase_config";
@@ -130,7 +130,7 @@ export const SignIn = () => {
             )}
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href={Routes.signUp} variant="body2">
+                <Link href={Route.signUp} variant="body2">
                   {"Нет аккаунта? Зарегистрируйтесь"}
                 </Link>
               </Grid>

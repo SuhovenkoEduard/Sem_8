@@ -3,7 +3,7 @@ import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { ACTION_NAMES } from "store/reducers/user/constants";
 import { NotificationManager } from "react-notifications";
-import { Routes } from "components/routing";
+import { Route } from "components/routing";
 import { useAppDispatch } from "store";
 import { Outlet, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
@@ -23,7 +23,7 @@ export const SignOut = () => {
     }
 
     if (!user) {
-      navigate(Routes.auth);
+      navigate(Route.auth);
       return;
     }
 
@@ -34,8 +34,8 @@ export const SignOut = () => {
 
     dispatch({ type: ACTION_NAMES.userSignOut });
     NotificationManager.success("Sign out successful!");
-    navigate(Routes.auth);
-  }, [signOut, dispatch, navigate, loading]);
+    navigate(Route.auth);
+  }, [signOut, dispatch, navigate, loading, user]);
 
   useEffect(() => {
     onSignOut();

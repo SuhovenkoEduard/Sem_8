@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
-import { Routes } from "components/routing/constants";
+import { Route } from "components/routing/constants";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { GlobalState, useAppDispatch } from "store";
@@ -35,6 +35,6 @@ export const ProtectedRoutes = () => {
   return authUser && currentUser.user ? (
     <Layout />
   ) : (
-    <Navigate replace to={Routes.notFound} />
+    <Navigate replace to={Route.notFound} />
   );
 };

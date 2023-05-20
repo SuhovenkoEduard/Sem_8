@@ -1,4 +1,4 @@
-export enum Routes {
+export enum Route {
   any = "*",
   default = "/",
   notFound = "/not-found",
@@ -11,6 +11,7 @@ export enum Routes {
   diary = "/patient/diary",
   goals = "/patient/goals",
   statistics = "/statistics",
+  relativeStatistics = "/statistics/relative",
   dialogs = "/dialogs",
   thematicMaterials = "/thematic-materials",
   patientsStatistics = "/doctor/patients-statistics",
@@ -18,24 +19,25 @@ export enum Routes {
   relative = "/relative",
 }
 
-export const RoutesTitles: {
-  [key in Routes]: string;
+export const RouteTitles: {
+  [key in Route]: string;
 } = {
-  [Routes.any]: "",
-  [Routes.default]: "",
-  [Routes.notFound]: "Не найдено",
-  [Routes.home]: "Главная",
-  [Routes.auth]: "Авторизация",
-  [Routes.signIn]: "Вход",
-  [Routes.signUp]: "Регистрация",
-  [Routes.signOut]: "Выход",
-  [Routes.profile]: "Профиль",
-  [Routes.diary]: "Дневник",
-  [Routes.goals]: "Цели",
-  [Routes.statistics]: "Статистика",
-  [Routes.dialogs]: "Диалоги",
-  [Routes.thematicMaterials]: "Тематические материалы",
-  [Routes.patientsStatistics]: "Статистика пациентов",
-  [Routes.employees]: "Работники",
-  [Routes.relative]: "Родственник",
+  [Route.any]: "",
+  [Route.default]: "",
+  [Route.notFound]: "Не найдено",
+  [Route.home]: "Главная",
+  [Route.auth]: "Авторизация",
+  [Route.signIn]: "Вход",
+  [Route.signUp]: "Регистрация",
+  [Route.signOut]: "Выход",
+  [Route.profile]: "Профиль",
+  [Route.diary]: "Дневник",
+  [Route.goals]: "Цели",
+  [Route.statistics]: "Статистика",
+  [Route.relativeStatistics]: "Статистика родственника",
+  [Route.dialogs]: "Диалоги",
+  [Route.thematicMaterials]: "Тематические материалы",
+  [Route.patientsStatistics]: "Статистика пациентов",
+  [Route.employees]: "Работники",
+  [Route.relative]: "Родственник",
 };

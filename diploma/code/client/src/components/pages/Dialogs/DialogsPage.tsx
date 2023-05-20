@@ -27,6 +27,8 @@ import { firebaseRepositories } from "firestore/data/repositories";
 import { convertUserToUserInfo } from "firestore/converters";
 import { where } from "firebase/firestore";
 import ruUpdated from "assets/i18/ru.json";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
 
 import "./dialogs.scss";
 
@@ -82,12 +84,12 @@ export const DialogsPage = () => {
     setDialogsUsers(users.map(convertUserToUserInfo));
   }, [dialogs]);
 
-  // set first user as selected if there's only one
+  // set first user as selected if user is patient
   useEffect(() => {
-    if (dialogs && dialogs.length === 1) {
+    if (dialogs && dialogs.length === 1 && userInfo.role === Role.PATIENT) {
       setSelectedDialog(dialogs[0]);
     }
-  }, [dialogs]);
+  }, [dialogs, userInfo]);
 
   // handlers
   // handles dialog selection
@@ -95,12 +97,12 @@ export const DialogsPage = () => {
     event: SyntheticEvent<Element, Event>,
     option: unknown
   ) => {
-    const { value } = option as { value: string; label: string };
-    if (!value || !dialogs) {
+    if (!dialogs) {
       return;
     }
+    const castedOption = option as { value: string; label: string } | null;
     setSelectedDialog(
-      dialogs.find((dialog) => dialog.docId === value) as Dialog
+      dialogs.find((dialog) => dialog.docId === castedOption?.value) ?? null
     );
   };
 
@@ -117,6 +119,7 @@ export const DialogsPage = () => {
       return {
         value: dialog.docId,
         label: getUserFullName(person),
+        imageUrl: person.imageUrl,
       };
     },
     [dialogsUsers, userInfo]
@@ -128,7 +131,7 @@ export const DialogsPage = () => {
         {!dialogs || !dialogsUsers.length ? (
           <LoadingSpinner />
         ) : (
-          dialogs.length !== 1 && (
+          userInfo.role === Role.DOCTOR && (
             <Autocomplete
               id="dialog-select"
               className="dialogs-page-select"
@@ -141,11 +144,24 @@ export const DialogsPage = () => {
                   label="Выберите диалог"
                   inputProps={{
                     ...params.inputProps,
-                    // autoComplete: 'new-password', // disable autocomplete and autofill
                   }}
                 />
               )}
               blurOnSelect
+              noOptionsText="Нет пациентов с таким именем."
+              renderOption={(props, option) => (
+                <Box
+                  component="li"
+                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                  {...props}
+                >
+                  <Avatar
+                    src={option.imageUrl}
+                    sx={{ width: "30px", height: "30px", marginRight: "20px" }}
+                  />
+                  {option.label}
+                </Box>
+              )}
             />
           )
         )}

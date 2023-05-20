@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { Routes } from "components/routing";
+import { Route } from "components/routing";
 import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { useEffect, useRef, useState } from "react";
@@ -198,7 +198,7 @@ export const SignUp = () => {
             )}
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href={Routes.signIn} variant="body2">
+                <Link href={Route.signIn} variant="body2">
                   Уже есть аккаунт? Войдите
                 </Link>
               </Grid>

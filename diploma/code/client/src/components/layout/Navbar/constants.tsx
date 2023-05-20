@@ -1,6 +1,6 @@
 import React from "react";
 import { Role } from "firestore/types/collections.types";
-import { Routes } from "components/routing/constants";
+import { Route } from "components/routing/constants";
 import PersonIcon from "@mui/icons-material/Person";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import AlarmIcon from "@mui/icons-material/Alarm";
@@ -17,7 +17,7 @@ export type NavBarItem = {
   id: number;
   icon: React.ReactNode;
   label: string;
-  route: Routes;
+  route: Route;
   roles: Role[];
 };
 
@@ -26,7 +26,7 @@ export const topNavbarItems: NavBarItem[] = [
     id: 0,
     icon: <PersonIcon />,
     label: "Профиль",
-    route: Routes.profile,
+    route: Route.profile,
     roles: [...Object.values(Role)],
   },
 ];
@@ -35,49 +35,49 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   {
     icon: <SummarizeIcon />,
     label: "Дневник",
-    route: Routes.diary,
+    route: Route.diary,
     roles: [Role.PATIENT],
   },
   {
     icon: <AlarmIcon />,
     label: "Цели",
-    route: Routes.goals,
+    route: Route.goals,
     roles: [Role.PATIENT],
   },
   {
     icon: <TrendingUpIcon />,
     label: "Статистика",
-    route: Routes.statistics,
+    route: Route.statistics,
     roles: [Role.PATIENT],
   },
   {
     icon: <ChatIcon />,
     label: "Диалоги",
-    route: Routes.dialogs,
+    route: Route.dialogs,
     roles: [Role.PATIENT, Role.DOCTOR],
   },
   {
     icon: <FamilyRestroomIcon />,
     label: "Родственник",
-    route: Routes.relative,
+    route: Route.relative,
     roles: [Role.PATIENT, Role.RELATIVE],
   },
   {
     icon: <InsightsIcon />,
     label: "Статистика родственника-пациента",
-    route: Routes.statistics,
+    route: Route.relativeStatistics,
     roles: [Role.RELATIVE],
   },
   {
     icon: <QueryStatsIcon />,
     label: "Статистика пациентов",
-    route: Routes.patientsStatistics,
+    route: Route.patientsStatistics,
     roles: [Role.DOCTOR],
   },
   {
     icon: <WysiwygIcon />,
     label: "Тематические материалы",
-    route: Routes.thematicMaterials,
+    route: Route.thematicMaterials,
     roles: [
       Role.PATIENT,
       Role.RELATIVE,
@@ -89,7 +89,7 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   {
     icon: <PeopleIcon />,
     label: "Работники",
-    route: Routes.employees,
+    route: Route.employees,
     roles: [Role.ADMIN],
   },
 ];
@@ -99,7 +99,7 @@ export const bottomNavBarItems: NavBarItem[] = [
     id: 0,
     icon: <LogoutIcon />,
     label: "Выход",
-    route: Routes.signOut,
+    route: Route.signOut,
     roles: [...Object.values(Role)],
   },
 ];

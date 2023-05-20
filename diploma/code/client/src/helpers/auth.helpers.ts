@@ -1,7 +1,7 @@
 import { UserCredential } from "firebase/auth";
 import { NavigateFunction } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
-import { Routes } from "components/routing";
+import { Route } from "components/routing";
 import { generateDocId } from "firestore/helpers";
 import { Role } from "firestore/types/collections.types";
 import { firebaseRepositories } from "firestore/data/repositories";
@@ -12,7 +12,7 @@ export const successfulAuth = async (
   navigate: NavigateFunction
 ) => {
   NotificationManager.success("Successful authentication!");
-  navigate(Routes.profile);
+  navigate(Route.profile);
 };
 
 export const successfulSignUp = async ({

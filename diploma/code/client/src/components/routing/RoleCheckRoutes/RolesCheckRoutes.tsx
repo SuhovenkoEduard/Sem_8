@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { Routes } from "components/routing/constants";
+import { Route } from "components/routing/constants";
 import { useSelector } from "react-redux";
 import { GlobalState } from "store";
 import { Role, User } from "firestore/types/collections.types";
@@ -11,7 +11,7 @@ export const RolesCheckRoutes = ({ roles }: { roles: Role[] }) => {
   );
 
   return !roles.includes(user.role) ? (
-    <Navigate replace to={Routes.notFound} />
+    <Navigate replace to={Route.notFound} />
   ) : (
     <Outlet />
   );

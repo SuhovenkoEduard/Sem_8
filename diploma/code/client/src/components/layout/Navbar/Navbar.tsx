@@ -49,7 +49,7 @@ export const Navbar = ({
         navigate(navBarItem.route);
       }}
       className="item-container"
-      selected={location.pathname.includes(navBarItem.route)}
+      selected={location.pathname === navBarItem.route}
     >
       <ListItemIcon className="item-icon">{navBarItem.icon}</ListItemIcon>
       <ListItemText primary={navBarItem.label} className="item-text" />

@@ -3,7 +3,7 @@
   position: relative;
   flex-direction: column !important;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px);
   padding-top: 20px;
 
   .statistics-page-content {
@@ -12,6 +12,12 @@
     align-items: center;
     gap: 20px;
     padding: 0 20px 20px;
+    width: 100%;
+    flex: 1;
+
+    .select {
+      width: 100%;
+    }
 
     .controls {
       display: flex;
@@ -25,6 +31,7 @@
       flex-direction: column;
       align-items: center;
       gap: 20px;
+      flex: 1;
       .chart-card-container {
         padding: 10px 10px 0;
       }

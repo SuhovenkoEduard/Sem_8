@@ -5,8 +5,8 @@ import { NotificationManager } from "react-notifications";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { where } from "firebase/firestore";
 
-export const useRelatives = (user: User) => {
-  const [patient, setPatient] = useState<User | null>(null);
+export const usePatientsStatistics = (user: User) => {
+  const [patients, setPatients] = useState<User[]>([]);
   const [relative, setRelative] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -14,7 +14,7 @@ export const useRelatives = (user: User) => {
     try {
       setIsLoading(true);
       if (user.role === Role.PATIENT) {
-        setPatient(user);
+        setPatients([user]);
         const relatives = await firebaseRepositories.users.getDocs(
           where("relativePatient", "==", user.docId)
         );
@@ -33,7 +33,17 @@ export const useRelatives = (user: User) => {
         if (!relativePatient) {
           throw new Error(`Patient with this id doesn't exist.`);
         }
-        setPatient(relativePatient);
+        setPatients([relativePatient]);
+      }
+      if (user.role === Role.DOCTOR) {
+        const dialogs = await firebaseRepositories.dialogs.getDocs(
+          where("doctor", "==", user.docId)
+        );
+        const dialogsPatientsIds = dialogs.map((dialog) => dialog.patient);
+        const newPatients = await firebaseRepositories.users.getDocs(
+          where("docId", "in", dialogsPatientsIds)
+        );
+        setPatients(newPatients);
       }
     } catch (e) {
       console.log(e);
@@ -49,6 +59,6 @@ export const useRelatives = (user: User) => {
   return {
     isLoading,
     relative,
-    patient,
+    patients,
   };
 };
