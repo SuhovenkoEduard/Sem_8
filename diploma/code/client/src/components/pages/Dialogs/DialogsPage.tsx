@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { PageContainer } from "components/layout";
 import { useDialogsData } from "components/pages/Dialogs/hooks/useDialogsData";
 import { getDialogsSelector, getUserInfoSelector } from "store/selectors";
@@ -21,14 +21,7 @@ import { fetchDialogs } from "store/reducers/dialogs/actions";
 import { useAppDispatch } from "store";
 import { Dialog, Role, UserInfo } from "firestore/types/collections.types";
 
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { getUserFullName } from "firestore/helpers";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { convertUserToUserInfo } from "firestore/converters";
@@ -53,7 +46,7 @@ const i18nInstance = new Streami18n({
   translationsForLanguage: ruUpdated,
 });
 
-export const Dialogs = () => {
+export const DialogsPage = () => {
   // state
   // global
   const dispatch = useAppDispatch();
@@ -98,10 +91,11 @@ export const Dialogs = () => {
 
   // handlers
   // handles dialog selection
-  const handleSelectedDialogChange = (e: SelectChangeEvent<string | null>) => {
-    const {
-      target: { value },
-    } = e;
+  const handleSelectedDialogChange = (
+    event: SyntheticEvent<Element, Event>,
+    option: unknown
+  ) => {
+    const { value } = option as { value: string; label: string };
     if (!value || !dialogs) {
       return;
     }
@@ -110,46 +104,49 @@ export const Dialogs = () => {
     );
   };
 
+  const getUserOption = useCallback(
+    (dialog: Dialog) => {
+      const person =
+        userInfo.role === Role.PATIENT
+          ? (dialogsUsers.find(
+              (user) => user.docId === dialog.doctor
+            ) as UserInfo)
+          : (dialogsUsers.find(
+              (user) => user.docId === dialog.patient
+            ) as UserInfo);
+      return {
+        value: dialog.docId,
+        label: getUserFullName(person),
+      };
+    },
+    [dialogsUsers, userInfo]
+  );
+
   return (
     <PageContainer className="dialogs-page-container">
-      <Typography variant="h4" className="dialogs-page-title">
-        Диалоги
-      </Typography>
       <div className="dialogs-container">
         {!dialogs || !dialogsUsers.length ? (
           <LoadingSpinner />
         ) : (
           dialogs.length !== 1 && (
-            <FormControl>
-              <InputLabel id="dialog-select-label">Диалоги</InputLabel>
-              <Select
-                id="dialog-select"
-                labelId="dialog-select-label"
-                label="Диалоги"
-                className="dialogs-page-select"
-                value={selectedDialog?.docId ?? ""}
-                onChange={handleSelectedDialogChange}
-              >
-                {dialogs.map((dialog) => (
-                  <MenuItem key={dialog.docId} value={dialog.docId}>
-                    {getUserFullName({
-                      name:
-                        userInfo.role === Role.PATIENT
-                          ? (
-                              dialogsUsers.find(
-                                (user) => user.docId === dialog.doctor
-                              ) as UserInfo
-                            ).name
-                          : (
-                              dialogsUsers.find(
-                                (user) => user.docId === dialog.patient
-                              ) as UserInfo
-                            ).name,
-                    })}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              id="dialog-select"
+              className="dialogs-page-select"
+              value={selectedDialog ? getUserOption(selectedDialog) : null}
+              onChange={handleSelectedDialogChange}
+              options={dialogs.map(getUserOption)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Выберите диалог"
+                  inputProps={{
+                    ...params.inputProps,
+                    // autoComplete: 'new-password', // disable autocomplete and autofill
+                  }}
+                />
+              )}
+              blurOnSelect
+            />
           )
         )}
         {selectedDialog &&
@@ -162,6 +159,12 @@ export const Dialogs = () => {
               client={streamClient}
               theme="str-chat__theme-light"
               i18nInstance={i18nInstance}
+              customClasses={{
+                chatContainer:
+                  userInfo.role === Role.DOCTOR
+                    ? "str-chat__container doctor-view"
+                    : "str-chat__container",
+              }}
             >
               <Channel channel={channel}>
                 <Window>

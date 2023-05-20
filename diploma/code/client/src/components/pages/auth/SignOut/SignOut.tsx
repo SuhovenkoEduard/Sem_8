@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { useSignOut } from "react-firebase-hooks/auth";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { auth } from "firebase_config";
 import { ACTION_NAMES } from "store/reducers/user/constants";
 import { NotificationManager } from "react-notifications";
@@ -13,9 +13,20 @@ export const SignOut = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [signOut, loading, error] = useSignOut(auth);
+  const [signOut, , error] = useSignOut(auth);
+
+  const [user, loading] = useAuthState(auth);
 
   const onSignOut = useCallback(async () => {
+    if (loading) {
+      return;
+    }
+
+    if (!user) {
+      navigate(Routes.auth);
+      return;
+    }
+
     await signOut();
     if (streamClient.user?.online) {
       await streamClient.disconnectUser();
@@ -24,7 +35,7 @@ export const SignOut = () => {
     dispatch({ type: ACTION_NAMES.userSignOut });
     NotificationManager.success("Sign out successful!");
     navigate(Routes.auth);
-  }, [signOut, dispatch, navigate]);
+  }, [signOut, dispatch, navigate, loading]);
 
   useEffect(() => {
     onSignOut();

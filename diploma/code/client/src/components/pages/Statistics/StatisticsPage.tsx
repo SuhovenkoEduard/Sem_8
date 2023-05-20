@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { PageContainer } from "components/layout";
-import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getUserSelector } from "store/selectors";
 import { CardContainer } from "components/ui/CardContainer";
@@ -34,7 +33,7 @@ const getDateWithDayOnly = (date: string | null) =>
 const getDateWithDayOnlyDayjs = (date: dayjs.Dayjs | null) =>
   getDateWithDayOnly(date ? date.toDate().toString() : null);
 
-export const Statistics = () => {
+export const StatisticsPage = () => {
   const user = useSelector(getUserSelector);
 
   const { isLoading, patient } = useRelatives(user);
@@ -80,9 +79,6 @@ export const Statistics = () => {
 
   return (
     <PageContainer className="statistics-page-container">
-      <Typography variant="h4" className="statistics-page-title">
-        Статистика
-      </Typography>
       {isLoading || !patient ? (
         <LoadingSpinner />
       ) : (

@@ -3,7 +3,7 @@ import { PageContainer } from "components/layout";
 import { DateCalendar } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useDailyLog, useDailyLogData } from "components/pages/Diary/hooks/";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { DailyLog, Diary, User } from "firestore/types/collections.types";
 import { CardContainer } from "components/ui/CardContainer";
 import { DailyLogDataView } from "components/pages/Diary/components";
@@ -142,9 +142,6 @@ export const DiaryPage = () => {
 
   return (
     <PageContainer className="diary-page-container">
-      <Typography variant="h4" className="page-title">
-        Дневник
-      </Typography>
       <div className="diary-page-content">
         <CardContainer className="calendar-container">
           <DateCalendar

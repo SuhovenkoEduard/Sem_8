@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Grid,
@@ -22,9 +22,13 @@ import { useSelector } from "react-redux";
 
 import "./navbar.scss";
 
-export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(!isMobile);
-
+export const Navbar = ({
+  isNavBarOpened,
+  setIsNavBarOpened,
+}: {
+  isNavBarOpened: boolean;
+  setIsNavBarOpened: React.Dispatch<boolean>;
+}) => {
   const [width] = useWindowSize();
 
   const navigate = useNavigate();
@@ -38,7 +42,12 @@ export const Navbar = () => {
   const navBarComponent = (navBarItem: NavBarItem) => (
     <ListItemButton
       key={navBarItem.id}
-      onClick={() => navigate(navBarItem.route)}
+      onClick={() => {
+        if (isMobile) {
+          setIsNavBarOpened(false);
+        }
+        navigate(navBarItem.route);
+      }}
       className="item-container"
       selected={location.pathname.includes(navBarItem.route)}
     >
@@ -54,10 +63,12 @@ export const Navbar = () => {
 
   const list = (
     <Box
-      sx={{ width: isMobile ? 250 : (width / 12) * 2, minWidth: 170 }}
+      sx={{
+        width: isMobile ? 250 : (width / 12) * 2,
+        minWidth: 170,
+        marginTop: "60px",
+      }}
       role="presentation"
-      onClick={() => {}}
-      onKeyDown={() => {}}
       className="navbar-items-container"
     >
       {mapNavBarItems(topNavbarItems)}
@@ -71,9 +82,9 @@ export const Navbar = () => {
       <SwipeableDrawer
         variant={isMobile ? "temporary" : "permanent"}
         anchor="left"
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-        onOpen={() => setIsOpen(true)}
+        open={isNavBarOpened}
+        onClose={() => setIsNavBarOpened(false)}
+        onOpen={() => setIsNavBarOpened(true)}
       >
         {list}
       </SwipeableDrawer>

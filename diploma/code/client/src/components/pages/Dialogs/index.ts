@@ -1,1 +1,1 @@
-export { Dialogs } from "components/pages/Dialogs/Dialogs";
+export { DialogsPage } from "components/pages/Dialogs/DialogsPage";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { TextField, Button, Typography, Card, CardMedia } from "@mui/material";
+import { TextField, Button, Card, CardMedia } from "@mui/material";
 import { useSelector } from "react-redux";
 import { GlobalState, useAppDispatch } from "store";
 import { User } from "firestore/types/collections.types";
@@ -171,9 +171,6 @@ export const ProfilePage: React.FC = () => {
   return (
     <PageContainer>
       <div className="profile-page">
-        <Typography variant="h4" className="profile-page-title">
-          Профиль
-        </Typography>
         <div
           className="profile-page-content"
           style={{ flexWrap: isMobile ? "wrap" : undefined }}

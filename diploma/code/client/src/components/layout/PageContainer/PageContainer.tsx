@@ -10,7 +10,7 @@ export const PageContainer = ({
   className?: string;
 }) => {
   return (
-    <Grid item xs={isMobile ? 12 : 10}>
+    <Grid item xs={isMobile ? 12 : 10} sx={{ marginTop: "60px" }}>
       <Grid item xs={12} className={className}>
         {children}
       </Grid>

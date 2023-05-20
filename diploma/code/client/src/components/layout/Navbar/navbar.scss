@@ -14,7 +14,11 @@
   }
   .item-container {
     &.Mui-selected {
-      background-color: #9797f3;
+      color: white;
+      svg {
+        color: white;
+      }
+      background-color: #1976d2 !important;
     }
     &.Mui-selected:hover {
       background-color: #b8b8f1;

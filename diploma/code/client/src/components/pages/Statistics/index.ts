@@ -1,1 +1,1 @@
-export { Statistics } from "./Statistics";
+export { StatisticsPage } from "components/pages/Statistics/StatisticsPage";

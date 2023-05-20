@@ -2,15 +2,11 @@
   display: flex;
   flex-direction: column !important;
   align-items: center;
-
-  .page-title {
-    margin: 20px auto;
-  }
+  padding-top: 20px;
 
   .diary-page-content {
     display: flex;
     justify-content: center;
-    //align-items: center;
     flex-wrap: wrap;
     gap: 20px;
 
