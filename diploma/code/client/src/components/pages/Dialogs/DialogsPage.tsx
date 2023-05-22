@@ -86,7 +86,7 @@ export const DialogsPage = () => {
 
   // set first user as selected if user is patient
   useEffect(() => {
-    if (dialogs && dialogs.length === 1 && userInfo.role === Role.PATIENT) {
+    if (dialogs && dialogs.length > 0) {
       setSelectedDialog(dialogs[0]);
     }
   }, [dialogs, userInfo]);

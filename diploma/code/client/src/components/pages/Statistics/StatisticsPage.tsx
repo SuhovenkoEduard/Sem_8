@@ -49,7 +49,7 @@ export const StatisticsPage = () => {
     if (!patients.length) {
       return;
     }
-    if ([Role.PATIENT, Role.RELATIVE].includes(user.role)) {
+    if ([Role.PATIENT, Role.RELATIVE, Role.DOCTOR].includes(user.role)) {
       setSelectedPatient(patients[0]);
     }
   }, [user, patients, setSelectedPatient]);

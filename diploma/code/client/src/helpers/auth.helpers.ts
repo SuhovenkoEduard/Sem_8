@@ -50,6 +50,5 @@ export const successfulSignUp = async ({
     docId: newDialogId,
     doctor: assignedDoctor.docId,
     patient: uid,
-    messages: [],
   });
 };
