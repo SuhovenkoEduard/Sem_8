@@ -135,7 +135,10 @@ export const ProfilePage: React.FC = () => {
       await dispatch(fetchUser(newUser.docId));
     } catch (e) {
       console.log(e);
-      NotificationManager.error("Couldn't upload an image", "[IMAGE UPLOAD]");
+      NotificationManager.error(
+        "Сохранение изображения",
+        '[Ошибка на странице "профиль"]'
+      );
     } finally {
       setIsImageLoading(false);
     }
@@ -161,7 +164,10 @@ export const ProfilePage: React.FC = () => {
         })
       );
       console.log(err);
-      NotificationManager.error("Couldn't save profile data", "[PROFILE SAVE]");
+      NotificationManager.error(
+        "Сохранение данных профиля",
+        '[Ошибка на странице "профиль"]'
+      );
     } finally {
       setIsFormSaving(false);
       setIsEditMode(false);

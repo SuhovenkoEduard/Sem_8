@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import { successfulAuth, successfulSignUp } from "helpers/auth.helpers";
-import { Copyright } from "components/pages/auth";
 
 export const SignUp = () => {
   const formRef = useRef<HTMLFormElement>();
@@ -205,7 +204,6 @@ export const SignUp = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Grid>
     </Grid>
   );

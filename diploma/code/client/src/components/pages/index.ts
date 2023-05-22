@@ -7,3 +7,5 @@ export { default as Profile } from "./Profile";
 export { DiaryPage } from "./Diary";
 export { DialogsPage } from "./Dialogs";
 export { StatisticsPage } from "./Statistics";
+export { ThematicMaterialsPage } from "./ThematicMaterialsPage";
+export { ThematicMaterialPage } from "./ThematicMaterialPage";

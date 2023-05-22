@@ -68,8 +68,8 @@ export class Repository<T extends FirebaseDocId> implements IRepository<T> {
       },
       error: {
         result: [],
-        title: `Repository<${this.collectionName}> - [GET_DOCS]`,
-        message: "Invalid docs from firestore",
+        title: `Репозиторий<${this.collectionName}> - [Получение документов]`,
+        message: "Неправильный формат документа",
       },
     });
   };
@@ -92,8 +92,8 @@ export class Repository<T extends FirebaseDocId> implements IRepository<T> {
       },
       error: {
         result: null,
-        title: `Repository<${this.collectionName}> - [GET_DOC_BY_ID]`,
-        message: "Invalid document from firestore",
+        title: `Репозиторий<${this.collectionName}> - [Получение документа по id]`,
+        message: "Неправильный формат документа",
       },
     });
   };
@@ -106,8 +106,8 @@ export class Repository<T extends FirebaseDocId> implements IRepository<T> {
       },
       error: {
         result: false,
-        title: `Repository<${this.collectionName}> - [UPDATE_DOC]`,
-        message: "Invalid document from arguments",
+        title: `Репозиторий<${this.collectionName}> - [Обновление документа]`,
+        message: "Неправильный формат документа",
       },
     });
 

@@ -12,6 +12,7 @@ import { getUserFullName } from "firestore/helpers";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 import { Route } from "components/routing";
+import { convertRoleToRussian } from "firestore/converters";
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -84,7 +85,7 @@ export const AppTitle = ({
               ":hover": { cursor: "pointer" },
             }}
           >
-            {getUserFullName(userInfo)}
+            {getUserFullName(userInfo)} ({convertRoleToRussian(userInfo.role)})
           </Typography>
         )}
         <IconButton onClick={onProfileClick}>

@@ -79,8 +79,8 @@ export const useDialogsData = ({
     } catch (e) {
       console.log(e);
       NotificationManager.error(
-        "Error in selectedDialog setup",
-        "Dialogs data error"
+        "Загрузке данных для диалогов",
+        "Ошибка данных диалогов"
       );
     } finally {
       setIsLoading(false);

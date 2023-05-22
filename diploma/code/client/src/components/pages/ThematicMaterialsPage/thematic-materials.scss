@@ -1,0 +1,11 @@
+.thematic-materials-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  min-height: calc(100vh - 60px);
+  .thematic-materials-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

@@ -18,6 +18,8 @@ import {
   DiaryPage,
   DialogsPage,
   StatisticsPage,
+  ThematicMaterialsPage,
+  ThematicMaterialPage,
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
@@ -55,6 +57,28 @@ export const AppRoutes = () => {
             <DomRoute
               path={Route.patientsStatistics}
               element={<StatisticsPage />}
+            />
+          </DomRoute>
+          <DomRoute
+            element={
+              <RolesCheckRoutes
+                roles={[
+                  Role.PATIENT,
+                  Role.RELATIVE,
+                  Role.DOCTOR,
+                  Role.CONTENT_MAKER,
+                  Role.MODERATOR,
+                ]}
+              />
+            }
+          >
+            <DomRoute
+              path={Route.thematicMaterials}
+              element={<ThematicMaterialsPage />}
+            />
+            <DomRoute
+              path={Route.thematicMaterial}
+              element={<ThematicMaterialPage />}
             />
           </DomRoute>
         </DomRoute>

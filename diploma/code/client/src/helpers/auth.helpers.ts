@@ -11,7 +11,7 @@ export const successfulAuth = async (
   userCredential: UserCredential,
   navigate: NavigateFunction
 ) => {
-  NotificationManager.success("Successful authentication!");
+  NotificationManager.success("Успешная авторизация!");
   navigate(Route.profile);
 };
 

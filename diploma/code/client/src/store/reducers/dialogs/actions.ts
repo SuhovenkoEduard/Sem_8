@@ -13,10 +13,7 @@ export const fetchDialogs = (uid: string) => async (dispatch: AppDispatch) => {
     dispatch(setDialogs(dialogs));
   } catch (e) {
     console.log(e);
-    NotificationManager.error(
-      "Error while loading dialogs from firestore!",
-      "Firestore error"
-    );
+    NotificationManager.error("Загрузка диалогов", "Ошибка Firestore");
   } finally {
     dispatch(setIsPending(false));
   }

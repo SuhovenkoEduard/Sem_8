@@ -11,8 +11,8 @@ export const fetchUser = (uid: string) => async (dispatch: AppDispatch) => {
   } catch (e) {
     console.log(e);
     NotificationManager.error(
-      "Error while loading user from firestore!",
-      "Firestore error"
+      "Загрузка пользователя из firestore!",
+      "Ошибка Firestore"
     );
   } finally {
     dispatch(setIsPending(false));

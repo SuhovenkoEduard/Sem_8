@@ -16,7 +16,7 @@ export const DailyLogDataView = ({
   isEditable: boolean;
 }) => {
   const getDisplayValue = (propName: keyof DailyLogData): string | number =>
-    (+dailyLogData[propName] || "-") as string | number;
+    ((+dailyLogData[propName]).toFixed(2) || "-") as string | number;
 
   return (
     <CardContainer className="diary-page-content__info-container">

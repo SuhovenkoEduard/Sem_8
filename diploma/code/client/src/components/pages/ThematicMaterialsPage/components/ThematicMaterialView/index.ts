@@ -1,0 +1,1 @@
+export { ThematicMaterialView } from "./ThematicMaterialView";

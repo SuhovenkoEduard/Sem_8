@@ -33,7 +33,7 @@ export const SignOut = () => {
     }
 
     dispatch({ type: ACTION_NAMES.userSignOut });
-    NotificationManager.success("Sign out successful!");
+    NotificationManager.success("Успешный выход из системы!");
     navigate(Route.auth);
   }, [signOut, dispatch, navigate, loading, user]);
 

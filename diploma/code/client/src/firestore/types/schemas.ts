@@ -130,7 +130,7 @@ export const commentSchema = z
 export const thematicMaterialSchema = firebaseDocIdSchema
   .extend({
     imageUrl: z.string(),
-    docUrl: z.string(),
+    content: z.string(),
     createdAt: timestampSchema,
     title: z.string(),
     description: z.string(),

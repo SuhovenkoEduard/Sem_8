@@ -36,7 +36,7 @@ export type Medication = FirebaseDocId & {
 
 export type ThematicMaterial = FirebaseDocId & {
   imageUrl: string;
-  docUrl: string;
+  content: string;
   createdAt: Timestamp;
   title: string;
   description: string;

@@ -16,7 +16,6 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useRef, useState } from "react";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import { successfulAuth } from "helpers/auth.helpers";
-import { Copyright } from "components/pages/auth";
 
 export const SignIn = () => {
   const navigate = useNavigate();
@@ -135,7 +134,6 @@ export const SignIn = () => {
                 </Link>
               </Grid>
             </Grid>
-            <Copyright sx={{ mt: 5 }} />
           </Box>
         </Box>
       </Grid>

@@ -133,7 +133,10 @@ export const DiaryPage = () => {
     } catch (err) {
       dispatch(setDailyLog(convertDailyLogToDailyLogData(originalDailyLog)));
       console.log(err);
-      NotificationManager.error("Couldn't save dailyLog data", "[DIARY SAVE]");
+      NotificationManager.error(
+        "Сохранение дневника",
+        '[Ошибка на странице "дневник"]'
+      );
     } finally {
       setIsFormSaving(false);
       setIsEditMode(false);

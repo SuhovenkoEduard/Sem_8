@@ -1,0 +1,1 @@
+export { ThematicMaterialPage } from "./ThematicMaterialPage";
