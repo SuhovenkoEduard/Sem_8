@@ -50,7 +50,7 @@ export const ThematicMaterialsPage = () => {
           className="thematic-materials-container"
           style={{
             gap: isMobile ? "10px" : "20px",
-            width: isMobile ? "410px" : "1080px",
+            width: isMobile ? "350px" : "1080px",
           }}
         >
           {thematicMaterials.map((thematicMaterial) => (
