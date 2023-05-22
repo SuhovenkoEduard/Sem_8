@@ -4,7 +4,7 @@
   "name": "Дневник диабетика",
   "icons": [
     {
-      "src": "logo.ico",
+      "src": "favicon.ico",
       "sizes": "64x64",
       "type": "image/x-icon"
     },
