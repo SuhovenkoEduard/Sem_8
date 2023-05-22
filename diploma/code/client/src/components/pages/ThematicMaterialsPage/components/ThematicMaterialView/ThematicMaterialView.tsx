@@ -14,7 +14,11 @@ export const ThematicMaterialView = ({
   onClick: () => void;
 }) => {
   return (
-    <CardContainer className="thematic-material-view" onClick={onClick} sx={{ width: isMobile ? "170px" : "200px" }}>
+    <CardContainer
+      className="thematic-material-view"
+      onClick={onClick}
+      sx={{ width: isMobile ? "170px" : "200px" }}
+    >
       <CardContainer className="image-container">
         <img src={imageUrl} alt={title} />
       </CardContainer>
