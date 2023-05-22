@@ -7,6 +7,7 @@ import moment from "moment";
 
 import { faker } from "@faker-js/faker";
 import { generateDiaries, generateEmployeeReviews } from "../generators";
+import fetch from "node-fetch";
 
 const addFields = (users: User[], medications: Medication[]): User[] => {
   const allReviewersIds: AuthUserId[] = users
@@ -78,24 +79,27 @@ const addFields = (users: User[], medications: Medication[]): User[] => {
   });
 };
 
-export const generateUsers = (
+export const generateUsers = async (
   usersAuthData: UsersAuthData,
   medications: Medication[]
-): User[] => {
-  const users = usersAuthData.map(({ role, uid, firstName }): User => {
-    return {
-      docId: uid,
-      email: faker.internet.email(),
-      imageUrl: faker.image.animals(),
-      name: {
-        first: firstName ?? faker.name.firstName(),
-        last: faker.name.lastName(),
-      },
-      address: `${faker.address.country()}, ${faker.address.streetAddress()} ${faker.address.buildingNumber()}`,
-      phone: faker.phone.number("+375-##-#######"),
-      role,
-    };
-  });
+): Promise<User[]> => {
+  const users = await Promise.all(
+    usersAuthData.map(async ({ role, uid, firstName }): Promise<User> => {
+      const { url: imageUrl } = await fetch(faker.image.animals());
+      return {
+        docId: uid,
+        email: faker.internet.email(),
+        imageUrl,
+        name: {
+          first: firstName ?? faker.name.firstName(),
+          last: faker.name.lastName(),
+        },
+        address: `${faker.address.country()}, ${faker.address.streetAddress()} ${faker.address.buildingNumber()}`,
+        phone: faker.phone.number("+375-##-#######"),
+        role,
+      };
+    })
+  );
 
   return addFields(users, medications);
 };

@@ -10,6 +10,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "allowJs": true,
+    "module": "ESNext"
   },
   "include": [
     "src"

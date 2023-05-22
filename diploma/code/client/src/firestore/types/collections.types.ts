@@ -47,7 +47,7 @@ export type ThematicMaterial = FirebaseDocId & {
 export type Dialog = FirebaseDocId & {
   doctor: AuthUserId;
   patient: AuthUserId;
-  messages: Message[];
+  // messages: Message[];
 };
 
 export enum Role {

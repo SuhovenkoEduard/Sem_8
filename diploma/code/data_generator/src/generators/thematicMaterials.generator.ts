@@ -5,32 +5,35 @@ import { faker } from "@faker-js/faker";
 import { generateDocId } from "../helpers";
 
 import { generateComments } from "../generators";
+import fetch from "node-fetch";
 
-export const generateThematicMaterial = (
+export const generateThematicMaterial = async (
   count: number,
   authorsIds: AuthUserId[],
   commentersIds: AuthUserId[]
-): ThematicMaterial[] => {
-  return new Array(count).fill(null).map((): ThematicMaterial => {
-    const createdAt = faker.datatype.datetime({
-      min: +moment().subtract(3, "months").toDate(),
-      max: +moment().toDate(),
-    });
-    return {
-      docId: generateDocId(),
-      imageUrl: faker.image.food(),
-      docUrl:
-        "https://docs.google.com/document/d/1FWeMX1fWdd5wAlwPFOPgIVxtrIvaklxmQdS5XA38fPY/edit",
-      createdAt: createdAt.toString(),
-      title: faker.lorem.words(3),
-      description: faker.lorem.sentences(3),
-      author: faker.helpers.arrayElement(authorsIds),
-      comments: generateComments(
-        faker.datatype.number({ min: 0, max: 5 }),
-        +createdAt,
-        +new Date(),
-        commentersIds
-      ),
-    };
-  });
+): Promise<ThematicMaterial[]> => {
+  return Promise.all(
+    new Array(count).fill(null).map(async (): Promise<ThematicMaterial> => {
+      const createdAt = faker.datatype.datetime({
+        min: +moment().subtract(3, "months").toDate(),
+        max: +moment().toDate(),
+      });
+      const { url: imageUrl } = await fetch(faker.image.nature());
+      return {
+        docId: generateDocId(),
+        imageUrl,
+        content: faker.lorem.sentences(2),
+        createdAt: createdAt.toString(),
+        title: faker.lorem.words(3),
+        description: faker.lorem.sentences(3),
+        author: faker.helpers.arrayElement(authorsIds),
+        comments: generateComments(
+          faker.datatype.number({ min: 0, max: 5 }),
+          +createdAt,
+          +new Date(),
+          commentersIds
+        ),
+      };
+    })
+  );
 };

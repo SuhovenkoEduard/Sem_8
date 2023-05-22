@@ -16,12 +16,13 @@ export const generateDialogs = (
       docId: generateDocId(),
       patient,
       doctor,
-      messages: generateMessages(
-        faker.datatype.number({ min: 10, max: 20 }),
-        +moment().subtract(3, "months").toDate(),
-        +new Date(),
-        [patient, doctor]
-      ),
+      // messages: [],
+      //   generateMessages(
+      //   faker.datatype.number({ min: 10, max: 20 }),
+      //   +moment().subtract(3, "months").toDate(),
+      //   +new Date(),
+      //   [patient, doctor]
+      // ),
     };
   });
 };

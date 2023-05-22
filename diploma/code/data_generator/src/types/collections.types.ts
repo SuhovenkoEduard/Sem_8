@@ -36,7 +36,7 @@ export type Medication = FirebaseDocId & {
 
 export type ThematicMaterial = FirebaseDocId & {
   imageUrl: string;
-  docUrl: string;
+  content: string;
   createdAt: Timestamp;
   title: string;
   description: string;
@@ -47,7 +47,7 @@ export type ThematicMaterial = FirebaseDocId & {
 export type Dialog = FirebaseDocId & {
   doctor: AuthUserId;
   patient: AuthUserId;
-  messages: Message[];
+  // messages: Message[];
 };
 
 export enum Role {

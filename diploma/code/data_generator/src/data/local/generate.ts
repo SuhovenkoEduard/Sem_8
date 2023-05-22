@@ -24,11 +24,12 @@ export const getUsersIdsByRoles = ({
 }): AuthUserId[] =>
   users.filter((user) => roles.includes(user.role)).map(({ docId }) => docId);
 
-export const generate = (): GeneratorResults => {
-  const medications: Medication[] = generateMedication(
-    COLLECTION_SIZES.medications
-  );
-  const users: User[] = generateUsers(USERS_AUTH_DATA, medications);
+export const generate = async (): Promise<GeneratorResults> => {
+  const medications: Medication[] = [];
+  //   generateMedication(
+  //   COLLECTION_SIZES.medications
+  // );
+  const users: User[] = await generateUsers(USERS_AUTH_DATA, medications);
 
   const usersPatientsIds: AuthUserId[] = getUsersIdsByRoles({
     users,
@@ -38,7 +39,7 @@ export const generate = (): GeneratorResults => {
     users,
     roles: [Role.CONTENT_MAKER],
   });
-  const thematicMaterials: ThematicMaterial[] = generateThematicMaterial(
+  const thematicMaterials: ThematicMaterial[] = await generateThematicMaterial(
     COLLECTION_SIZES.thematicMaterials,
     usersAuthorsIds,
     usersPatientsIds

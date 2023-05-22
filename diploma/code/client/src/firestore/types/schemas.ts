@@ -86,7 +86,7 @@ export const dialogSchema = firebaseDocIdSchema
   .extend({
     doctor: authUserIdSchema,
     patient: authUserIdSchema,
-    messages: z.array(messageSchema),
+    // messages: z.array(messageSchema),
   })
   .strict();
 
