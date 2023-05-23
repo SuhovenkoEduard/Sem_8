@@ -42,7 +42,7 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
     icon: <AlarmIcon />,
     label: "Цели",
     route: Route.goals,
-    roles: [Role.PATIENT],
+    roles: [],
   },
   {
     icon: <TrendingUpIcon />,

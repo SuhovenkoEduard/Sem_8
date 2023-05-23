@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 
 import "./home.scss";
 
-export const Home = () => {
+export const HomePage = () => {
   const navigate = useNavigate();
   return (
     <div className="home-page">

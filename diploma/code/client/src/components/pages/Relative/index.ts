@@ -1,0 +1,1 @@
+export { RelativePage } from "./RelativePage";

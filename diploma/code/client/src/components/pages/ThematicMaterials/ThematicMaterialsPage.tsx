@@ -5,7 +5,7 @@ import useAsyncEffect from "use-async-effect";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { ThematicMaterialView } from "components/pages/ThematicMaterialsPage/components/ThematicMaterialView";
+import { ThematicMaterialView } from "components/pages/ThematicMaterials/components/ThematicMaterialView";
 import { useNavigate } from "react-router-dom";
 import { Route } from "components/routing";
 import { isMobile } from "react-device-detect";

@@ -4,7 +4,7 @@ import { AppRoutes } from "components/routing";
 import { StreamChat } from "stream-chat";
 import * as emailjs from "@emailjs/browser";
 
-import "./app.scss";
+import "containers/App/app.scss";
 
 export const streamClient = StreamChat.getInstance("bq8h3h82pvd8");
 emailjs.init("y-xzk78YvyzBfbFUe");

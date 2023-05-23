@@ -15,7 +15,7 @@ import {
   Window,
 } from "stream-chat-react";
 import "stream-chat-react/dist/css/v2/index.css";
-import { streamClient } from "components/App/App";
+import { streamClient } from "containers/App/App";
 import useAsyncEffect from "use-async-effect";
 import { fetchDialogs } from "store/reducers/dialogs/actions";
 import { useAppDispatch } from "store";

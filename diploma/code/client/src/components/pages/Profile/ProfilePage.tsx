@@ -25,7 +25,7 @@ import { setUser } from "store/reducers/user/userSlice";
 import { deepEqual } from "ts-deep-equal";
 import { EditButton } from "components/ui/EditButton";
 
-import "./profile-page.scss";
+import "./profile.scss";
 
 const validationObj: {
   [key: string]: (s: string) => string | null;

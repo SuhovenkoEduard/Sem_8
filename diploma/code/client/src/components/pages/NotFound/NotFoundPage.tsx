@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 import "./not-found.scss";
 
-export const NotFound = () => {
+export const NotFoundPage = () => {
   const navigate = useNavigate();
   const user = useSelector(getUserSelector);
   return (

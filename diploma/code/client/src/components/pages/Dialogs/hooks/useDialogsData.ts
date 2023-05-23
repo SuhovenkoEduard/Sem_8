@@ -4,7 +4,7 @@ import useAsyncEffect from "use-async-effect";
 import { useState } from "react";
 import { getUserFullName } from "firestore/helpers";
 import { NotificationManager } from "react-notifications";
-import { streamClient } from "components/App/App";
+import { streamClient } from "containers/App/App";
 
 const getStreamUserData = (userInfo: UserInfo) => ({
   id: userInfo.docId,

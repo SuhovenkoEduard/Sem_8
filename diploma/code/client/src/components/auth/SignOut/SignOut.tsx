@@ -7,7 +7,7 @@ import { Route } from "components/routing";
 import { useAppDispatch } from "store";
 import { Outlet, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
-import { streamClient } from "components/App/App";
+import { streamClient } from "containers/App/App";
 
 export const SignOut = () => {
   const navigate = useNavigate();

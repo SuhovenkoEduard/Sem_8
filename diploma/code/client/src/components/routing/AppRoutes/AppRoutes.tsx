@@ -9,22 +9,23 @@ import { Route } from "components/routing/constants";
 import { PublicRoutes } from "components/routing/PublicRoutes";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import {
+  DialogsPage,
+  DiaryPage,
   Home,
   NotFound,
   Profile,
+  RelativePage,
   SignIn,
-  SignUp,
   SignOut,
-  DiaryPage,
-  DialogsPage,
+  SignUp,
   StatisticsPage,
-  ThematicMaterialsPage,
   ThematicMaterialPage,
+  ThematicMaterialsPage,
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
 
-// const Home = React.lazy(() => import("components/pages/Home"));
+// const HomePage = React.lazy(() => import("components/pages/HomePage"));
 
 export const AppRoutes = () => {
   return (
@@ -81,13 +82,18 @@ export const AppRoutes = () => {
               element={<ThematicMaterialPage />}
             />
           </DomRoute>
+          <DomRoute
+            element={<RolesCheckRoutes roles={[Role.PATIENT, Role.RELATIVE]} />}
+          >
+            <DomRoute path={Route.relative} element={<RelativePage />} />
+          </DomRoute>
         </DomRoute>
         {/* Default "/" */}
         <DomRoute
           path={Route.default}
           element={<Navigate replace to={Route.home} />}
         />
-        {/* Home */}
+        {/* HomePage */}
         <DomRoute path={Route.home} element={<Home />} />
         <DomRoute element={<PublicRoutes />}>
           {/* auth: sign-in, sign-up */}
