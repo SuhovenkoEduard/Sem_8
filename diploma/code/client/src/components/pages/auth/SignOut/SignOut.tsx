@@ -23,7 +23,7 @@ export const SignOut = () => {
     }
 
     if (!user) {
-      navigate(Route.auth);
+      navigate(Route.home);
       return;
     }
 

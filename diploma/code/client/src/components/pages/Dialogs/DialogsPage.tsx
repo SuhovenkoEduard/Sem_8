@@ -29,6 +29,7 @@ import { where } from "firebase/firestore";
 import ruUpdated from "assets/i18/ru.json";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
+import * as emailjs from "@emailjs/browser";
 
 import "./dialogs.scss";
 
@@ -90,6 +91,39 @@ export const DialogsPage = () => {
       setSelectedDialog(dialogs[0]);
     }
   }, [dialogs, userInfo]);
+
+  // send emails when a new message occurs
+  useEffect(() => {
+    const listener = streamClient.on("message.new", async (event) => {
+      if (!selectedDialog || !dialogsUsers.length) {
+        return;
+      }
+
+      if (event?.user?.id === userInfo.docId && event?.message?.text) {
+        const message = event.message.text;
+        const receiverId =
+          userInfo.role === Role.PATIENT
+            ? selectedDialog.doctor
+            : selectedDialog.patient;
+        const receiverUserInfo = dialogsUsers.find(
+          (user) => user.docId === receiverId
+        ) as UserInfo;
+
+        const response = await emailjs.send(
+          "service_oxiflh8",
+          "template_4mhfpd6",
+          {
+            to_email: receiverUserInfo.email,
+            from_name: getUserFullName(userInfo),
+            to_name: getUserFullName(receiverUserInfo),
+            message,
+          }
+        );
+        console.log(response);
+      }
+    });
+    return () => listener.unsubscribe();
+  }, [selectedDialog, dialogsUsers, userInfo]);
 
   // handlers
   // handles dialog selection
