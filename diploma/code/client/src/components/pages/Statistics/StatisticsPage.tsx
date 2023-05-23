@@ -157,6 +157,9 @@ export const StatisticsPage = () => {
           )}
           {selectedPatient && (
             <>
+              <div className="diabet-type">
+                Тип диабета: {selectedPatient.diary?.diabetType}
+              </div>
               <div className="controls">
                 <DatePickerComponent
                   className={isMobile ? "mobile-date-picker" : ""}

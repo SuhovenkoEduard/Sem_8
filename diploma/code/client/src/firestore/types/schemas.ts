@@ -141,6 +141,7 @@ export const thematicMaterialSchema = firebaseDocIdSchema
 
 export const diarySchema = z
   .object({
+    diabetType: z.number(),
     dailyLogs: z.array(dailyLogSchema),
     goals: z.array(goalSchema),
   })
@@ -149,6 +150,7 @@ export const diarySchema = z
 export const userSchema = firebaseDocIdSchema
   .extend({
     email: z.string(),
+    password: z.string().optional(),
     imageUrl: z.string(),
     name: z
       .object({

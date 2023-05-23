@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { TextField, Button, Card, CardMedia } from "@mui/material";
 import { useSelector } from "react-redux";
 import { GlobalState, useAppDispatch } from "store";
-import { User } from "firestore/types/collections.types";
+import { Role, User } from "firestore/types/collections.types";
 import {
   convertRoleToRussian,
   convertUserDataToUserInfo,
@@ -190,8 +190,11 @@ export const ProfilePage: React.FC = () => {
                 component="img"
                 height="100%"
                 width="100%"
-                sx={{ objectFit: "cover" }}
-                image={userData.imageUrl}
+                sx={{ objectFit: "fill" }}
+                image={
+                  userData.imageUrl ||
+                  "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                }
                 alt="Profile Image"
               />
             </Card>
@@ -211,6 +214,9 @@ export const ProfilePage: React.FC = () => {
               <p>Телефон: {userData.phone}</p>
               <p>Адрес: {userData.address}</p>
               <p>Тип учётной записи: {convertRoleToRussian(userData.role)}</p>
+              {userData.role === Role.PATIENT && (
+                <p>Тип диабета: {user.diary?.diabetType}</p>
+              )}
               <p className="role-logo-container">
                 <img src={`/images/logos/${userData.role}-logo.png`} alt="" />
               </p>

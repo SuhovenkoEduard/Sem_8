@@ -15,6 +15,9 @@ import { Button } from "@mui/material";
 import { NotificationManager } from "react-notifications";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { isMobile } from "react-device-detect";
+import { deleteUser, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseConfig } from "firebase_config";
+import { initializeApp } from "firebase/app";
 
 import "./relative.scss";
 
@@ -39,8 +42,17 @@ export const RelativePage = () => {
     }
     try {
       setIsRemoveLoading(true);
+      const firebaseApp2 = initializeApp(firebaseConfig, "relativeApp");
+      const auth2 = getAuth(firebaseApp2);
+      const relativeUserCredential = await signInWithEmailAndPassword(
+        auth2,
+        relative.email,
+        relative.password as string
+      );
+      await deleteUser(relativeUserCredential.user);
       await firebaseRepositories.users.deleteDocById(relative.docId);
       await updateRelatives();
+      await auth2.signOut();
     } catch (e) {
       console.log(e);
       NotificationManager.error(
@@ -88,7 +100,11 @@ export const RelativePage = () => {
           <CardContainer className="avatar">
             <img
               className="avatar"
-              src={userInfo.imageUrl}
+              style={{ objectFit: "fill" }}
+              src={
+                userInfo.imageUrl ||
+                "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+              }
               alt={getUserFullName(userInfo)}
             />
           </CardContainer>
@@ -106,6 +122,9 @@ export const RelativePage = () => {
             <div>Эл. почта: {userInfo.email}</div>
             <div>Телефон: {userInfo.phone}</div>
             <div>Адрес: {userInfo.address}</div>
+            {userInfo.role === Role.PATIENT && (
+              <div>Тип диабета: {patient?.diary?.diabetType}</div>
+            )}
             <div>Тип учётной записи: {convertRoleToRussian(userInfo.role)}</div>
             <div className="role-logo-container">
               <img

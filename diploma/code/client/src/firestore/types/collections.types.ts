@@ -7,6 +7,7 @@ export type FirebaseDocId = {
 
 export type User = FirebaseDocId & {
   email: string;
+  password?: string;
   imageUrl: string;
   name: {
     first: string;
@@ -87,6 +88,7 @@ export enum EmployeeReviewRate {
 }
 
 export type Diary = {
+  diabetType: number;
   dailyLogs: DailyLog[];
   goals: Goal[];
 };

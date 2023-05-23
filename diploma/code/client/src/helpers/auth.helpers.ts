@@ -19,11 +19,19 @@ export const successfulSignUp = async ({
   firstName,
   lastName,
   email,
+  password,
+  role,
+  relativePatientId,
+  diabetType,
   userCredential,
 }: {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
+  role: Role;
+  relativePatientId?: string;
+  diabetType?: number;
   userCredential: UserCredential;
 }) => {
   const { uid } = userCredential.user;
@@ -32,6 +40,25 @@ export const successfulSignUp = async ({
     (user) => user.role === Role.DOCTOR
   );
 
+  const patientData =
+    role === Role.PATIENT && diabetType
+      ? {
+          diary: {
+            diabetType,
+            dailyLogs: [],
+            goals: [],
+          },
+        }
+      : undefined;
+
+  const relativeData =
+    role === Role.PATIENT
+      ? undefined
+      : {
+          relativePatient: relativePatientId,
+          password,
+        };
+
   await firebaseRepositories.users.updateDoc({
     docId: uid,
     address: "",
@@ -39,18 +66,18 @@ export const successfulSignUp = async ({
     imageUrl: "",
     name: { first: firstName, last: lastName },
     phone: "",
-    role: Role.PATIENT,
-    diary: {
-      dailyLogs: [],
-      goals: [],
-    },
+    role,
+    ...patientData,
+    ...relativeData,
   });
 
-  const assignedDoctor = faker.helpers.arrayElement(doctors);
-  const newDialogId = generateDocId();
-  await firebaseRepositories.dialogs.updateDoc({
-    docId: newDialogId,
-    doctor: assignedDoctor.docId,
-    patient: uid,
-  });
+  if (role === Role.PATIENT) {
+    const assignedDoctor = faker.helpers.arrayElement(doctors);
+    const newDialogId = generateDocId();
+    await firebaseRepositories.dialogs.updateDoc({
+      docId: newDialogId,
+      doctor: assignedDoctor.docId,
+      patient: uid,
+    });
+  }
 };
