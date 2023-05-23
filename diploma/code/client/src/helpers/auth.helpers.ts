@@ -18,10 +18,12 @@ export const successfulAuth = async (
 export const successfulSignUp = async ({
   firstName,
   lastName,
+  email,
   userCredential,
 }: {
   firstName: string;
   lastName: string;
+  email: string;
   userCredential: UserCredential;
 }) => {
   const { uid } = userCredential.user;
@@ -33,7 +35,7 @@ export const successfulSignUp = async ({
   await firebaseRepositories.users.updateDoc({
     docId: uid,
     address: "",
-    email: "",
+    email,
     imageUrl: "",
     name: { first: firstName, last: lastName },
     phone: "",

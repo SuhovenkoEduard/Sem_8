@@ -9,11 +9,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { CardContainer } from "components/ui/CardContainer";
 import Avatar from "@mui/material/Avatar";
 import { getUserFullName } from "firestore/helpers";
-import dayjs from "dayjs";
 import { Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Route } from "components/routing";
 import ReactHtmlParser from "react-html-parser";
+import { formatDate } from "helpers/helpers";
 
 import "./thematic-material.scss";
 
@@ -91,7 +91,7 @@ export const ThematicMaterialPage = () => {
               </div>
               <div className="title">{thematicMaterial.title}</div>
               <div className="light-text">
-                {dayjs(thematicMaterial.createdAt).format("HH:mm, D MMMM YYYY")}
+                {formatDate(thematicMaterial.createdAt)}
               </div>
               <div className="description">{thematicMaterial.description}</div>
             </div>

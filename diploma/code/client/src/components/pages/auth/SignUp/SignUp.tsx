@@ -44,7 +44,7 @@ export const SignUp = () => {
 
     if (userCredential) {
       await successfulAuth(userCredential, navigate);
-      await successfulSignUp({ firstName, lastName, userCredential });
+      await successfulSignUp({ firstName, lastName, email, userCredential });
     }
   };
 

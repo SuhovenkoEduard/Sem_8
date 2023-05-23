@@ -4,7 +4,7 @@ import { DateCalendar } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useDailyLog, useDailyLogData } from "components/pages/Diary/hooks/";
 import { Button, TextField } from "@mui/material";
-import { DailyLog, Diary, User } from "firestore/types/collections.types";
+import { DailyLog, Diary, Note, User } from "firestore/types/collections.types";
 import { CardContainer } from "components/ui/CardContainer";
 import { DailyLogDataView } from "components/pages/Diary/components";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
@@ -23,6 +23,12 @@ import { setDailyLog } from "store/reducers/user/userSlice";
 import { NotificationManager } from "react-notifications";
 import { GlobalState, useAppDispatch } from "store";
 import { useSelector } from "react-redux";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { NoteModal } from "components/pages/Diary/components/NoteModal";
+import { EditButton } from "components/ui/EditButton";
+import { formatDate } from "helpers/helpers";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
 
 import "./diary.scss";
 
@@ -101,18 +107,14 @@ export const DiaryPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const diary: Diary = user.diary as Diary;
     const dailyLogs: DailyLog[] = diary.dailyLogs;
-
     try {
       setIsFormSaving(true);
-
       const newDailyLog: DailyLog = {
         ...convertDailyLogDataToDailyLog(dailyLogData),
         createdAt: new Date().toString(),
       };
-
       const newDiary: Diary = {
         ...diary,
         dailyLogs: [
@@ -123,7 +125,6 @@ export const DiaryPage = () => {
           newDailyLog,
         ],
       };
-
       const newUser = {
         ...user,
         diary: newDiary,
@@ -141,6 +142,103 @@ export const DiaryPage = () => {
       setIsFormSaving(false);
       setIsEditMode(false);
     }
+  };
+
+  // notes
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+  const [deletedNote, setDeletedNote] = useState<Note | null>(null);
+
+  const handleSubmitNote = async (note: Note) => {
+    const diary: Diary = user.diary as Diary;
+    const dailyLogs: DailyLog[] = diary.dailyLogs;
+    try {
+      const notesWithoutSelected = dailyLogData.notes.filter(
+        (_note) => _note.createdAt !== selectedNote?.createdAt
+      );
+      const newNotes = [...notesWithoutSelected, note];
+      const newDailyLog: DailyLog = {
+        ...convertDailyLogDataToDailyLog(dailyLogData),
+        notes: newNotes,
+      };
+      const newDiary: Diary = {
+        ...diary,
+        dailyLogs: [
+          ...dailyLogs.filter(
+            (dailyLog) =>
+              dayjs(dailyLog.createdAt).format("l") !== currentDate.format("l")
+          ),
+          newDailyLog,
+        ],
+      };
+      const newUser = {
+        ...user,
+        diary: newDiary,
+      };
+      await firebaseRepositories.users.updateDoc(newUser);
+      await dispatch(fetchUser(newUser.docId));
+    } catch (e) {
+      dispatch(setDailyLog(convertDailyLogToDailyLogData(originalDailyLog)));
+      console.log(e);
+      NotificationManager.error(
+        "Сохранение заметки",
+        '[Ошибка на странице "дневник"]'
+      );
+    }
+  };
+
+  const handleDeleteNote = async (note: Note) => {
+    const diary: Diary = user.diary as Diary;
+    const dailyLogs: DailyLog[] = diary.dailyLogs;
+    try {
+      setDeletedNote(note);
+      const newNotes = dailyLogData.notes.filter(
+        (_note) => _note.createdAt !== note.createdAt
+      );
+      const newDailyLog: DailyLog = {
+        ...convertDailyLogDataToDailyLog(dailyLogData),
+        notes: newNotes,
+      };
+      const newDiary: Diary = {
+        ...diary,
+        dailyLogs: [
+          ...dailyLogs.filter(
+            (dailyLog) =>
+              dayjs(dailyLog.createdAt).format("l") !== currentDate.format("l")
+          ),
+          newDailyLog,
+        ],
+      };
+      const newUser = {
+        ...user,
+        diary: newDiary,
+      };
+      await firebaseRepositories.users.updateDoc(newUser);
+      await dispatch(fetchUser(newUser.docId));
+    } catch (e) {
+      dispatch(setDailyLog(convertDailyLogToDailyLogData(originalDailyLog)));
+      console.log(e);
+      NotificationManager.error(
+        "Сохранение заметки",
+        '[Ошибка на странице "дневник"]'
+      );
+    } finally {
+      setDeletedNote(null);
+    }
+  };
+
+  const onOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleOpenNoteModal = (note: Note) => {
+    setSelectedNote(note);
+    setIsOpen(true);
+  };
+
+  const handleCloseNoteModal = () => {
+    setIsOpen(false);
+    setTimeout(() => setSelectedNote(null), 300);
   };
 
   return (
@@ -263,6 +361,61 @@ export const DiaryPage = () => {
             </form>
           </div>
         )}
+        <CardContainer className="notes" title="Заметки">
+          <div className="notes-content">
+            {!dailyLogData.notes.length ? (
+              <div className="notes-empty">Заметок нет</div>
+            ) : (
+              [...dailyLogData.notes]
+                .sort((left, right) =>
+                  dayjs(left.createdAt).diff(dayjs(right.createdAt), "hour")
+                )
+                .map((note) => (
+                  <CardContainer className="note" key={note.createdAt}>
+                    {deepEqual(note, deletedNote ?? {}) ? (
+                      <LoadingSpinner />
+                    ) : (
+                      <>
+                        <div className="first-line">
+                          <div className="date">
+                            {formatDate(note.createdAt)}
+                          </div>
+                          <div className="controls">
+                            <EditButton
+                              onClick={() => handleOpenNoteModal(note)}
+                            />
+                            <IconButton
+                              className="delete-button"
+                              onClick={() => handleDeleteNote(note)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
+                        </div>
+                        <div className="content">{note.content}</div>
+                      </>
+                    )}
+                  </CardContainer>
+                ))
+            )}
+            <div className="page-controls">
+              <Button
+                className="add-note-button"
+                onClick={onOpen}
+                variant="outlined"
+                startIcon={<AddCircleIcon />}
+              >
+                Добавить заметку
+              </Button>
+            </div>
+          </div>
+          <NoteModal
+            isOpen={isOpen}
+            onClose={handleCloseNoteModal}
+            submitNote={handleSubmitNote}
+            selectedNote={selectedNote}
+          />
+        </CardContainer>
       </div>
     </PageContainer>
   );

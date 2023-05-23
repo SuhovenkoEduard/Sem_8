@@ -49,5 +49,52 @@
         }
       }
     }
+
+    .notes {
+      margin: 20px 20px 5rem;
+      display: flex;
+      flex-direction: column;
+      min-width: 350px;
+      max-width: 700px;
+      .notes-content {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 20px;
+        gap: 20px;
+        .notes-empty {
+          text-align: center;
+          width: 100%;
+        }
+        .note {
+          width: 315px;
+          height: 150px;
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          .first-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .controls {
+              .delete-button {
+                color: red;
+              }
+            }
+          }
+          .content {
+            overflow-y: auto;
+          }
+        }
+
+        .page-controls {
+          padding: 10px;
+          display: flex;
+          flex: 0 0 100%;
+          .add-note-button {
+            margin-left: auto;
+          }
+        }
+      }
+    }
   }
 }
