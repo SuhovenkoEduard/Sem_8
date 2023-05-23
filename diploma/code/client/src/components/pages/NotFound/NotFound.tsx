@@ -9,7 +9,7 @@ import "./not-found.scss";
 
 export const NotFound = () => {
   const navigate = useNavigate();
-  const user = useSelector(getUserSelector)
+  const user = useSelector(getUserSelector);
   return (
     <div className="not-found-page">
       <h2 className="title">Страница не найдена :(</h2>
