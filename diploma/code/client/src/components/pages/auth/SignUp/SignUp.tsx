@@ -91,17 +91,20 @@ export const SignUp = () => {
       />
       <Grid
         item
-        sx={{ p: (_theme) => _theme.spacing(2) }}
         xs={12}
         sm={8}
         md={5}
         component={Paper}
         elevation={6}
         square
+        sx={{
+          p: (_theme) => _theme.spacing(2),
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
