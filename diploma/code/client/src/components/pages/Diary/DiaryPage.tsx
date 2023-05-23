@@ -158,7 +158,7 @@ export const DiaryPage = () => {
       );
       const newNotes = [...notesWithoutSelected, note];
       const newDailyLog: DailyLog = {
-        ...convertDailyLogDataToDailyLog(dailyLogData),
+        ...originalDailyLog,
         notes: newNotes,
       };
       const newDiary: Diary = {
@@ -196,7 +196,7 @@ export const DiaryPage = () => {
         (_note) => _note.createdAt !== note.createdAt
       );
       const newDailyLog: DailyLog = {
-        ...convertDailyLogDataToDailyLog(dailyLogData),
+        ...originalDailyLog,
         notes: newNotes,
       };
       const newDiary: Diary = {
