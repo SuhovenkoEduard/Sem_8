@@ -73,13 +73,13 @@ export const StatisticsPage = () => {
     () =>
       dailyLogsData
         .filter(
-          ({ createdAt }) =>
+          ({ createdAt, sugarLevel }) =>
             getDateWithDayOnly(createdAt).diff(
               !startDate
                 ? getDateWithDayOnly(getMinDate(dailyLogsData) ?? null)
                 : getDateWithDayOnlyDayjs(startDate),
               "day"
-            ) >= 0
+            ) >= 0 && +sugarLevel
         )
         .filter(
           ({ createdAt }) =>
