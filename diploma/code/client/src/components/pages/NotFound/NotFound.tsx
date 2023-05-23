@@ -1,45 +1,28 @@
 import React from "react";
-import { Box, Button, Container, Typography } from "@mui/material";
-import Grid from "@mui/material/Grid";
+import { Button } from "@mui/material";
 import { Route } from "components/routing";
 import { useNavigate } from "react-router-dom";
+
+import "./not-found.scss";
 
 export const NotFound = () => {
   const navigate = useNavigate();
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <Container maxWidth="md">
-        <Grid container spacing={2}>
-          <Grid>
-            <Typography variant="h1">404</Typography>
-            <Typography variant="h6">
-              The page you’re looking for doesn’t exist.
-            </Typography>
-            <Button
-              sx={{ mt: 3, mb: 2 }}
-              variant="contained"
-              onClick={() => navigate(Route.home)}
-            >
-              Back Home
-            </Button>
-          </Grid>
-          <Grid>
-            <img
-              src="https://cdn.pixabay.com/photo/2017/03/09/12/31/error-2129569__340.jpg"
-              alt=""
-              width={500}
-              height={250}
-            />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+    <div className="not-found-page">
+      <h2 className="title">Страница не найдена :(</h2>
+      <div className="image">
+        <img
+          src="https://cdn1.specialist.ru/Content/Image/News/Small/404-error-s.jpg"
+          alt="not-found-image"
+          width="300px"
+          height="300px"
+        />
+      </div>
+      <div className="controls">
+        <Button variant="outlined" onClick={() => navigate(Route.home)}>
+          Вернуться на главную
+        </Button>
+      </div>
+    </div>
   );
 };
