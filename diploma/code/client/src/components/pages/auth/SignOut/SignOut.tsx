@@ -34,7 +34,7 @@ export const SignOut = () => {
 
     dispatch({ type: ACTION_NAMES.userSignOut });
     NotificationManager.success("Успешный выход из системы!");
-    navigate(Route.auth);
+    navigate(Route.home);
   }, [signOut, dispatch, navigate, loading, user]);
 
   useEffect(() => {

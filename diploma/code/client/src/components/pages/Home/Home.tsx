@@ -1,33 +1,31 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Route } from "components/routing";
-import { Button, Container, Grid } from "@mui/material";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "firebase_config";
+import { Button } from "@mui/material";
+
+import "./home.scss";
 
 export const Home = () => {
   const navigate = useNavigate();
-  const [user] = useAuthState(auth);
   return (
-    <Grid sx={{ margin: "auto" }}>
-      <Container sx={{ mt: 3, mb: 2 }}>Home page!</Container>
-      {user ? (
-        <Button
-          sx={{ mt: 3, mb: 2 }}
-          variant="contained"
-          onClick={() => navigate(Route.profile)}
-        >
-          Profile
+    <div className="home-page">
+      <h2 className="title">Добро пожаловать в дневник диабетика</h2>
+      <div className="logo">
+        <img
+          src="/logo512.png"
+          alt="home-page-logo"
+          width="300px"
+          height="300px"
+        />
+      </div>
+      <div className="controls">
+        <Button variant="outlined" onClick={() => navigate(Route.signIn)}>
+          Войти
         </Button>
-      ) : (
-        <Button
-          sx={{ mt: 3, mb: 2 }}
-          variant="contained"
-          onClick={() => navigate(Route.auth)}
-        >
-          Auth
+        <Button variant="outlined" onClick={() => navigate(Route.signUp)}>
+          Зарегистрироваться
         </Button>
-      )}
-    </Grid>
+      </div>
+    </div>
   );
 };
