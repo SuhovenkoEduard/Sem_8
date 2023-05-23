@@ -2,11 +2,14 @@ import React from "react";
 import { Button } from "@mui/material";
 import { Route } from "components/routing";
 import { useNavigate } from "react-router-dom";
+import { getUserSelector } from "store/selectors";
+import { useSelector } from "react-redux";
 
 import "./not-found.scss";
 
 export const NotFound = () => {
   const navigate = useNavigate();
+  const user = useSelector(getUserSelector)
   return (
     <div className="not-found-page">
       <h2 className="title">Страница не найдена :(</h2>
@@ -19,9 +22,15 @@ export const NotFound = () => {
         />
       </div>
       <div className="controls">
-        <Button variant="outlined" onClick={() => navigate(Route.home)}>
-          Вернуться на главную
-        </Button>
+        {user ? (
+          <Button variant="outlined" onClick={() => navigate(Route.profile)}>
+            Вернуться в профиль
+          </Button>
+        ) : (
+          <Button variant="outlined" onClick={() => navigate(Route.home)}>
+            Вернуться на главную
+          </Button>
+        )}
       </div>
     </div>
   );
