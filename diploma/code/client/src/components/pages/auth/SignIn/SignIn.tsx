@@ -16,6 +16,7 @@ import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { useEffect, useRef, useState } from "react";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import { successfulAuth } from "helpers/auth.helpers";
+import { isMobile } from "react-device-detect";
 
 export const SignIn = () => {
   const navigate = useNavigate();
@@ -79,13 +80,15 @@ export const SignIn = () => {
         square
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: isMobile ? "center" : undefined,
         }}
       >
         <Box
           sx={{
-            my: 8,
-            mx: 4,
+            marginTop: "10px",
+            marginLeft: "20px",
+            marginRight: "20px",
+            width: "100%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

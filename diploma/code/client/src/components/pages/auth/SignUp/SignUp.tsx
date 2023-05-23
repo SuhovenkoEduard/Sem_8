@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import { successfulAuth, successfulSignUp } from "helpers/auth.helpers";
+import { isMobile } from "react-device-detect";
 
 export const SignUp = () => {
   const formRef = useRef<HTMLFormElement>();
@@ -100,7 +101,7 @@ export const SignUp = () => {
         sx={{
           p: (_theme) => _theme.spacing(2),
           display: "flex",
-          alignItems: "center",
+          alignItems: isMobile ? "center" : undefined,
         }}
       >
         <Box
