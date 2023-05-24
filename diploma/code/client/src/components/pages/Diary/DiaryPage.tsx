@@ -113,7 +113,7 @@ export const DiaryPage = () => {
       setIsFormSaving(true);
       const newDailyLog: DailyLog = {
         ...convertDailyLogDataToDailyLog(dailyLogData),
-        createdAt: new Date().toString(),
+        createdAt: currentDate.toDate().toString(),
       };
       const newDiary: Diary = {
         ...diary,
