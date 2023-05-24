@@ -23,6 +23,7 @@ export type User = FirebaseDocId & {
     salary: number;
   };
   relativePatient?: AuthUserId;
+  doctor?: string;
 };
 
 export type UserInfo = Omit<User, "diary" | "employee" | "relativePatient">;
@@ -43,12 +44,6 @@ export type ThematicMaterial = FirebaseDocId & {
   description: string;
   author: AuthUserId;
   comments: Comment[];
-};
-
-export type Dialog = FirebaseDocId & {
-  doctor: AuthUserId;
-  patient: AuthUserId;
-  // messages: Message[];
 };
 
 export enum Role {

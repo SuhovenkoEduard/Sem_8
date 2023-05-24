@@ -2,7 +2,6 @@ import { UserCredential } from "firebase/auth";
 import { NavigateFunction } from "react-router-dom";
 import { NotificationManager } from "react-notifications";
 import { Route } from "components/routing";
-import { generateDocId } from "firestore/helpers";
 import { Role } from "firestore/types/collections.types";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { faker } from "@faker-js/faker";
@@ -40,6 +39,8 @@ export const successfulSignUp = async ({
     (user) => user.role === Role.DOCTOR
   );
 
+  const assignedDoctor = faker.helpers.arrayElement(doctors);
+
   const patientData =
     role === Role.PATIENT && diabetType
       ? {
@@ -48,6 +49,7 @@ export const successfulSignUp = async ({
             dailyLogs: [],
             goals: [],
           },
+          doctor: assignedDoctor.docId,
         }
       : undefined;
 
@@ -70,14 +72,4 @@ export const successfulSignUp = async ({
     ...patientData,
     ...relativeData,
   });
-
-  if (role === Role.PATIENT) {
-    const assignedDoctor = faker.helpers.arrayElement(doctors);
-    const newDialogId = generateDocId();
-    await firebaseRepositories.dialogs.updateDoc({
-      docId: newDialogId,
-      doctor: assignedDoctor.docId,
-      patient: uid,
-    });
-  }
 };

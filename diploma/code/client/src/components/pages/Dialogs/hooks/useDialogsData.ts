@@ -1,4 +1,4 @@
-import { Dialog, Role, UserInfo } from "firestore/types/collections.types";
+import { Role, User, UserInfo } from "firestore/types/collections.types";
 import { Channel } from "stream-chat";
 import useAsyncEffect from "use-async-effect";
 import { useState } from "react";
@@ -21,49 +21,41 @@ const connectStreamUser = async (userInfo: UserInfo) =>
   );
 
 export const useDialogsData = ({
-  uid,
-  role,
+  currentUser,
   dialogsUsers,
-  selectedDialog,
+  selectedUser,
 }: {
-  uid: string;
-  role: Role;
+  currentUser: User;
   dialogsUsers: UserInfo[];
-  selectedDialog: Dialog | null;
+  selectedUser: User | null;
 }) => {
   const [channel, setChannel] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useAsyncEffect(async () => {
-    if (!selectedDialog || !dialogsUsers.length) {
+    if (!selectedUser || !dialogsUsers.length) {
       return;
     }
 
     try {
       setIsLoading(true);
 
-      const channelId = `${selectedDialog.doctor}_${selectedDialog.patient}`;
+      const patient =
+        currentUser.role === Role.PATIENT ? currentUser : selectedUser;
 
-      const doctorUserInfo = dialogsUsers.find(
-        (userInfo) => userInfo.docId === selectedDialog.doctor
-      ) as UserInfo;
-      const patientUserInfo = dialogsUsers.find(
-        (userInfo) => userInfo.docId === selectedDialog.patient
-      ) as UserInfo;
+      const doctor =
+        currentUser.role === Role.PATIENT ? selectedUser : currentUser;
+
+      const channelId = `${doctor.docId}_${patient.docId}`;
 
       const channelName =
-        role === Role.PATIENT
-          ? getUserFullName({ name: doctorUserInfo.name })
-          : getUserFullName({ name: patientUserInfo.name });
+        currentUser.role === Role.PATIENT
+          ? getUserFullName({ name: doctor.name })
+          : getUserFullName({ name: patient.name });
 
-      const channelImage =
-        role === Role.PATIENT
-          ? doctorUserInfo.imageUrl
-          : patientUserInfo.imageUrl;
+      const channelImage = selectedUser.imageUrl;
 
-      await connectStreamUser(
-        role === Role.PATIENT ? patientUserInfo : doctorUserInfo
-      );
+      await connectStreamUser(currentUser);
 
       const newChannel = streamClient.channel("messaging", channelId);
 
@@ -72,7 +64,7 @@ export const useDialogsData = ({
       await newChannel.update({
         name: channelName,
         image: channelImage,
-        members: [doctorUserInfo.docId, patientUserInfo.docId],
+        members: [currentUser.docId, selectedUser.docId],
       });
 
       setChannel(newChannel);
@@ -85,7 +77,7 @@ export const useDialogsData = ({
     } finally {
       setIsLoading(false);
     }
-  }, [uid, role, dialogsUsers, selectedDialog]);
+  }, [currentUser, dialogsUsers, selectedUser]);
 
   return {
     isLoading,

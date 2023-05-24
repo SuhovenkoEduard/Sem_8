@@ -36,12 +36,8 @@ export const usePatientsStatistics = (user: User) => {
         setPatients([relativePatient]);
       }
       if (user.role === Role.DOCTOR) {
-        const dialogs = await firebaseRepositories.dialogs.getDocs(
-          where("doctor", "==", user.docId)
-        );
-        const dialogsPatientsIds = dialogs.map((dialog) => dialog.patient);
         const newPatients = await firebaseRepositories.users.getDocs(
-          where("docId", "in", dialogsPatientsIds)
+          where("doctor", "==", user.docId)
         );
         setPatients(newPatients);
       }

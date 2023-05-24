@@ -19,9 +19,6 @@ export const getUserInfoSelector = createSelector([getUserSelector], (user) =>
   convertUserToUserInfo(user)
 );
 
-export const getDialogsSelector = (state: GlobalState) =>
-  state.currentDialogs.dialogs;
-
 export const getDailyLogsSelector = createSelector(
   [getUserSelector],
   (user) => user.diary?.dailyLogs ?? []
