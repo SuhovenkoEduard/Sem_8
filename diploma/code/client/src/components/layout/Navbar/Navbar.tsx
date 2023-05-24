@@ -9,12 +9,7 @@ import {
 } from "@mui/material";
 import { isMobile } from "react-device-detect";
 import { useWindowSize } from "hooks/useWindowSize";
-import {
-  NavBarItem,
-  topNavbarItems,
-  navBarItems,
-  bottomNavBarItems,
-} from "components/layout/Navbar/constants";
+import { NavBarItem, navBarItems } from "components/layout/Navbar/constants";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "firestore/types/collections.types";
 import { GlobalState } from "store";
@@ -71,9 +66,7 @@ export const Navbar = ({
       role="presentation"
       className="navbar-items-container"
     >
-      {mapNavBarItems(topNavbarItems)}
       {mapNavBarItems(navBarItems)}
-      {mapNavBarItems(bottomNavBarItems)}
     </Box>
   );
 

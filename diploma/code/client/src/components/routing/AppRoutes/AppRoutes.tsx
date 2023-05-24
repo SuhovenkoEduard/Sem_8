@@ -87,6 +87,8 @@ export const AppRoutes = () => {
           >
             <DomRoute path={Route.relative} element={<RelativePage />} />
           </DomRoute>
+          {/* Sign out */}
+          <DomRoute path={Route.signOut} element={<SignOut />} />
         </DomRoute>
         {/* Default "/" */}
         <DomRoute
@@ -104,8 +106,6 @@ export const AppRoutes = () => {
           <DomRoute path={Route.signIn} element={<SignIn />} />
           <DomRoute path={Route.signUp} element={<SignUp />} />
         </DomRoute>
-        {/* Sign out */}
-        <DomRoute path={Route.signOut} element={<SignOut />} />
         {/* not found */}
         <DomRoute path={Route.notFound} element={<NotFound />} />
         {/* any */}

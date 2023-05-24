@@ -104,7 +104,11 @@ export const bottomNavBarItems: NavBarItem[] = [
   },
 ];
 
-export const navBarItems: NavBarItem[] = navbarItemsData.map((data, index) => ({
+export const navBarItems: NavBarItem[] = [
+  ...topNavbarItems,
+  ...navbarItemsData,
+  ...bottomNavBarItems,
+].map((data, index) => ({
   ...data,
   id: index,
 }));
