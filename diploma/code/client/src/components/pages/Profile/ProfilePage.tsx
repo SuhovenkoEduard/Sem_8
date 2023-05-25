@@ -24,6 +24,7 @@ import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import { setUser } from "store/reducers/user/userSlice";
 import { deepEqual } from "ts-deep-equal";
 import { EditButton } from "components/ui/EditButton";
+import { DoctorDescription } from "components/pages/Doctor/DoctorDescription";
 
 import "./profile.scss";
 
@@ -302,6 +303,11 @@ export const ProfilePage: React.FC = () => {
             </Card>
           )}
         </div>
+        {user.role === Role.DOCTOR && (
+          <div className="doctor-info" style={{ marginBottom: "5rem" }}>
+            <DoctorDescription doctor={user} />
+          </div>
+        )}
       </div>
     </PageContainer>
   );

@@ -21,6 +21,7 @@ export type User = FirebaseDocId & {
     hiredAt: Timestamp;
     reviews: EmployeeReview[];
     salary: number;
+    description: string;
   };
   relativePatient?: AuthUserId;
   doctor?: string;
@@ -143,7 +144,7 @@ export type Message = {
 
 export type EmployeeReview = {
   createdAt: Timestamp;
-  rate: EmployeeReviewRate;
+  score: number;
   content: string;
   reviewer: AuthUserId;
 };

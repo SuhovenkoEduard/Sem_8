@@ -12,6 +12,8 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import WysiwygIcon from "@mui/icons-material/Wysiwyg";
 import PeopleIcon from "@mui/icons-material/People";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import ReviewsIcon from "@mui/icons-material/Reviews";
 
 export type NavBarItem = {
   id: number;
@@ -32,6 +34,12 @@ export const topNavbarItems: NavBarItem[] = [
 ];
 
 export const navbarItemsData: Omit<NavBarItem, "id">[] = [
+  {
+    icon: <LocalHospitalIcon />,
+    label: "Доктор",
+    route: Route.doctor,
+    roles: [Role.PATIENT],
+  },
   {
     icon: <SummarizeIcon />,
     label: "Дневник",
@@ -91,6 +99,12 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
     label: "Работники",
     route: Route.employees,
     roles: [Role.ADMIN],
+  },
+  {
+    icon: <ReviewsIcon />,
+    label: "Отзывы",
+    route: Route.reviews,
+    roles: [Role.DOCTOR],
   },
 ];
 

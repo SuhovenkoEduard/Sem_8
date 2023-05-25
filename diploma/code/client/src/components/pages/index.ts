@@ -10,3 +10,4 @@ export { StatisticsPage } from "./Statistics";
 export { ThematicMaterialsPage } from "./ThematicMaterials";
 export { ThematicMaterialPage } from "./ThematicMaterial";
 export { RelativePage } from "./Relative";
+export { DoctorPage } from "./Doctor";

@@ -5,7 +5,13 @@ import "./card-container.scss";
 
 export const CardContainer = (props) => {
   return (
-    <Card {...props} className={"card-container" + (props.className ?  " " + props.className : "")} onClick={props.onClick}>
+    <Card
+      {...props}
+      className={
+        "card-container" + (props.className ? " " + props.className : "")
+      }
+      onClick={props.onClick}
+    >
       {props.title && (
         <Typography variant="h6" className="card-container-title">
           {props.title}
@@ -13,5 +19,5 @@ export const CardContainer = (props) => {
       )}
       {props.children}
     </Card>
-  )
+  );
 };

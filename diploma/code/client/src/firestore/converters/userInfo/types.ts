@@ -1,7 +1,9 @@
 import { UserInfo } from "firestore/types/collections.types";
-import { Omit } from "firestore/types/client.types";
 
-export type UserData = Omit<UserInfo, "name" | "password" | "doctor"> & {
+export type UserData = Pick<
+  UserInfo,
+  "docId" | "address" | "phone" | "imageUrl" | "email" | "role"
+> & {
   firstName: string;
   lastName: string;
 };

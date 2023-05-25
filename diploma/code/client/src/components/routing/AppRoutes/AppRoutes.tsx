@@ -11,6 +11,7 @@ import { LoadingSpinner } from "components/ui/LoadingSpinner";
 import {
   DialogsPage,
   DiaryPage,
+  DoctorPage,
   Home,
   NotFound,
   Profile,
@@ -24,6 +25,7 @@ import {
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
+import { ReviewsPage } from "components/pages/Reviews";
 
 // const HomePage = React.lazy(() => import("components/pages/HomePage"));
 
@@ -86,6 +88,12 @@ export const AppRoutes = () => {
             element={<RolesCheckRoutes roles={[Role.PATIENT, Role.RELATIVE]} />}
           >
             <DomRoute path={Route.relative} element={<RelativePage />} />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.PATIENT]} />}>
+            <DomRoute path={Route.doctor} element={<DoctorPage />} />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.DOCTOR]} />}>
+            <DomRoute path={Route.reviews} element={<ReviewsPage />} />
           </DomRoute>
           {/* Sign out */}
           <DomRoute path={Route.signOut} element={<SignOut />} />
