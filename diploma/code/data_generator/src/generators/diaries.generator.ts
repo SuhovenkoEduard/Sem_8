@@ -11,14 +11,15 @@ export const generateDiaries = (
 ): Diary[] => {
   return new Array(count).fill(null).map(
     (): Diary => ({
+      diabetType: faker.datatype.number({ min: 1, max: 2 }),
       dailyLogs: generateDailyLogs(
         +moment()
-          .subtract(faker.datatype.number({ min: 3, max: 12 }), "months")
+          .subtract(1, "week")
           .toDate(),
         +moment().toDate(),
         medications
       ),
-      goals: generateGoals(faker.datatype.number({ min: 3, max: 10 })),
+      goals: [] // generateGoals(faker.datatype.number({ min: 3, max: 10 })),
     })
   );
 };

@@ -12,10 +12,18 @@ export const validate = ({
   thematicMaterials,
   dialogs,
 }: GeneratorResults) => {
-  users.forEach((fbUser) => userSchema.parse(fbUser));
-  medications.forEach((fbMedication) => medicationSchema.parse(fbMedication));
-  thematicMaterials.forEach((fbThematicMaterial) =>
-    thematicMaterialSchema.parse(fbThematicMaterial)
-  );
-  dialogs.forEach((fbDialog) => dialogSchema.parse(fbDialog));
+  if (users) {
+    users.forEach((fbUser) => userSchema.parse(fbUser));
+  }
+  if (medications) {
+    medications.forEach((fbMedication) => medicationSchema.parse(fbMedication));
+  }
+  if (thematicMaterials) {
+    thematicMaterials.forEach((fbThematicMaterial) =>
+      thematicMaterialSchema.parse(fbThematicMaterial)
+    );
+  }
+  if (dialogs) {
+    dialogs.forEach((fbDialog) => dialogSchema.parse(fbDialog));
+  }
 };

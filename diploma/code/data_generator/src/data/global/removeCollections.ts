@@ -7,12 +7,12 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { CollectionNames } from "../../constants";
+import { CollectionName } from "../../constants";
 import { firebaseApp } from "../../firebase_config";
 
 const getCollectionDocs = async (
   db: Firestore,
-  collectionName: CollectionNames
+  collectionName: CollectionName
 ) => {
   const docsSnap = await getDocs(collection(db, collectionName));
   return docsSnap.docs.map((document) => document.data());
@@ -20,7 +20,7 @@ const getCollectionDocs = async (
 
 const removeDocs = async (
   db: Firestore,
-  collectionName: CollectionNames,
+  collectionName: CollectionName,
   docs: DocumentData[]
 ) => {
   return Promise.all(
@@ -30,17 +30,17 @@ const removeDocs = async (
 
 const removeCollection = async (
   db: Firestore,
-  collectionName: CollectionNames
+  collectionName: CollectionName
 ) => {
   const documents = await getCollectionDocs(db, collectionName);
   await removeDocs(db, collectionName, documents);
 };
 
-export const removeCollections = async () => {
+export const removeCollections = async (collectionNames: CollectionName[] = Object.values(CollectionName)) => {
   const db = getFirestore(firebaseApp);
 
   await Promise.all(
-    Object.values(CollectionNames).map((collectionName) =>
+    collectionNames.map((collectionName) =>
       removeCollection(db, collectionName)
     )
   );

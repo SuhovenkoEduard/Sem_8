@@ -4,7 +4,7 @@ import {
   generateThematicMaterial,
   generateUsers,
 } from "../../generators";
-import { COLLECTION_SIZES, USERS_AUTH_DATA } from "../../constants";
+import { COLLECTION_SIZES, THEMATIC_MATERIALS_DATA, USERS_AUTH_DATA } from '../../constants'
 import {
   AuthUserId,
   Dialog,
@@ -25,11 +25,10 @@ export const getUsersIdsByRoles = ({
   users.filter((user) => roles.includes(user.role)).map(({ docId }) => docId);
 
 export const generate = async (): Promise<GeneratorResults> => {
-  const medications: Medication[] = [];
-  //   generateMedication(
+  // const medications: Medication[] = generateMedication(
   //   COLLECTION_SIZES.medications
   // );
-  const users: User[] = await generateUsers(USERS_AUTH_DATA, medications);
+  const users: User[] = await generateUsers(USERS_AUTH_DATA, []);
 
   const usersPatientsIds: AuthUserId[] = getUsersIdsByRoles({
     users,
@@ -37,24 +36,23 @@ export const generate = async (): Promise<GeneratorResults> => {
   });
   const usersAuthorsIds: AuthUserId[] = getUsersIdsByRoles({
     users,
-    roles: [Role.CONTENT_MAKER],
-  });
-  const thematicMaterials: ThematicMaterial[] = await generateThematicMaterial(
-    COLLECTION_SIZES.thematicMaterials,
-    usersAuthorsIds,
-    usersPatientsIds
-  );
-
-  const usersDoctorsIds: AuthUserId[] = getUsersIdsByRoles({
-    users,
     roles: [Role.DOCTOR],
   });
-  const dialogs: Dialog[] = generateDialogs(usersPatientsIds, usersDoctorsIds);
+  const thematicMaterials: ThematicMaterial[] = generateThematicMaterial(
+    THEMATIC_MATERIALS_DATA,
+    usersAuthorsIds
+  );
+
+  // const usersDoctorsIds: AuthUserId[] = getUsersIdsByRoles({
+  //   users,
+  //   roles: [Role.DOCTOR],
+  // });
+  // const dialogs: Dialog[] = generateDialogs(usersPatientsIds, usersDoctorsIds);
 
   return {
     users,
-    medications,
+    medications: null,
     thematicMaterials,
-    dialogs,
+    dialogs: null,
   };
 };

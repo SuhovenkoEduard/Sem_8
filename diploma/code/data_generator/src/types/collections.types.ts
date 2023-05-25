@@ -20,8 +20,10 @@ export type User = FirebaseDocId & {
     hiredAt: Timestamp;
     reviews: EmployeeReview[];
     salary: number;
+    description: string;
   };
   relativePatient?: AuthUserId;
+  doctor?: string;
 };
 
 export type UserInfo = Omit<User, "diary" | "employee" | "relativePatient">;
@@ -87,6 +89,7 @@ export enum EmployeeReviewRate {
 }
 
 export type Diary = {
+  diabetType: number;
   dailyLogs: DailyLog[];
   goals: Goal[];
 };
@@ -146,7 +149,7 @@ export type Message = {
 
 export type EmployeeReview = {
   createdAt: Timestamp;
-  rate: EmployeeReviewRate;
+  score: number;
   content: string;
   reviewer: AuthUserId;
 };

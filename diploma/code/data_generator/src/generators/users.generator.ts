@@ -12,7 +12,7 @@ import fetch from "node-fetch";
 const addFields = (users: User[], medications: Medication[]): User[] => {
   const allReviewersIds: AuthUserId[] = users
     .filter((user) =>
-      [Role.ADMIN, Role.MODERATOR, Role.CONTENT_MAKER, Role.DOCTOR].includes(
+      [Role.PATIENT].includes(
         user.role
       )
     )
@@ -32,7 +32,7 @@ const addFields = (users: User[], medications: Medication[]): User[] => {
     );
     const subsetOfReviewersIds = faker.helpers.arrayElements(
       possibleReviewers,
-      faker.datatype.number({ min: 1, max: possibleReviewers.length })
+      faker.datatype.number({ min: 2, max: possibleReviewers.length })
     );
 
     let employeeObj = {};
@@ -55,6 +55,7 @@ const addFields = (users: User[], medications: Medication[]): User[] => {
             +new Date()
           ),
           salary: faker.datatype.number({ min: 1000, max: 3000 }),
+          description: faker.lorem.sentences(2)
         },
       };
     }
@@ -79,27 +80,25 @@ const addFields = (users: User[], medications: Medication[]): User[] => {
   });
 };
 
-export const generateUsers = async (
+export const generateUsers = (
   usersAuthData: UsersAuthData,
   medications: Medication[]
-): Promise<User[]> => {
-  const users = await Promise.all(
-    usersAuthData.map(async ({ role, uid, firstName }): Promise<User> => {
-      const { url: imageUrl } = await fetch(faker.image.animals());
-      return {
-        docId: uid,
-        email: faker.internet.email(),
-        imageUrl,
-        name: {
-          first: firstName ?? faker.name.firstName(),
-          last: faker.name.lastName(),
-        },
-        address: `${faker.address.country()}, ${faker.address.streetAddress()} ${faker.address.buildingNumber()}`,
-        phone: faker.phone.number("+375-##-#######"),
-        role,
-      };
-    })
-  );
+): User[] => {
+  const users = usersAuthData.map(({ role, uid, firstName, lastName, email, imageUrl }): User => {
+    // const { url: imageUrl } = await fetch(faker.image.animals());
+    return {
+      docId: uid,
+      email,
+      imageUrl: imageUrl,
+      name: {
+        first: firstName,
+        last: lastName,
+      },
+      address: `${faker.address.country()}, ${faker.address.streetAddress()} ${faker.address.buildingNumber()}`,
+      phone: faker.phone.number("+375-##-#######"),
+      role,
+    };
+  })
 
   return addFields(users, medications);
 };

@@ -1,9 +1,9 @@
 import { GeneratorResults } from '../../types/generator.types'
 import { collection, getDocs, getFirestore } from 'firebase/firestore'
 import { firebaseApp } from '../../firebase_config'
-import { CollectionNames } from '../../constants'
+import { CollectionName } from '../../constants'
 
-export const getDocuments = async <T>(collectionName: CollectionNames): Promise<T[]> => {
+export const getDocuments = async <T>(collectionName: CollectionName): Promise<T[]> => {
   const db = getFirestore(firebaseApp);
   const snapShot = await getDocs(collection(db, collectionName))
   return snapShot.docs.map(doc => doc.data()) as T[];
@@ -11,9 +11,9 @@ export const getDocuments = async <T>(collectionName: CollectionNames): Promise<
 
 export const readCollections = async (): Promise<GeneratorResults> => {
   return {
-    users: await getDocuments(CollectionNames.USERS),
-    thematicMaterials: await getDocuments(CollectionNames.THEMATIC_MATERIALS),
-    medications: await getDocuments(CollectionNames.MEDICATIONS),
-    dialogs: await getDocuments(CollectionNames.DIALOGS)
+    users: await getDocuments(CollectionName.USERS),
+    thematicMaterials: await getDocuments(CollectionName.THEMATIC_MATERIALS),
+    medications: await getDocuments(CollectionName.MEDICATIONS),
+    dialogs: await getDocuments(CollectionName.DIALOGS)
   }
 }

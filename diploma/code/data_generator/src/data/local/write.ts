@@ -1,5 +1,5 @@
 import fs from "fs";
-import { BASE_FILE_PATH, CollectionNames } from "../../constants";
+import { BASE_FILE_PATH, CollectionName } from "../../constants";
 import { GeneratorResults } from "../../types/generator.types";
 import {
   Dialog,
@@ -13,8 +13,11 @@ export const writeToFile = <T>({
   collection,
 }: {
   collectionName: string;
-  collection: T[];
+  collection: T[] | null;
 }) => {
+  if (!collection) {
+    return
+  }
   fs.writeFileSync(
     `${BASE_FILE_PATH}/${collectionName}.json`,
     JSON.stringify(collection, null, "  ")
@@ -28,19 +31,19 @@ export const write = ({
   dialogs,
 }: GeneratorResults) => {
   writeToFile<User>({
-    collectionName: CollectionNames.USERS,
+    collectionName: CollectionName.USERS,
     collection: users,
   });
   writeToFile<Medication>({
-    collectionName: CollectionNames.MEDICATIONS,
+    collectionName: CollectionName.MEDICATIONS,
     collection: medications,
   });
   writeToFile<ThematicMaterial>({
-    collectionName: CollectionNames.THEMATIC_MATERIALS,
+    collectionName: CollectionName.THEMATIC_MATERIALS,
     collection: thematicMaterials,
   });
   writeToFile<Dialog>({
-    collectionName: CollectionNames.DIALOGS,
+    collectionName: CollectionName.DIALOGS,
     collection: dialogs,
   });
 };

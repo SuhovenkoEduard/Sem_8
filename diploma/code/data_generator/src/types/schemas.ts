@@ -76,7 +76,7 @@ export const messageSchema = z
 export const employeeReviewSchema = z
   .object({
     createdAt: timestampSchema,
-    rate: employeeReviewRateSchema,
+    score: z.number(),
     content: z.string(),
     reviewer: authUserIdSchema,
   })
@@ -141,6 +141,7 @@ export const thematicMaterialSchema = firebaseDocIdSchema
 
 export const diarySchema = z
   .object({
+    diabetType: z.number(),
     dailyLogs: z.array(dailyLogSchema),
     goals: z.array(goalSchema),
   })
@@ -165,6 +166,7 @@ export const userSchema = firebaseDocIdSchema
         hiredAt: timestampSchema,
         reviews: z.array(employeeReviewSchema),
         salary: z.number(),
+        description: z.string(),
       })
       .strict()
       .optional(),

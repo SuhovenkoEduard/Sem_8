@@ -15,8 +15,8 @@ export const generateEmployeeReviews = (
       createdAt: faker.datatype
         .datetime({ min: minDate, max: maxDate })
         .toString(),
-      rate: faker.helpers.arrayElement(Object.values(EmployeeReviewRate)),
-      content: faker.lorem.sentences(faker.datatype.number({ min: 2, max: 5 })),
+      score: faker.datatype.number({ min: 3, max: 5, precision: 0.1 }),
+      content: faker.lorem.sentences(faker.datatype.number({ min: 1, max: 3 })),
       reviewer: reviewersLeft.shift(),
     })
   );
