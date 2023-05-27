@@ -1,4 +1,4 @@
-import { Role } from "firestore/types/collections.types";
+import { DailyLogPropName, Role } from "firestore/types/collections.types";
 
 export const RUSSIAN_ROLES: {
   [key in Role]: string;
@@ -9,4 +9,16 @@ export const RUSSIAN_ROLES: {
   [Role.CONTENT_MAKER]: "контент-мейкер",
   [Role.MODERATOR]: "модератор",
   [Role.ADMIN]: "админ",
+};
+
+export const RUSSIAN_DAILY_LOG_PROP_NAMES: {
+  [key in DailyLogPropName]: string;
+} = {
+  [DailyLogPropName.SUGAR_LEVEL]: "Уровень сахара",
+  [DailyLogPropName.PULSE]: "Пульс",
+  [DailyLogPropName.SYSTOLIC]: "Систолическое давление",
+  [DailyLogPropName.DIASTOLIC]: "Диастолическое давление",
+  [DailyLogPropName.WEIGHT]: "Вес",
+  [DailyLogPropName.TOTAL]: "Количество калорий",
+  [DailyLogPropName.TEMPERATURE]: "Температура",
 };

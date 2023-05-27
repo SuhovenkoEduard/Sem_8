@@ -1,0 +1,28 @@
+.health-states-page {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 60px);
+
+  .health-states-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+
+    .add-button {
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

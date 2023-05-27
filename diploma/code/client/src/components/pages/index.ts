@@ -11,3 +11,5 @@ export { ThematicMaterialsPage } from "./ThematicMaterials";
 export { ThematicMaterialPage } from "./ThematicMaterial";
 export { RelativePage } from "./Relative";
 export { DoctorPage } from "./Doctor";
+export { ReviewsPage } from "./Reviews";
+export { HealthStatesPage } from "./HealthStates";

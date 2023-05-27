@@ -14,6 +14,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import ReviewsIcon from "@mui/icons-material/Reviews";
+import RecommendIcon from "@mui/icons-material/Recommend";
 
 export type NavBarItem = {
   id: number;
@@ -34,6 +35,12 @@ export const topNavbarItems: NavBarItem[] = [
 ];
 
 export const navbarItemsData: Omit<NavBarItem, "id">[] = [
+  {
+    icon: <RecommendIcon />,
+    label: "Помощь пациентам",
+    route: Route.healthStates,
+    roles: [Role.DOCTOR],
+  },
   {
     icon: <LocalHospitalIcon />,
     label: "Доктор",

@@ -1,18 +1,20 @@
 export class ValidationNumber {
   value: string;
+
   isAllowedToBeEmpty: boolean;
+
   error: string | null;
 
-  constructor(value: string, isAllowedToBeEmpty: boolean = true) {
+  constructor(value: string, isAllowedToBeEmpty = true) {
     this.value = value;
     this.isAllowedToBeEmpty = isAllowedToBeEmpty;
   }
-  
+
   isValueEmptyOrNull = () => {
-    return this.value === "" || +this.value === 0
-  }
-  
-  isEmpty = (message: string = "") => {
+    return this.value === "" || +this.value === 0;
+  };
+
+  isEmpty = (message = "") => {
     if (this.isAllowedToBeEmpty) {
       return this;
     }

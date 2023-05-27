@@ -20,6 +20,7 @@ export enum Route {
   relative = "/relative",
   doctor = "/doctor",
   reviews = "/reviews",
+  healthStates = "/health-states",
 }
 
 export const RouteTitles: {
@@ -46,4 +47,5 @@ export const RouteTitles: {
   [Route.relative]: "Родственник",
   [Route.doctor]: "Доктор",
   [Route.reviews]: "Отзывы",
+  [Route.healthStates]: "Помощь пациентам",
 };

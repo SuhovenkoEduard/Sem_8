@@ -263,7 +263,9 @@ export const DiaryPage = () => {
               <TextField
                 label="Уровень сахара (ммоль/л)"
                 name="sugarLevel"
-                value={dailyLogData.sugarLevel === "0" ? "" : dailyLogData.sugarLevel}
+                value={
+                  dailyLogData.sugarLevel === "0" ? "" : dailyLogData.sugarLevel
+                }
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -285,7 +287,9 @@ export const DiaryPage = () => {
               <TextField
                 label="Систолическое давление (ммрт)"
                 name="systolic"
-                value={dailyLogData.systolic === "0" ? "" : dailyLogData.systolic}
+                value={
+                  dailyLogData.systolic === "0" ? "" : dailyLogData.systolic
+                }
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -296,7 +300,9 @@ export const DiaryPage = () => {
               <TextField
                 label="Диастолическое давление (ммрт)"
                 name="diastolic"
-                value={dailyLogData.diastolic === "0" ? "" : dailyLogData.diastolic}
+                value={
+                  dailyLogData.diastolic === "0" ? "" : dailyLogData.diastolic
+                }
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -329,7 +335,11 @@ export const DiaryPage = () => {
               <TextField
                 label="Температура (°C)"
                 name="temperature"
-                value={dailyLogData.temperature === "0" ? "" : dailyLogData.temperature}
+                value={
+                  dailyLogData.temperature === "0"
+                    ? ""
+                    : dailyLogData.temperature
+                }
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"

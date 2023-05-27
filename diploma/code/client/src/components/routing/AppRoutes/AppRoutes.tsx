@@ -12,6 +12,7 @@ import {
   DialogsPage,
   DiaryPage,
   DoctorPage,
+  HealthStatesPage,
   Home,
   NotFound,
   Profile,
@@ -22,10 +23,10 @@ import {
   StatisticsPage,
   ThematicMaterialPage,
   ThematicMaterialsPage,
+  ReviewsPage,
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
-import { ReviewsPage } from "components/pages/Reviews";
 
 // const HomePage = React.lazy(() => import("components/pages/HomePage"));
 
@@ -94,6 +95,12 @@ export const AppRoutes = () => {
           </DomRoute>
           <DomRoute element={<RolesCheckRoutes roles={[Role.DOCTOR]} />}>
             <DomRoute path={Route.reviews} element={<ReviewsPage />} />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.DOCTOR]} />}>
+            <DomRoute
+              path={Route.healthStates}
+              element={<HealthStatesPage />}
+            />
           </DomRoute>
           {/* Sign out */}
           <DomRoute path={Route.signOut} element={<SignOut />} />

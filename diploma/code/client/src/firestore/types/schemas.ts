@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  DailyLogPropName,
   EmployeeReviewRate,
   GoalCategory,
   GoalStatus,
@@ -165,5 +166,17 @@ export const userSchema = firebaseDocIdSchema
       .optional(),
     relativePatient: authUserIdSchema.optional(),
     doctor: z.string().optional(),
+  })
+  .strict();
+
+export const dailyLogPropNameSchema = z.nativeEnum(DailyLogPropName);
+
+export const healthStateSchema = firebaseDocIdSchema
+  .extend({
+    propName: dailyLogPropNameSchema,
+    min: z.number(),
+    max: z.number(),
+    warning: z.string(),
+    recommendation: z.string(),
   })
   .strict();

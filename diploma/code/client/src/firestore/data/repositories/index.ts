@@ -1,12 +1,12 @@
 import { Repository } from "firestore/data/repositories/repositories";
 import {
-  Medication,
+  HealthState,
   ThematicMaterial,
   User,
 } from "firestore/types/collections.types";
 import { CollectionNames } from "firestore/constants";
 import {
-  medicationSchema,
+  healthStateSchema,
   thematicMaterialSchema,
   userSchema,
 } from "firestore/types/schemas";
@@ -22,13 +22,13 @@ const thematicMaterialsRepository: Repository<ThematicMaterial> =
     thematicMaterialSchema
   );
 
-const medicationsRepository: Repository<Medication> =
-  new Repository<Medication>(CollectionNames.MEDICATIONS, medicationSchema);
+const healthStatesRepository: Repository<HealthState> =
+  new Repository<HealthState>(CollectionNames.HEALTH_STATES, healthStateSchema);
 
 export const firebaseRepositories = {
   [CollectionNames.USERS]: usersRepository,
   [CollectionNames.THEMATIC_MATERIALS]: thematicMaterialsRepository,
-  [CollectionNames.MEDICATIONS]: medicationsRepository,
+  [CollectionNames.HEALTH_STATES]: healthStatesRepository,
 };
 
 export { Repository } from "./repositories";

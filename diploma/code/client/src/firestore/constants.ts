@@ -3,4 +3,5 @@ export enum CollectionNames {
   MEDICATIONS = "medications",
   THEMATIC_MATERIALS = "thematicMaterials",
   DIALOGS = "dialogs",
+  HEALTH_STATES = "healthStates",
 }
