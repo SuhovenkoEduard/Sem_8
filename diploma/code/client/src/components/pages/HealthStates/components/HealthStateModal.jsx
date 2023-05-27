@@ -27,6 +27,7 @@ export const HealthStateModal = ({
         : {
             min: "",
             max: "",
+            warning: "",
             recommendation: "",
           },
     [healthStateToEdit]
