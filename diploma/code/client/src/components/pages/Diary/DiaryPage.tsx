@@ -263,7 +263,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Уровень сахара (ммоль/л)"
                 name="sugarLevel"
-                value={dailyLogData.sugarLevel}
+                value={dailyLogData.sugarLevel === "0" ? "" : dailyLogData.sugarLevel}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -274,7 +274,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Пульс (уд/мин)"
                 name="pulse"
-                value={dailyLogData.pulse}
+                value={dailyLogData.pulse === "0" ? "" : dailyLogData.pulse}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -285,7 +285,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Систолическое давление (ммрт)"
                 name="systolic"
-                value={dailyLogData.systolic}
+                value={dailyLogData.systolic === "0" ? "" : dailyLogData.systolic}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -296,7 +296,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Диастолическое давление (ммрт)"
                 name="diastolic"
-                value={dailyLogData.diastolic}
+                value={dailyLogData.diastolic === "0" ? "" : dailyLogData.diastolic}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -307,7 +307,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Количество каллорий (ккал)"
                 name="total"
-                value={dailyLogData.total}
+                value={dailyLogData.total === "0" ? "" : dailyLogData.total}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -318,7 +318,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Вес (кг)"
                 name="weight"
-                value={dailyLogData.weight}
+                value={dailyLogData.weight === "0" ? "" : dailyLogData.weight}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
@@ -329,7 +329,7 @@ export const DiaryPage = () => {
               <TextField
                 label="Температура (°C)"
                 name="temperature"
-                value={dailyLogData.temperature}
+                value={dailyLogData.temperature === "0" ? "" : dailyLogData.temperature}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"

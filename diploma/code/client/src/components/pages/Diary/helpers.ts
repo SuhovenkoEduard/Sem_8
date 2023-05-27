@@ -7,7 +7,11 @@ export class ValidationNumber {
     this.value = value;
     this.isAllowedToBeEmpty = isAllowedToBeEmpty;
   }
-
+  
+  isValueEmptyOrNull = () => {
+    return this.value === "" || +this.value === 0
+  }
+  
   isEmpty = (message: string = "") => {
     if (this.isAllowedToBeEmpty) {
       return this;
@@ -20,7 +24,7 @@ export class ValidationNumber {
   };
 
   isNumber = (message: string) => {
-    if (this.isAllowedToBeEmpty && this.isEmpty()) {
+    if (this.isAllowedToBeEmpty && this.isValueEmptyOrNull()) {
       return this;
     }
 
@@ -31,7 +35,7 @@ export class ValidationNumber {
   };
 
   min = (value: number, message: string) => {
-    if (this.isAllowedToBeEmpty && this.isEmpty()) {
+    if (this.isAllowedToBeEmpty && this.isValueEmptyOrNull()) {
       return this;
     }
 
@@ -42,7 +46,7 @@ export class ValidationNumber {
   };
 
   max = (value: number, message: string) => {
-    if (this.isAllowedToBeEmpty && this.isEmpty()) {
+    if (this.isAllowedToBeEmpty && this.isValueEmptyOrNull()) {
       return this;
     }
 
