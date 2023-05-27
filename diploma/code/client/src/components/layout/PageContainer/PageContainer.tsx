@@ -12,7 +12,7 @@ export const PageContainer = ({
   style?: CSSProperties;
 }) => {
   return (
-    <Grid item xs={isMobile ? 12 : 10} sx={{ marginTop: "60px" }}>
+    <Grid item xs={isMobile ? 12 : 10} sx={{ marginTop: "60px", maxWidth: "initial" }}>
       <Grid item xs={12} className={className} style={style}>
         {children}
       </Grid>
