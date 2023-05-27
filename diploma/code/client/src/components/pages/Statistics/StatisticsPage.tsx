@@ -73,13 +73,13 @@ export const StatisticsPage = () => {
     () =>
       dailyLogsData
         .filter(
-          ({ createdAt, sugarLevel }) =>
+          ({ createdAt }) =>
             getDateWithDayOnly(createdAt).diff(
               !startDate
                 ? getDateWithDayOnly(getMinDate(dailyLogsData) ?? null)
                 : getDateWithDayOnlyDayjs(startDate),
               "day"
-            ) >= 0 && +sugarLevel
+            ) >= 0
         )
         .filter(
           ({ createdAt }) =>
@@ -116,85 +116,100 @@ export const StatisticsPage = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="statistics-page-content">
-          {user.role === Role.RELATIVE && selectedPatient && (
-            <Typography component="h1" variant="h5">
-              {getUserFullName(selectedPatient)}
-            </Typography>
+        <>
+          {!patients.length && (
+            <div className="no-patients" style={{ fontSize: "18pt" }}>
+              {user.role === Role.DOCTOR && "Нет пациентов"}
+            </div>
           )}
-          {user.role === Role.DOCTOR && (
-            <Autocomplete
-              id="patients-select"
-              className="select"
-              value={selectedPatient ? getUserOption(selectedPatient) : null}
-              onChange={handleSelectedUserChange}
-              options={patients.map(getUserOption)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Выберите пациента"
-                  inputProps={{
-                    ...params.inputProps,
-                  }}
-                />
+          {patients.length > 0 && (
+            <div className="statistics-page-content">
+              {user.role === Role.RELATIVE && selectedPatient && (
+                <Typography component="h1" variant="h5">
+                  {getUserFullName(selectedPatient)}
+                </Typography>
               )}
-              blurOnSelect
-              noOptionsText="Нет пациентов с таким именем."
-              renderOption={(props, option) => (
-                <Box
-                  component="li"
-                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                  {...props}
-                >
-                  <Avatar
-                    src={option.imageUrl}
-                    sx={{ width: "30px", height: "30px", marginRight: "20px" }}
-                  />
-                  {option.label}
-                </Box>
-              )}
-            />
-          )}
-          {selectedPatient && (
-            <>
-              <div className="diabet-type">
-                Тип диабета: {selectedPatient.diary?.diabetType}
-              </div>
-              <div className="controls">
-                <DatePickerComponent
-                  className={isMobile ? "mobile-date-picker" : ""}
-                  label="Дата начала периода"
-                  value={startDate}
-                  maxDate={endDate}
-                  onChange={(newValue) => setStartDate(newValue)}
-                />
-                <DatePickerComponent
-                  className={isMobile ? "mobile-date-picker" : ""}
-                  label="Дата конца периода"
-                  value={endDate}
-                  minDate={startDate}
-                  onChange={(newValue) => setEndDate(newValue)}
-                />
-              </div>
-              <div className="charts">
-                {chartsInfo.map((chartInfo, index) => (
-                  <CardContainer
-                    title={chartInfo.title}
-                    className="chart-card-container"
-                    key={index}
-                  >
-                    <LineChart
-                      dailyLogsData={filteredDailyLogsData}
-                      title={chartInfo.title}
-                      propName={chartInfo.propName}
+              {user.role === Role.DOCTOR && (
+                <Autocomplete
+                  id="patients-select"
+                  className="select"
+                  value={
+                    selectedPatient ? getUserOption(selectedPatient) : null
+                  }
+                  onChange={handleSelectedUserChange}
+                  options={patients.map(getUserOption)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Выберите пациента"
+                      inputProps={{
+                        ...params.inputProps,
+                      }}
                     />
-                  </CardContainer>
-                ))}
-              </div>
-            </>
+                  )}
+                  blurOnSelect
+                  noOptionsText="Нет пациентов с таким именем."
+                  renderOption={(props, option) => (
+                    <Box
+                      component="li"
+                      sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                      {...props}
+                    >
+                      <Avatar
+                        src={option.imageUrl}
+                        sx={{
+                          width: "30px",
+                          height: "30px",
+                          marginRight: "20px",
+                        }}
+                      />
+                      {option.label}
+                    </Box>
+                  )}
+                />
+              )}
+              {selectedPatient && (
+                <>
+                  <div className="diabet-type">
+                    Тип диабета: {selectedPatient.diary?.diabetType}
+                  </div>
+                  <div className="controls">
+                    <DatePickerComponent
+                      className={isMobile ? "mobile-date-picker" : ""}
+                      label="Дата начала периода"
+                      value={startDate}
+                      maxDate={endDate}
+                      onChange={(newValue) => setStartDate(newValue)}
+                    />
+                    <DatePickerComponent
+                      className={isMobile ? "mobile-date-picker" : ""}
+                      label="Дата конца периода"
+                      value={endDate}
+                      minDate={startDate}
+                      onChange={(newValue) => setEndDate(newValue)}
+                    />
+                  </div>
+                  <div className="charts">
+                    {chartsInfo.map((chartInfo, index) => (
+                      <CardContainer
+                        title={chartInfo.title}
+                        className="chart-card-container"
+                        key={index}
+                      >
+                        <LineChart
+                          dailyLogsData={filteredDailyLogsData}
+                          title={chartInfo.title}
+                          propName={chartInfo.propName}
+                        />
+                      </CardContainer>
+                    ))}
+                  </div>
+                </>
+              )}
+              <div style={{ height: "5rem" }} />
+            </div>
           )}
-          <div style={{ height: "5rem" }} />
-        </div>
+        </>
       )}
     </PageContainer>
   );

@@ -31,7 +31,7 @@ export const DialogsPage = () => {
   const currentUser = useSelector(getUserSelector);
 
   // dialogs
-  const [dialogsUsers, setDialogsUsers] = useState<UserInfo[]>([]);
+  const [dialogsUsers, setDialogsUsers] = useState<UserInfo[] | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const { isLoading, channel } = useDialogsData({
@@ -53,7 +53,7 @@ export const DialogsPage = () => {
 
   // set first user as selected if user is patient
   useEffect(() => {
-    if (dialogsUsers.length > 0) {
+    if (dialogsUsers && dialogsUsers.length > 0) {
       setSelectedUser(dialogsUsers[0]);
     }
   }, [dialogsUsers, currentUser]);
@@ -61,7 +61,7 @@ export const DialogsPage = () => {
   // send emails when a new message occurs
   useEffect(() => {
     return streamClient.on("message.new", async (event) => {
-      if (!selectedUser || !dialogsUsers.length) {
+      if (!selectedUser || !dialogsUsers || !dialogsUsers.length) {
         return;
       }
 
@@ -108,45 +108,59 @@ export const DialogsPage = () => {
   return (
     <PageContainer className="dialogs-page-container">
       <div className="dialogs-container">
-        {!dialogsUsers.length ? (
+        {!dialogsUsers ? (
           <LoadingSpinner />
         ) : (
-          currentUser.role === Role.DOCTOR && (
-            <Autocomplete
-              id="dialog-select"
-              className="dialogs-page-select"
-              value={selectedUser ? getUserOption(selectedUser) : null}
-              onChange={handleSelectedDialogChange}
-              options={dialogsUsers.map(getUserOption)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Выберите диалог"
-                  inputProps={{
-                    ...params.inputProps,
-                  }}
-                />
-              )}
-              blurOnSelect
-              noOptionsText="Нет пациентов с таким именем."
-              renderOption={(props, option) => (
-                <Box
-                  component="li"
-                  sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                  {...props}
-                >
-                  <Avatar
-                    src={option.imageUrl}
-                    sx={{ width: "30px", height: "30px", marginRight: "20px" }}
+          <>
+            {!dialogsUsers.length && (
+              <div className="no-dialog-users">
+                {currentUser.role === Role.DOCTOR && "Нет пациентов"}
+                {currentUser.role === Role.PATIENT &&
+                  "Доктор не выбран, перейдите на вкладку [Доктор]"}
+              </div>
+            )}
+            {dialogsUsers.length > 0 && currentUser.role === Role.DOCTOR && (
+              <Autocomplete
+                id="dialog-select"
+                className="dialogs-page-select"
+                value={selectedUser ? getUserOption(selectedUser) : null}
+                onChange={handleSelectedDialogChange}
+                options={dialogsUsers.map(getUserOption)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Выберите диалог"
+                    inputProps={{
+                      ...params.inputProps,
+                    }}
                   />
-                  {option.label}
-                </Box>
-              )}
-            />
-          )
+                )}
+                blurOnSelect
+                noOptionsText="Нет пациентов с таким именем."
+                renderOption={(props, option) => (
+                  <Box
+                    component="li"
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...props}
+                  >
+                    <Avatar
+                      src={option.imageUrl}
+                      sx={{
+                        width: "30px",
+                        height: "30px",
+                        marginRight: "20px",
+                      }}
+                    />
+                    {option.label}
+                  </Box>
+                )}
+              />
+            )}
+          </>
         )}
         {selectedUser &&
-          !!dialogsUsers.length &&
+          dialogsUsers &&
+          dialogsUsers.length > 0 &&
           // "!channel" check only because of typescript
           (isLoading || !channel ? (
             <LoadingSpinner />

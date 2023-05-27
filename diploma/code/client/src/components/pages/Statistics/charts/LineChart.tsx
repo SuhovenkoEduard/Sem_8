@@ -47,14 +47,19 @@ export const LineChart = ({
   title: string;
 }) => {
   const data = useMemo(() => {
+    const filteredDailyLogs = dailyLogsData.filter(
+      (dailyLogData) => +dailyLogData[propName]
+    );
+    const mappedDailyLogs = filteredDailyLogs.map((dailyLogData) => ({
+      label: dayjs(dailyLogData.createdAt).format("DD MMMM YYYY"),
+      data: dailyLogData[propName],
+    }));
     return {
-      labels: dailyLogsData.map((dailyLogData) =>
-        dayjs(dailyLogData.createdAt).format("DD MMMM YYYY")
-      ),
+      labels: mappedDailyLogs.map(({ label }) => label),
       datasets: [
         {
           label: title,
-          data: dailyLogsData.map((dailyLogData) => dailyLogData[propName]),
+          data: mappedDailyLogs.map(({ data }) => data),
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgba(53, 162, 235, 0.5)",
         },

@@ -1,27 +1,40 @@
 export class ValidationNumber {
   value: string;
-
+  isAllowedToBeEmpty: boolean;
   error: string | null;
 
-  constructor(value: string) {
+  constructor(value: string, isAllowedToBeEmpty: boolean = true) {
     this.value = value;
+    this.isAllowedToBeEmpty = isAllowedToBeEmpty;
   }
 
-  isNumber = (message: string) => {
-    if (isNaN(+this.value)) {
-      this.error = message;
+  isEmpty = (message: string = "") => {
+    if (this.isAllowedToBeEmpty) {
+      return this;
     }
-    return this;
-  };
 
-  isEmpty = (message: string) => {
     if (this.value === "") {
       this.error = message;
     }
     return this;
   };
 
+  isNumber = (message: string) => {
+    if (this.isAllowedToBeEmpty && this.isEmpty()) {
+      return this;
+    }
+
+    if (isNaN(+this.value)) {
+      this.error = message;
+    }
+    return this;
+  };
+
   min = (value: number, message: string) => {
+    if (this.isAllowedToBeEmpty && this.isEmpty()) {
+      return this;
+    }
+
     if (!this.error && +this.value < value) {
       this.error = message;
     }
@@ -29,6 +42,10 @@ export class ValidationNumber {
   };
 
   max = (value: number, message: string) => {
+    if (this.isAllowedToBeEmpty && this.isEmpty()) {
+      return this;
+    }
+
     if (!this.error && +this.value > value) {
       this.error = message;
     }

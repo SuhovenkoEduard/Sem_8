@@ -26,14 +26,14 @@ export const useDialogsData = ({
   selectedUser,
 }: {
   currentUser: User;
-  dialogsUsers: UserInfo[];
+  dialogsUsers: UserInfo[] | null;
   selectedUser: User | null;
 }) => {
   const [channel, setChannel] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useAsyncEffect(async () => {
-    if (!selectedUser || !dialogsUsers.length) {
+    if (!selectedUser || !dialogsUsers || !dialogsUsers.length) {
       return;
     }
 
