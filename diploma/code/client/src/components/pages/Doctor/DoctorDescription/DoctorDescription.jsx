@@ -5,7 +5,9 @@ import { isMobile } from "react-device-detect";
 
 export const DoctorDescription = ({ doctor }) => {
   return (
-    <CardContainer sx={{ width: isMobile ? undefined : "900px", padding: "20px" }}>
+    <CardContainer
+      sx={{ width: isMobile ? undefined : "900px", padding: "20px" }}
+    >
       <Typography sx={{ textAlign: "center" }} variant="h6">
         Описание
       </Typography>
