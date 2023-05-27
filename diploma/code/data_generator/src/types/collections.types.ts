@@ -153,3 +153,21 @@ export type EmployeeReview = {
   content: string;
   reviewer: AuthUserId;
 };
+
+export enum DailyLogPropName {
+  SUGAR_LEVEL = "sugarLevel",
+  PULSE = "pulse",
+  SYSTOLIC = "systolic",
+  DIASTOLIC = "diastolic",
+  WEIGHT = "weight",
+  TOTAL = "total",
+  TEMPERATURE = "temperature",
+}
+
+export type HealthState = FirebaseDocId & {
+  propName: DailyLogPropName;
+  min: number;
+  max: number;
+  warning: string;
+  recommendation: string;
+};

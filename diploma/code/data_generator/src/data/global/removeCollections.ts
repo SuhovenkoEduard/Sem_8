@@ -7,7 +7,7 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { CollectionName } from "../../constants";
+import { CollectionName } from "../../constants/constants";
 import { firebaseApp } from "../../firebase_config";
 
 const getCollectionDocs = async (
@@ -36,7 +36,9 @@ const removeCollection = async (
   await removeDocs(db, collectionName, documents);
 };
 
-export const removeCollections = async (collectionNames: CollectionName[] = Object.values(CollectionName)) => {
+export const removeCollections = async (
+  collectionNames: CollectionName[] = Object.values(CollectionName)
+) => {
   const db = getFirestore(firebaseApp);
 
   await Promise.all(

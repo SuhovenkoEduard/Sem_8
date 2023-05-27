@@ -3,6 +3,7 @@ import { BASE_FILE_PATH, CollectionName } from "../../constants";
 import { GeneratorResults } from "../../types/generator.types";
 import {
   Dialog,
+  HealthState,
   Medication,
   ThematicMaterial,
   User,
@@ -16,7 +17,7 @@ export const writeToFile = <T>({
   collection: T[] | null;
 }) => {
   if (!collection) {
-    return
+    return;
   }
   fs.writeFileSync(
     `${BASE_FILE_PATH}/${collectionName}.json`,
@@ -29,6 +30,7 @@ export const write = ({
   medications,
   thematicMaterials,
   dialogs,
+  healthStates,
 }: GeneratorResults) => {
   writeToFile<User>({
     collectionName: CollectionName.USERS,
@@ -45,5 +47,9 @@ export const write = ({
   writeToFile<Dialog>({
     collectionName: CollectionName.DIALOGS,
     collection: dialogs,
+  });
+  writeToFile<HealthState>({
+    collectionName: CollectionName.HEALTH_STATES,
+    collection: healthStates,
   });
 };

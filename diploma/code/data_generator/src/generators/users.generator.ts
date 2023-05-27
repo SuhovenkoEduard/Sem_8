@@ -11,11 +11,7 @@ import fetch from "node-fetch";
 
 const addFields = (users: User[], medications: Medication[]): User[] => {
   const allReviewersIds: AuthUserId[] = users
-    .filter((user) =>
-      [Role.PATIENT].includes(
-        user.role
-      )
-    )
+    .filter((user) => [Role.PATIENT].includes(user.role))
     .map(({ docId }) => docId);
 
   return users.map((user) => {
@@ -55,7 +51,7 @@ const addFields = (users: User[], medications: Medication[]): User[] => {
             +new Date()
           ),
           salary: faker.datatype.number({ min: 1000, max: 3000 }),
-          description: faker.lorem.sentences(2)
+          description: faker.lorem.sentences(2),
         },
       };
     }
@@ -84,21 +80,23 @@ export const generateUsers = (
   usersAuthData: UsersAuthData,
   medications: Medication[]
 ): User[] => {
-  const users = usersAuthData.map(({ role, uid, firstName, lastName, email, imageUrl }): User => {
-    // const { url: imageUrl } = await fetch(faker.image.animals());
-    return {
-      docId: uid,
-      email,
-      imageUrl: imageUrl,
-      name: {
-        first: firstName,
-        last: lastName,
-      },
-      address: `${faker.address.country()}, ${faker.address.streetAddress()} ${faker.address.buildingNumber()}`,
-      phone: faker.phone.number("+375-##-#######"),
-      role,
-    };
-  })
+  const users = usersAuthData.map(
+    ({ role, uid, firstName, lastName, email, imageUrl }): User => {
+      // const { url: imageUrl } = await fetch(faker.image.animals());
+      return {
+        docId: uid,
+        email,
+        imageUrl: imageUrl,
+        name: {
+          first: firstName,
+          last: lastName,
+        },
+        address: `${faker.address.country()}, ${faker.address.streetAddress()} ${faker.address.buildingNumber()}`,
+        phone: faker.phone.number("+375-##-#######"),
+        role,
+      };
+    }
+  );
 
   return addFields(users, medications);
 };

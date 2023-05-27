@@ -9,3 +9,4 @@ export { generateMessages } from "./messages.generator";
 export { generateNotes } from "./notes.generator";
 export { generateThematicMaterial } from "./thematicMaterials.generator";
 export { generateUsers } from "./users.generator";
+export { generateHealthStates } from "./healthStates.generator";

@@ -1,18 +1,17 @@
 import {
   Dialog,
+  HealthState,
   Medication,
   ThematicMaterial,
   User,
 } from "../../types/collections.types";
 import fs from "fs";
-import { BASE_FILE_PATH, CollectionName } from "../../constants";
+import { BASE_FILE_PATH, CollectionName } from "../../constants/constants";
 import { GeneratorResults } from "../../types/generator.types";
 
 export const read = () => {
   const users: User[] = JSON.parse(
-    fs
-      .readFileSync(`${BASE_FILE_PATH}/${CollectionName.USERS}.json`)
-      .toString()
+    fs.readFileSync(`${BASE_FILE_PATH}/${CollectionName.USERS}.json`).toString()
   );
   const medications: Medication[] = JSON.parse(
     fs
@@ -31,12 +30,18 @@ export const read = () => {
       .readFileSync(`${BASE_FILE_PATH}/${CollectionName.DIALOGS}.json`)
       .toString()
   );
+  const healthStates: HealthState[] = JSON.parse(
+    fs
+      .readFileSync(`${BASE_FILE_PATH}/${CollectionName.HEALTH_STATES}.json`)
+      .toString()
+  );
 
   const result: GeneratorResults = {
     users,
     medications,
     thematicMaterials,
     dialogs,
+    healthStates,
   };
 
   return result;

@@ -13,13 +13,11 @@ export const generateDiaries = (
     (): Diary => ({
       diabetType: faker.datatype.number({ min: 1, max: 2 }),
       dailyLogs: generateDailyLogs(
-        +moment()
-          .subtract(1, "week")
-          .toDate(),
+        +moment().subtract(1, "week").toDate(),
         +moment().toDate(),
         medications
       ),
-      goals: [] // generateGoals(faker.datatype.number({ min: 3, max: 10 })),
+      goals: [], // generateGoals(faker.datatype.number({ min: 3, max: 10 })),
     })
   );
 };
