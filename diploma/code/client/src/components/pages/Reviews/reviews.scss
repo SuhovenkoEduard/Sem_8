@@ -1,6 +1,6 @@
 .reviews-page {
   display: flex;
-  flex-direction: column;
+  flex-direction: column !important;
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 60px);
