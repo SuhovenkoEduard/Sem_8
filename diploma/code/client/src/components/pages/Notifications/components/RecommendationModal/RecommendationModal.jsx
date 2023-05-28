@@ -12,7 +12,6 @@ import { deepCopy } from "deep-copy-ts";
 import { formatDate } from "helpers/helpers";
 import { isMobile } from "react-device-detect";
 import dayjs from "dayjs";
-import { deepEqual } from "ts-deep-equal";
 
 import "./recommendation-modal.scss";
 import { HealthStatesChip } from "./HealthStatesChip";

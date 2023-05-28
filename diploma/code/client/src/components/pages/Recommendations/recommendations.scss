@@ -1,0 +1,51 @@
+.recommendations-page {
+  display: flex;
+  flex-direction: column !important;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 20px;
+
+  .no-recommendations, .no-doctor {
+    margin-top: 20px;
+    font-size: 18pt;
+    text-align: center;
+  }
+
+  .recommendations-container {
+    .report-date {
+      margin: 10px 0;
+      padding: 5px;
+      text-align: center;
+    }
+    .notification-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      .patient-report {
+        padding: 5px;
+        display: flex;
+        gap: 10px;
+        .current-value {
+          font-weight: bold;
+        }
+      }
+    }
+    .recommendation-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      .advices {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .advice {
+          //flex: 1;
+          width: 100%;
+          padding: 5px;
+        }
+      }
+    }
+  }
+}

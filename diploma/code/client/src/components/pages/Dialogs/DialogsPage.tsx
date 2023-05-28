@@ -43,6 +43,11 @@ export const DialogsPage = () => {
   // effects
   // fetch dialogs on initial load
   useAsyncEffect(async () => {
+    if (currentUser.role === Role.PATIENT && !currentUser.doctor) {
+      setDialogsUsers([]);
+      return;
+    }
+
     const filter =
       currentUser.role === Role.PATIENT
         ? where("docId", "==", currentUser.doctor)

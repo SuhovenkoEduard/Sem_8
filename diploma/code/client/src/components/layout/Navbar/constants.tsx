@@ -16,6 +16,7 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import RecommendIcon from "@mui/icons-material/Recommend";
 import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 export type NavBarItem = {
   id: number;
@@ -37,6 +38,24 @@ export const topNavbarItems: NavBarItem[] = [
 
 export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   {
+    icon: <SummarizeIcon />,
+    label: "Дневник",
+    route: Route.diary,
+    roles: [Role.PATIENT],
+  },
+  {
+    icon: <LocalHospitalIcon />,
+    label: "Доктор",
+    route: Route.doctor,
+    roles: [Role.PATIENT],
+  },
+  {
+    icon: <FavoriteIcon />,
+    label: "Рекомендации",
+    route: Route.recommendations,
+    roles: [Role.PATIENT],
+  },
+  {
     icon: <MonitorHeartIcon />,
     label: "Уведомления",
     route: Route.notifications,
@@ -47,18 +66,6 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
     label: "Готовые рекомендации",
     route: Route.healthStates,
     roles: [Role.DOCTOR],
-  },
-  {
-    icon: <LocalHospitalIcon />,
-    label: "Доктор",
-    route: Route.doctor,
-    roles: [Role.PATIENT],
-  },
-  {
-    icon: <SummarizeIcon />,
-    label: "Дневник",
-    route: Route.diary,
-    roles: [Role.PATIENT],
   },
   {
     icon: <AlarmIcon />,

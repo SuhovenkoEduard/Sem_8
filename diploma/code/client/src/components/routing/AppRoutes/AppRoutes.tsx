@@ -25,6 +25,7 @@ import {
   ThematicMaterialsPage,
   ReviewsPage,
   NotificationsPage,
+  RecommendationsPage,
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
@@ -107,6 +108,12 @@ export const AppRoutes = () => {
             <DomRoute
               path={Route.notifications}
               element={<NotificationsPage />}
+            />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.PATIENT]} />}>
+            <DomRoute
+              path={Route.recommendations}
+              element={<RecommendationsPage />}
             />
           </DomRoute>
           {/* Sign out */}

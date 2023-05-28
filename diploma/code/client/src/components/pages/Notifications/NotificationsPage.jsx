@@ -28,6 +28,9 @@ import { Role } from "../../../firestore/types/collections.types";
 import Avatar from "@mui/material/Avatar";
 import { getUserFullName } from "../../../firestore/helpers";
 import { RecommendationModal } from "./components/RecommendationModal";
+import { useSelector } from "react-redux";
+import { getUserSelector } from "../../../store/selectors";
+import dayjs from "dayjs";
 
 const getHealthStatesByPatientReports = (patientReports, healthStates) =>
   patientReports
@@ -42,9 +45,17 @@ const getHealthStatesByPatientReports = (patientReports, healthStates) =>
     .flat();
 
 export const NotificationsPage = () => {
+  const user = useSelector(getUserSelector);
   const [isNotificationsLoading, notifications, resetNotifications] =
     useGeneralDataHook(
-      async () => await firebaseRepositories.notifications.getDocs(),
+      async () =>
+        (
+          await firebaseRepositories.notifications.getDocs(
+            where("doctor", "==", user.docId)
+          )
+        ).sort(
+          (a, b) => -dayjs(a.createdAt).diff(dayjs(b.createdAt), "second")
+        ),
       []
     );
 
@@ -67,7 +78,7 @@ export const NotificationsPage = () => {
   }, [notifications]);
 
   const [isHealthStatesLoading, healthStates] = useGeneralDataHook(
-    async () => await firebaseRepositories.healthStates.getDocs(),
+    async () => firebaseRepositories.healthStates.getDocs(),
     []
   );
 
@@ -117,12 +128,12 @@ export const NotificationsPage = () => {
         <div className="no-notifications">Нет уведомлений</div>
       )}
       {!isLoading &&
-        notifications &&
-        patients &&
-        healthStates &&
-        notifications.length &&
-        patients.length &&
-        healthStates.length && (
+        notifications != null &&
+        patients != null &&
+        healthStates != null &&
+        !!notifications.length &&
+        !!patients.length &&
+        !!healthStates.length && (
           <CardContainer className="notifications-container">
             <TableContainer component={Paper}>
               <Typography sx={{ textAlign: "center" }} variant="h6">
@@ -140,7 +151,8 @@ export const NotificationsPage = () => {
                 <TableBody>
                   {notifications.map((notification) => {
                     const patient = patients.find(
-                      (patient) => notification.patient === patient.docId
+                      (currentPatient) =>
+                        notification.patient === currentPatient.docId
                     );
                     return (
                       <TableRow
@@ -204,7 +216,7 @@ export const NotificationsPage = () => {
                                 color="info"
                                 // onClick={() => onOpenEdit(healthState)}
                               >
-                                Детали
+                                Подробнее
                               </Button>
                               <Button
                                 variant="contained"
