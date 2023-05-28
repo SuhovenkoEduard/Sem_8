@@ -1,5 +1,5 @@
 import { FirebaseDocId } from "firestore/types/collections.types";
-import { CollectionNames } from "firestore/constants";
+import { CollectionName } from "firestore/constants";
 import {
   collection,
   CollectionReference,
@@ -38,11 +38,11 @@ export class Repository<T extends FirebaseDocId> implements IRepository<T> {
 
   private firestore: Firestore;
 
-  private collectionName: CollectionNames;
+  private collectionName: CollectionName;
 
   private collectionRef: CollectionReference<T>;
 
-  constructor(collectionName: CollectionNames, validator: z.ZodSchema) {
+  constructor(collectionName: CollectionName, validator: z.ZodSchema) {
     this.validator = validator;
     this.firestore = getFirestore(firebaseApp);
     this.collectionName = collectionName;

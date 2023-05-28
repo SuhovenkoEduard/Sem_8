@@ -3,6 +3,7 @@ import {
   dialogSchema,
   healthStateSchema,
   medicationSchema,
+  notificationSchema,
   thematicMaterialSchema,
   userSchema,
 } from "../../types/schemas";
@@ -13,6 +14,7 @@ export const validate = ({
   thematicMaterials,
   dialogs,
   healthStates,
+  notifications,
 }: GeneratorResults) => {
   if (users) {
     users.forEach((fbUser) => userSchema.parse(fbUser));
@@ -31,6 +33,11 @@ export const validate = ({
   if (healthStates) {
     healthStates.forEach((fbHealthState) =>
       healthStateSchema.parse(fbHealthState)
+    );
+  }
+  if (notifications) {
+    notifications.forEach((fbNotification) =>
+      notificationSchema.parse(fbNotification)
     );
   }
 };

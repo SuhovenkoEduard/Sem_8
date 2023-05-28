@@ -18,5 +18,6 @@ export const readCollections = async (): Promise<GeneratorResults> => {
     medications: await getDocuments(CollectionName.MEDICATIONS),
     dialogs: await getDocuments(CollectionName.DIALOGS),
     healthStates: await getDocuments(CollectionName.HEALTH_STATES),
+    notifications: await getDocuments(CollectionName.NOTIFICATIONS),
   };
 };

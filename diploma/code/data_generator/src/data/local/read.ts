@@ -2,6 +2,7 @@ import {
   Dialog,
   HealthState,
   Medication,
+  Notification,
   ThematicMaterial,
   User,
 } from "../../types/collections.types";
@@ -35,6 +36,11 @@ export const read = () => {
       .readFileSync(`${BASE_FILE_PATH}/${CollectionName.HEALTH_STATES}.json`)
       .toString()
   );
+  const notifications: Notification[] = JSON.parse(
+    fs
+      .readFileSync(`${BASE_FILE_PATH}/${CollectionName.NOTIFICATIONS}.json`)
+      .toString()
+  );
 
   const result: GeneratorResults = {
     users,
@@ -42,6 +48,7 @@ export const read = () => {
     thematicMaterials,
     dialogs,
     healthStates,
+    notifications,
   };
 
   return result;

@@ -166,3 +166,36 @@ export type HealthState = FirebaseDocId & {
   warning: string;
   recommendation: string;
 };
+
+export enum PatientReplyStatus {
+  DONE = "Выполнено, спасибо!",
+  IGNORED = "Проигнорирована",
+  DENIED = "Отклонена",
+  NOT_SEEN = "Не просмотрена",
+}
+
+export type PatientReply = {
+  createdAt: Timestamp;
+  status: PatientReplyStatus;
+  comment: string;
+};
+
+export type Recommendation = {
+  createdAt: Timestamp;
+  healthStates: HealthState[];
+  comment: string;
+  patientReply: PatientReply | null;
+};
+
+export type PatientReport = {
+  currentValue: number;
+  propName: DailyLogPropName;
+};
+
+export type Notification = FirebaseDocId & {
+  createdAt: Timestamp;
+  patient: AuthUserId;
+  doctor: AuthUserId;
+  patientReports: PatientReport[];
+  recommendation: Recommendation | null;
+};

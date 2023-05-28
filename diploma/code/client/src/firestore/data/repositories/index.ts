@@ -1,34 +1,43 @@
 import { Repository } from "firestore/data/repositories/repositories";
 import {
   HealthState,
+  Notification,
   ThematicMaterial,
   User,
 } from "firestore/types/collections.types";
-import { CollectionNames } from "firestore/constants";
+import { CollectionName } from "firestore/constants";
 import {
   healthStateSchema,
+  notificationSchema,
   thematicMaterialSchema,
   userSchema,
 } from "firestore/types/schemas";
 
 const usersRepository: Repository<User> = new Repository<User>(
-  CollectionNames.USERS,
+  CollectionName.USERS,
   userSchema
 );
 
 const thematicMaterialsRepository: Repository<ThematicMaterial> =
   new Repository<ThematicMaterial>(
-    CollectionNames.THEMATIC_MATERIALS,
+    CollectionName.THEMATIC_MATERIALS,
     thematicMaterialSchema
   );
 
 const healthStatesRepository: Repository<HealthState> =
-  new Repository<HealthState>(CollectionNames.HEALTH_STATES, healthStateSchema);
+  new Repository<HealthState>(CollectionName.HEALTH_STATES, healthStateSchema);
+
+const notificationsRepository: Repository<Notification> =
+  new Repository<Notification>(
+    CollectionName.NOTIFICATIONS,
+    notificationSchema
+  );
 
 export const firebaseRepositories = {
-  [CollectionNames.USERS]: usersRepository,
-  [CollectionNames.THEMATIC_MATERIALS]: thematicMaterialsRepository,
-  [CollectionNames.HEALTH_STATES]: healthStatesRepository,
+  [CollectionName.USERS]: usersRepository,
+  [CollectionName.THEMATIC_MATERIALS]: thematicMaterialsRepository,
+  [CollectionName.HEALTH_STATES]: healthStatesRepository,
+  [CollectionName.NOTIFICATIONS]: notificationsRepository,
 };
 
 export { Repository } from "./repositories";

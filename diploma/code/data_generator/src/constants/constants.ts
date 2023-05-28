@@ -4,6 +4,7 @@ export enum CollectionName {
   THEMATIC_MATERIALS = "thematicMaterials",
   DIALOGS = "dialogs",
   HEALTH_STATES = "healthStates",
+  NOTIFICATIONS = "notifications",
 }
 
 export const COLLECTION_SIZES: {

@@ -2,6 +2,7 @@ import {
   Dialog,
   HealthState,
   Medication,
+  Notification,
   ThematicMaterial,
   User,
 } from "./collections.types";
@@ -12,4 +13,5 @@ export type GeneratorResults = {
   thematicMaterials: ThematicMaterial[];
   dialogs: Dialog[];
   healthStates: HealthState[];
+  notifications: Notification[];
 };

@@ -15,6 +15,7 @@ import {
   Dialog,
   HealthState,
   Medication,
+  Notification,
   Role,
   ThematicMaterial,
   User,
@@ -51,6 +52,8 @@ export const generate = async (): Promise<GeneratorResults> => {
   );
   const healthStates: HealthState[] = generateHealthStates(HEALTH_STATES_DATA);
 
+  const notifications: Notification[] = null;
+
   // const usersDoctorsIds: AuthUserId[] = getUsersIdsByRoles({
   //   users,
   //   roles: [Role.DOCTOR],
@@ -63,5 +66,6 @@ export const generate = async (): Promise<GeneratorResults> => {
     thematicMaterials,
     dialogs: null,
     healthStates,
+    notifications,
   };
 };

@@ -4,7 +4,13 @@ import { DateCalendar } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { useDailyLog, useDailyLogData } from "components/pages/Diary/hooks/";
 import { Button, TextField } from "@mui/material";
-import { DailyLog, Diary, Note, User } from "firestore/types/collections.types";
+import {
+  DailyLog,
+  Diary,
+  Note,
+  PatientReport,
+  User,
+} from "firestore/types/collections.types";
 import { CardContainer } from "components/ui/CardContainer";
 import { DailyLogDataView } from "components/pages/Diary/components";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
@@ -31,6 +37,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 
 import "./diary.scss";
+import { generateDocId } from "firestore/helpers";
 
 export const emptyErrors: DiaryFormErrors = {
   sugarLevel: null,
@@ -40,6 +47,50 @@ export const emptyErrors: DiaryFormErrors = {
   total: null,
   weight: null,
   temperature: null,
+};
+
+const generateNotification = async ({
+  user,
+  dailyLogData,
+}: {
+  user: User;
+  dailyLogData: DailyLogData;
+}) => {
+  const patientId = user.docId;
+  const doctorId = user.doctor;
+
+  if (!doctorId) {
+    return;
+  }
+
+  const healthStates = await firebaseRepositories.healthStates.getDocs();
+  const patientReports: PatientReport[] = healthStates
+    .filter(({ min, max, propName }) => {
+      const currentValue = +dailyLogData[propName];
+      return (
+        !isNaN(currentValue) &&
+        currentValue &&
+        min <= currentValue &&
+        currentValue <= max
+      );
+    })
+    .map(({ propName }) => ({
+      currentValue: +dailyLogData[propName],
+      propName,
+    }));
+
+  if (!patientReports.length) {
+    return;
+  }
+
+  await firebaseRepositories.notifications.updateDoc({
+    docId: generateDocId(),
+    createdAt: dayjs().toDate().toString(),
+    patient: patientId,
+    doctor: doctorId,
+    patientReports,
+    recommendation: null,
+  });
 };
 
 export const DiaryPage = () => {
@@ -131,6 +182,7 @@ export const DiaryPage = () => {
       };
       await firebaseRepositories.users.updateDoc(newUser);
       await dispatch(fetchUser(newUser.docId));
+      await generateNotification({ user, dailyLogData });
     } catch (err) {
       dispatch(setDailyLog(convertDailyLogToDailyLogData(originalDailyLog)));
       console.log(err);

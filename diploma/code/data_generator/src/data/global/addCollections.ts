@@ -4,8 +4,14 @@ import { firebaseApp } from "../../firebase_config";
 import { CollectionName } from "../../constants";
 
 export const addCollections = async (results: GeneratorResults) => {
-  const { users, medications, thematicMaterials, dialogs, healthStates } =
-    results;
+  const {
+    users,
+    medications,
+    thematicMaterials,
+    dialogs,
+    healthStates,
+    notifications,
+  } = results;
 
   const db = getFirestore(firebaseApp);
 
@@ -61,5 +67,17 @@ export const addCollections = async (results: GeneratorResults) => {
       )
     );
     console.log("HealthStates added!");
+  }
+
+  if (notifications) {
+    await Promise.all(
+      notifications.map((notification) =>
+        setDoc(
+          doc(db, CollectionName.NOTIFICATIONS, notification.docId),
+          notification
+        )
+      )
+    );
+    console.log("Notifications added!");
   }
 };

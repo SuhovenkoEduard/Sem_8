@@ -5,6 +5,7 @@ import {
   Dialog,
   HealthState,
   Medication,
+  Notification,
   ThematicMaterial,
   User,
 } from "../../types/collections.types";
@@ -31,6 +32,7 @@ export const write = ({
   thematicMaterials,
   dialogs,
   healthStates,
+  notifications,
 }: GeneratorResults) => {
   writeToFile<User>({
     collectionName: CollectionName.USERS,
@@ -51,5 +53,9 @@ export const write = ({
   writeToFile<HealthState>({
     collectionName: CollectionName.HEALTH_STATES,
     collection: healthStates,
+  });
+  writeToFile<Notification>({
+    collectionName: CollectionName.NOTIFICATIONS,
+    collection: notifications,
   });
 };

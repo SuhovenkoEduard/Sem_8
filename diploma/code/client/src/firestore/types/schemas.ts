@@ -5,6 +5,7 @@ import {
   GoalCategory,
   GoalStatus,
   MedicationRoute,
+  PatientReplyStatus,
   Role,
 } from "./collections.types";
 
@@ -178,5 +179,41 @@ export const healthStateSchema = firebaseDocIdSchema
     max: z.number(),
     warning: z.string(),
     recommendation: z.string(),
+  })
+  .strict();
+
+export const patientReplyStatusSchema = z.nativeEnum(PatientReplyStatus);
+
+export const patientReplySchema = z
+  .object({
+    createdAt: timestampSchema,
+    status: patientReplyStatusSchema,
+    comment: z.string(),
+  })
+  .strict();
+
+export const recommendationSchema = z
+  .object({
+    createdAt: timestampSchema,
+    healthStates: z.array(healthStateSchema),
+    comment: z.string(),
+    patientReply: patientReplySchema.or(z.null()),
+  })
+  .strict();
+
+export const patientReportSchema = z
+  .object({
+    currentValue: z.number(),
+    propName: dailyLogPropNameSchema,
+  })
+  .strict();
+
+export const notificationSchema = firebaseDocIdSchema
+  .extend({
+    createdAt: timestampSchema,
+    patient: authUserIdSchema,
+    doctor: authUserIdSchema,
+    patientReports: z.array(patientReportSchema),
+    recommendation: recommendationSchema.or(z.null()),
   })
   .strict();

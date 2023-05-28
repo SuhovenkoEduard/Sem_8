@@ -7,7 +7,7 @@ import {
   getDocs,
   getFirestore,
 } from "firebase/firestore";
-import { CollectionName } from "../../constants/constants";
+import { CollectionName } from "../../constants";
 import { firebaseApp } from "../../firebase_config";
 
 const getCollectionDocs = async (
@@ -46,5 +46,5 @@ export const removeCollections = async (
       removeCollection(db, collectionName)
     )
   );
-  console.log("All collections are removed!");
+  console.log(`Collections: [${collectionNames.join(", ")}] are removed!`);
 };
