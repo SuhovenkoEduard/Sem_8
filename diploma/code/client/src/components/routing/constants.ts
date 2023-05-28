@@ -21,6 +21,7 @@ export enum Route {
   doctor = "/doctor",
   reviews = "/reviews",
   healthStates = "/health-states",
+  notifications = "/notifications",
 }
 
 export const RouteTitles: {
@@ -48,4 +49,5 @@ export const RouteTitles: {
   [Route.doctor]: "Доктор",
   [Route.reviews]: "Отзывы",
   [Route.healthStates]: "Помощь пациентам",
+  [Route.notifications]: "Уведомления",
 };

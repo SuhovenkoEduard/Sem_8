@@ -160,6 +160,7 @@ export enum DailyLogPropName {
 }
 
 export type HealthState = FirebaseDocId & {
+  title: string;
   propName: DailyLogPropName;
   min: number;
   max: number;

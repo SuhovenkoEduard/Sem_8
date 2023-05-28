@@ -14,7 +14,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { convertDailyLogPropNameToRussian } from "../../../firestore/converters";
+import {
+  convertDailyLogPropNameToMeasurement,
+  convertDailyLogPropNameToRussian,
+} from "../../../firestore/converters";
 import { CardContainer } from "../../ui/CardContainer";
 
 import "./health-states.scss";
@@ -93,11 +96,16 @@ export const HealthStatesPage = () => {
                       Добавить
                     </Button>
                   </div>
-                  <Table sx={{ maxWidth: 900 }}>
+                  <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell>Минимум</TableCell>
-                        <TableCell>Максимум</TableCell>
+                        <TableCell>Название</TableCell>
+                        <TableCell sx={{ minWidth: "120px" }}>
+                          Минимум
+                        </TableCell>
+                        <TableCell sx={{ minWidth: "120px" }}>
+                          Максимум
+                        </TableCell>
                         <TableCell>Предупреждение</TableCell>
                         <TableCell>Рекомендация</TableCell>
                         <TableCell>Управление</TableCell>
@@ -111,8 +119,19 @@ export const HealthStatesPage = () => {
                             "&:last-child td, &:last-child th": { border: 0 },
                           }}
                         >
-                          <TableCell>{healthState.min}</TableCell>
-                          <TableCell>{healthState.max}</TableCell>
+                          <TableCell>{healthState.title}</TableCell>
+                          <TableCell>
+                            {healthState.min}{" "}
+                            {convertDailyLogPropNameToMeasurement(
+                              healthState.propName
+                            )}
+                          </TableCell>
+                          <TableCell>
+                            {healthState.max}{" "}
+                            {convertDailyLogPropNameToMeasurement(
+                              healthState.propName
+                            )}
+                          </TableCell>
                           <TableCell>{healthState.warning}</TableCell>
                           <TableCell>{healthState.recommendation}</TableCell>
                           <TableCell>

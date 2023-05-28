@@ -25,6 +25,7 @@ export const HealthStateModal = ({
       healthStateToEdit
         ? deepCopy(healthStateToEdit)
         : {
+            title: "",
             min: "",
             max: "",
             warning: "",
@@ -89,6 +90,14 @@ export const HealthStateModal = ({
           onSubmit={handleSubmitHealthState}
         >
           <TextField
+            label="Название"
+            name="title"
+            value={healthState.title}
+            onChange={handleFieldChange}
+            disabled={isLoading}
+            fullWidth
+          />
+          <TextField
             label="Показатель"
             name="propName"
             value={convertDailyLogPropNameToRussian(propName)}
@@ -151,7 +160,8 @@ export const HealthStateModal = ({
                   healthStateToEdit?.recommendation ===
                     healthState.recommendation &&
                   healthStateToEdit?.min === healthState.min &&
-                  healthStateToEdit?.max === healthState.max
+                  healthStateToEdit?.max === healthState.max &&
+                  healthStateToEdit?.title === healthState.title
                 }
                 autoFocus
               >

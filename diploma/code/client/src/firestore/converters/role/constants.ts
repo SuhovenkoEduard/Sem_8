@@ -22,3 +22,15 @@ export const RUSSIAN_DAILY_LOG_PROP_NAMES: {
   [DailyLogPropName.TOTAL]: "Количество калорий",
   [DailyLogPropName.TEMPERATURE]: "Температура",
 };
+
+export const MEASUREMENTS: {
+  [key in DailyLogPropName]: string;
+} = {
+  [DailyLogPropName.SUGAR_LEVEL]: "ммоль/л",
+  [DailyLogPropName.PULSE]: "уд/мин",
+  [DailyLogPropName.SYSTOLIC]: "ммрт",
+  [DailyLogPropName.DIASTOLIC]: "ммрт",
+  [DailyLogPropName.WEIGHT]: "кг",
+  [DailyLogPropName.TOTAL]: "ккал",
+  [DailyLogPropName.TEMPERATURE]: "°C",
+};

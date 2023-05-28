@@ -2,7 +2,10 @@ import { DailyLog, DailyLogPropName } from "firestore/types/collections.types";
 import { DailyLogData } from "firestore/converters/dailyLog/types";
 import { PartialBy } from "firestore/types/client.types";
 import { deepCopy } from "deep-copy-ts";
-import { RUSSIAN_DAILY_LOG_PROP_NAMES } from "firestore/converters/role/constants";
+import {
+  MEASUREMENTS,
+  RUSSIAN_DAILY_LOG_PROP_NAMES,
+} from "firestore/converters/role/constants";
 
 export const convertDailyLogToDailyLogData = (
   dailyLog: DailyLog
@@ -71,3 +74,7 @@ export const convertDailyLogDataToDailyLog = (
 
 export const convertDailyLogPropNameToRussian = (propName: DailyLogPropName) =>
   RUSSIAN_DAILY_LOG_PROP_NAMES[propName];
+
+export const convertDailyLogPropNameToMeasurement = (
+  propName: DailyLogPropName
+) => MEASUREMENTS[propName];

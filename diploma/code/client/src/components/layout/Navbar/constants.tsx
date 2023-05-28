@@ -15,6 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import RecommendIcon from "@mui/icons-material/Recommend";
+import MonitorHeartIcon from "@mui/icons-material/MonitorHeart";
 
 export type NavBarItem = {
   id: number;
@@ -36,8 +37,14 @@ export const topNavbarItems: NavBarItem[] = [
 
 export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   {
+    icon: <MonitorHeartIcon />,
+    label: "Уведомления",
+    route: Route.notifications,
+    roles: [Role.DOCTOR],
+  },
+  {
     icon: <RecommendIcon />,
-    label: "Помощь пациентам",
+    label: "Готовые рекомендации",
     route: Route.healthStates,
     roles: [Role.DOCTOR],
   },

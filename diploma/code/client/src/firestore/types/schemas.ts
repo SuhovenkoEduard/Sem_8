@@ -174,6 +174,7 @@ export const dailyLogPropNameSchema = z.nativeEnum(DailyLogPropName);
 
 export const healthStateSchema = firebaseDocIdSchema
   .extend({
+    title: z.string(),
     propName: dailyLogPropNameSchema,
     min: z.number(),
     max: z.number(),
