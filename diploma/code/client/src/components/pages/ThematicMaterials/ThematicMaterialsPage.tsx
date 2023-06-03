@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { PageContainer } from "components/layout";
 import { ThematicMaterial } from "firestore/types/collections.types";
-import useAsyncEffect from "use-async-effect";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
@@ -9,6 +8,10 @@ import { ThematicMaterialView } from "components/pages/ThematicMaterials/compone
 import { useNavigate } from "react-router-dom";
 import { Route } from "components/routing";
 import { isMobile } from "react-device-detect";
+import { useGeneralModalHandlers } from "../../../hooks/useGeneralModalHandlers";
+import { Button } from "@mui/material";
+import { ThematicMaterialEditModal } from "./components/ThematicMaterialEditModal";
+import dayjs from "dayjs";
 
 import "./thematic-materials.scss";
 
@@ -19,7 +22,7 @@ export const ThematicMaterialsPage = () => {
     ThematicMaterial[]
   >([]);
 
-  useAsyncEffect(async () => {
+  const loadThematicMaterials = useCallback(async () => {
     try {
       setIsLoading(true);
       const newMaterials =
@@ -36,6 +39,34 @@ export const ThematicMaterialsPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    loadThematicMaterials();
+  }, [loadThematicMaterials]);
+
+  const [
+    isThematicMaterialModalOpened,
+    openThematicMaterialModal,
+    closeThematicMaterialModal,
+  ] = useGeneralModalHandlers();
+
+  const submitThematicMaterial = async (thematicMaterial: ThematicMaterial) => {
+    try {
+      setIsLoading(true);
+      await firebaseRepositories.thematicMaterials.updateDoc(thematicMaterial);
+      await loadThematicMaterials();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sortedThematicMaterials = useMemo(() => {
+    return thematicMaterials.sort((left, right) =>
+      dayjs(left.createdAt).diff(dayjs(right.createdAt))
+    );
+  }, [thematicMaterials]);
+
   return (
     <PageContainer
       className="thematic-materials-page"
@@ -46,24 +77,44 @@ export const ThematicMaterialsPage = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div
-          className="thematic-materials-container"
-          style={{
-            gap: isMobile ? "10px" : "20px",
-            width: isMobile ? "350px" : "1080px",
-          }}
-        >
-          {thematicMaterials.map((thematicMaterial) => (
-            <ThematicMaterialView
-              key={thematicMaterial.docId}
-              {...thematicMaterial}
-              onClick={() =>
-                navigate(`${Route.thematicMaterials}/${thematicMaterial.docId}`)
-              }
-            />
-          ))}
+        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              color="success"
+              variant="contained"
+              sx={{ fontSize: "11px", fontWeight: "bold" }}
+              onClick={openThematicMaterialModal as () => void}
+            >
+              Добавить тематический материал
+            </Button>
+          </div>
+          <div
+            className="thematic-materials-container"
+            style={{
+              gap: isMobile ? "10px" : "20px",
+              width: isMobile ? "350px" : "1080px",
+            }}
+          >
+            {sortedThematicMaterials.map((thematicMaterial) => (
+              <ThematicMaterialView
+                key={thematicMaterial.docId}
+                {...thematicMaterial}
+                onClick={() =>
+                  navigate(
+                    `${Route.thematicMaterials}/${thematicMaterial.docId}`
+                  )
+                }
+              />
+            ))}
+          </div>
         </div>
       )}
+      <ThematicMaterialEditModal
+        isOpen={isThematicMaterialModalOpened}
+        onClose={closeThematicMaterialModal as () => void}
+        submitThematicMaterial={submitThematicMaterial}
+        selectedThematicMaterial={null}
+      />
     </PageContainer>
   );
 };

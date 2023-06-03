@@ -4,21 +4,21 @@ export const useGeneralModalHandlers = ({
   onOpen,
   onClose,
 }: {
-  onOpen: (...args: unknown[]) => void;
-  onClose: () => void;
-}) => {
+  onOpen?: (...args: unknown[]) => void;
+  onClose?: () => void;
+} = {}) => {
   const [isModalOpened, setIsModalOpened] = useState(false);
 
   const openModal = useCallback(
     (...args: unknown[]) => {
-      onOpen(...args);
+      onOpen?.(...args);
       setIsModalOpened(true);
     },
     [setIsModalOpened, onOpen]
   );
 
   const closeModal = useCallback(() => {
-    onClose();
+    onClose?.();
     setIsModalOpened(false);
   }, [setIsModalOpened, onClose]);
 

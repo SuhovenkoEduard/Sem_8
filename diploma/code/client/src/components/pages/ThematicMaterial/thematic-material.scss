@@ -4,6 +4,7 @@
   justify-content: center;
   min-height: calc(100vh - 60px);
   .thematic-material-container {
+    width: 100%;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -66,6 +67,7 @@
 
     }
     .thematic-material-body {
+      width: 100%;
       position: relative;
       padding: 10px;
       font-size: 12pt;

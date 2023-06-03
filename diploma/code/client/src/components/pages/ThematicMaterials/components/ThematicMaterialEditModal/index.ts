@@ -1,0 +1,1 @@
+export { ThematicMaterialEditModal } from "./ThematicMaterialEditModal";
