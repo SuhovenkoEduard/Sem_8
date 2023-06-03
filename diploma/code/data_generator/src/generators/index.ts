@@ -1,6 +1,5 @@
 export { generateComments } from "./comments.generator";
 export { generateDailyLogs } from "./dailyLogs.generator";
-export { generateDialogs } from "./dialogs.generator";
 export { generateDiaries } from "./diaries.generator";
 export { generateEmployeeReviews } from "./employeeReviews.generator";
 export { generateGoals } from "./goals.generator";

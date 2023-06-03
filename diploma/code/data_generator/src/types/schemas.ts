@@ -85,14 +85,6 @@ export const employeeReviewSchema = z
   })
   .strict();
 
-export const dialogSchema = firebaseDocIdSchema
-  .extend({
-    doctor: authUserIdSchema,
-    patient: authUserIdSchema,
-    // messages: z.array(messageSchema),
-  })
-  .strict();
-
 export const dailyLogSchema = z
   .object({
     createdAt: timestampSchema,
@@ -153,6 +145,7 @@ export const diarySchema = z
 export const userSchema = firebaseDocIdSchema
   .extend({
     email: z.string(),
+    password: z.string(),
     imageUrl: z.string(),
     name: z
       .object({
@@ -174,6 +167,7 @@ export const userSchema = firebaseDocIdSchema
       .strict()
       .optional(),
     relativePatient: authUserIdSchema.optional(),
+    doctor: authUserIdSchema.optional(),
   })
   .strict();
 

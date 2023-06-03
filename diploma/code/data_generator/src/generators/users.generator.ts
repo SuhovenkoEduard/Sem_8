@@ -81,10 +81,11 @@ export const generateUsers = (
   medications: Medication[]
 ): User[] => {
   const users = usersAuthData.map(
-    ({ role, uid, firstName, lastName, email, imageUrl }): User => {
+    ({ role, uid, firstName, lastName, email, password, imageUrl }): User => {
       // const { url: imageUrl } = await fetch(faker.image.animals());
       return {
         docId: uid,
+        password,
         email,
         imageUrl: imageUrl,
         name: {

@@ -1,1 +1,129 @@
-[]
+[
+  {
+    "createdAt": "Sun May 28 2023 20:01:29 GMT+0300 (Moscow Standard Time)",
+    "patient": "jsvFTA0FUvYi7rBzIpKboW9iOap1",
+    "patientReports": [
+      {
+        "currentValue": 10,
+        "propName": "sugarLevel"
+      }
+    ],
+    "docId": "040cc8b3bf774057a132",
+    "doctor": "AaZtVCAFedbxLRsShieEG3qnpLs2",
+    "recommendation": {
+      "healthStates": [
+        {
+          "recommendation": "Пациенту с сахарным диабетом при высоком уровне сахара в крови и чувстве голода, необходимо сделать дополнительную инъекцию инсулина, а не принимать пищу, поскольку прием дополнительных углеводов при отсутствии инсулина не приведет к насыщению.",
+          "propName": "sugarLevel",
+          "max": 10,
+          "docId": "59fb16f13ee6496d9346",
+          "title": "Высокий уровень сахара",
+          "min": 7,
+          "warning": "Затянувшийся переизбыток глюкозы в крови повреждает кровеносные сосуды и нервные волокна, что в конце концов может привести к сердечно‑сосудистым проблемам, снижению зрения, сбоям в работе внутренних органов и смертельно опасному нарушению обмена веществ (кетоацидозу)."
+        }
+      ],
+      "comment": "Срочно примите меры.",
+      "patientReply": {
+        "comment": "",
+        "createdAt": "Sun May 28 2023 23:32:08 GMT+0300 (Moscow Standard Time)",
+        "status": "Выполнена, спасибо!"
+      },
+      "createdAt": "Sun May 28 2023 23:29:31 GMT+0300 (Moscow Standard Time)"
+    }
+  },
+  {
+    "patientReports": [
+      {
+        "currentValue": 3,
+        "propName": "sugarLevel"
+      }
+    ],
+    "recommendation": {
+      "comment": "Примите инсулин\n",
+      "patientReply": null,
+      "createdAt": "Sat Jun 03 2023 15:31:57 GMT+0300 (Moscow Standard Time)",
+      "healthStates": [
+        {
+          "warning": "Если уровень сахара в крови опускается ниже 3,5 ммоль/л – это признак гипогликемии. Такое состояние может привести к эпилептическому припадку, судорогам, потере сознания и коме.",
+          "min": 1,
+          "recommendation": "Чтоб быстро повысить сахар крови нужно принять быстроусвояемые углеводы: сахар 4-5 кусочков, мед, варенье, сладкие напитки фруктовые или лимонад в количестве 200мл. Важное правило: больной диабетом, получающий лечение сахароснижающими препаратами должен всегда носить легко усваиваемые углеводы с собой.",
+          "propName": "sugarLevel",
+          "docId": "c954994e79644422be87",
+          "max": 3.5,
+          "title": "Низкий уровень сахара"
+        }
+      ]
+    },
+    "docId": "04690cc5f43d4a4da363",
+    "doctor": "AaZtVCAFedbxLRsShieEG3qnpLs2",
+    "patient": "jsvFTA0FUvYi7rBzIpKboW9iOap1",
+    "createdAt": "Sat Jun 03 2023 13:06:40 GMT+0300 (Moscow Standard Time)"
+  },
+  {
+    "patient": "jsvFTA0FUvYi7rBzIpKboW9iOap1",
+    "docId": "726dc519cad343109ac5",
+    "doctor": "DytsPV83oKhZvmu3E9G4Iu3J7S53",
+    "patientReports": [
+      {
+        "propName": "temperature",
+        "currentValue": 39.9
+      }
+    ],
+    "createdAt": "Sun May 28 2023 16:47:09 GMT+0300 (Moscow Standard Time)",
+    "recommendation": {
+      "patientReply": {
+        "comment": "",
+        "status": "Проигнорирована",
+        "createdAt": "Sun May 28 2023 23:31:10 GMT+0300 (Moscow Standard Time)"
+      },
+      "comment": "23234",
+      "healthStates": [],
+      "createdAt": "Sun May 28 2023 23:39:49 GMT+0300 (Moscow Standard Time)"
+    }
+  },
+  {
+    "docId": "ce125d8f8f7449dd9696",
+    "createdAt": "Sat Jun 03 2023 15:39:43 GMT+0300 (Moscow Standard Time)",
+    "doctor": "AaZtVCAFedbxLRsShieEG3qnpLs2",
+    "patientReports": [
+      {
+        "currentValue": 39.3,
+        "propName": "temperature"
+      }
+    ],
+    "patient": "jsvFTA0FUvYi7rBzIpKboW9iOap1",
+    "recommendation": null
+  },
+  {
+    "patientReports": [
+      {
+        "propName": "pulse",
+        "currentValue": 110
+      }
+    ],
+    "recommendation": {
+      "healthStates": [
+        {
+          "max": 110,
+          "min": 100,
+          "docId": "0c24804538db45fabad1",
+          "warning": "Повышение частоты пульса до 90 и более ударов/мин называется тахикардией. Такое явление может вызвать заболевание сердца, сосудов, например, инфаркт, ишемия, сердечная, аортальная недостаточность, артериальная гипертензия, аномалия проводящих путей.",
+          "propName": "pulse",
+          "recommendation": "Занять лежачее положение, это поможет снизить нагрузку на сердечно-сосудистую систему; расстегнуть пуговицы на шее, снять галстук, обеспечить свободное дыхание; в области шеи подложить подушку или свернутую одежду, это предотвратит нарушение кровообращения в результате запрокидывания головы; открыть окна, обеспечить доступ воздуха. При тахикардии органы испытывают нехватку кислорода, это позволит улучшить состояние больного; мелкими глотками выпить стакан прохладной воды. Нельзя обливать человека холодной водой или давать пить горячие напитки.",
+          "title": "Высокий пульс"
+        }
+      ],
+      "patientReply": {
+        "createdAt": "Sat Jun 03 2023 14:35:16 GMT+0300 (Moscow Standard Time)",
+        "comment": "",
+        "status": "Выполнена, спасибо!"
+      },
+      "createdAt": "Sat Jun 03 2023 14:27:26 GMT+0300 (Moscow Standard Time)",
+      "comment": "Расслабтесь, не паникуйте."
+    },
+    "doctor": "AaZtVCAFedbxLRsShieEG3qnpLs2",
+    "createdAt": "Sat Jun 03 2023 14:23:09 GMT+0300 (Moscow Standard Time)",
+    "docId": "f245801acf604143aebd",
+    "patient": "jsvFTA0FUvYi7rBzIpKboW9iOap1"
+  }
+]

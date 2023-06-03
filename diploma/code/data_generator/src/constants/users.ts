@@ -5,6 +5,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Алексей",
     lastName: "Сайко",
     email: "sukhovenkoedik+patient_alex@gmail.com",
+    password: "123456",
     uid: "4SjKsrZJdMdMOXHB3vzrlx7Y0Dj1",
     role: Role.PATIENT,
     imageUrl:
@@ -14,6 +15,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Игорь",
     lastName: "Пивоварчик",
     email: "sukhovenkoedik+patient_igor@gmail.com",
+    password: "123456",
     uid: "jsvFTA0FUvYi7rBzIpKboW9iOap1",
     role: Role.PATIENT,
     imageUrl:
@@ -23,6 +25,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Валентина",
     lastName: "Измайлова",
     email: "sukhovenkoedik+patient_valentina@gmail.com",
+    password: "123456",
     uid: "gteQhTSOkaQm52QeW8t968jnfxs2",
     role: Role.PATIENT,
     imageUrl:
@@ -32,6 +35,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Гордей",
     lastName: "Лавров",
     email: "sukhovenkoedik+patient_gordei@gmail.com",
+    password: "123456",
     uid: "5Y7WdOYCeTXmGrTMRaq3CQkRHqS2",
     role: Role.PATIENT,
     imageUrl: "https://sm.imgix.net/12/47/mike-magee-la-galaxy.jpg",
@@ -40,6 +44,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Алла",
     lastName: "Воронина",
     email: "sukhovenkoedik+patient_alla@gmail.com",
+    password: "123456",
     uid: "YZWRSpLxChM6vZIJvQAlUteaJgj2",
     role: Role.PATIENT,
     imageUrl:
@@ -49,6 +54,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Рита",
     lastName: "Туркова",
     email: "sukhovenkoedik+relative@gmail.com",
+    password: "123456",
     uid: "1Nsuwpw16ONs5wBbCZz9N3dlOBh1",
     role: Role.RELATIVE,
     imageUrl:
@@ -58,6 +64,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Ксения",
     lastName: "Пидлипная",
     email: "sukhovenkoedik+doctor_ksenia@gmail.com",
+    password: "123456",
     uid: "V9crQpaitTfkOmjrgjRarB2kMhc2",
     role: Role.DOCTOR,
     imageUrl:
@@ -67,6 +74,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Михаил",
     lastName: "Кириллов",
     email: "sukhovenkoedik+doctor_michail@gmail.com",
+    password: "123456",
     uid: "DytsPV83oKhZvmu3E9G4Iu3J7S53",
     role: Role.DOCTOR,
     imageUrl:
@@ -76,6 +84,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Мирослав",
     lastName: "Лебедев",
     email: "sukhovenkoedik+doctor_miroslav@gmail.com",
+    password: "123456",
     uid: "AaZtVCAFedbxLRsShieEG3qnpLs2",
     role: Role.DOCTOR,
     imageUrl:
@@ -85,6 +94,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Федор",
     lastName: "Авдеев",
     email: "sukhovenkoedik+doctor_fedor@gmail.com",
+    password: "123456",
     uid: "WMpsaVSOGLQFO5PEjToPm9FzbbJ3",
     role: Role.DOCTOR,
     imageUrl:
@@ -94,6 +104,7 @@ export const USERS_AUTH_DATA = [
     firstName: "Александр",
     lastName: "Крючков",
     email: "sukhovenkoedik+doctor_admin@gmail.com",
+    password: "123456",
     uid: "Ph0RnmF77cduOdfNg16CVYYDjVc2",
     role: Role.ADMIN,
     imageUrl:

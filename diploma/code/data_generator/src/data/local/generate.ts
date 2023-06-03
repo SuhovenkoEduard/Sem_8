@@ -1,5 +1,4 @@
 import {
-  generateDialogs,
   generateHealthStates,
   generateMedication,
   generateThematicMaterial,
@@ -12,7 +11,6 @@ import {
 } from "../../constants/";
 import {
   AuthUserId,
-  Dialog,
   HealthState,
   Medication,
   Notification,
@@ -53,18 +51,11 @@ export const generate = async (): Promise<GeneratorResults> => {
   const healthStates: HealthState[] = generateHealthStates(HEALTH_STATES_DATA);
 
   const notifications: Notification[] = null;
-
-  // const usersDoctorsIds: AuthUserId[] = getUsersIdsByRoles({
-  //   users,
-  //   roles: [Role.DOCTOR],
-  // });
-  // const dialogs: Dialog[] = generateDialogs(usersPatientsIds, usersDoctorsIds);
-
+  
   return {
     users,
     medications: null,
     thematicMaterials,
-    dialogs: null,
     healthStates,
     notifications,
   };

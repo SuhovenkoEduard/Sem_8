@@ -1,5 +1,4 @@
 import {
-  Dialog,
   HealthState,
   Medication,
   Notification,
@@ -26,11 +25,6 @@ export const read = () => {
       )
       .toString()
   );
-  const dialogs: Dialog[] = JSON.parse(
-    fs
-      .readFileSync(`${BASE_FILE_PATH}/${CollectionName.DIALOGS}.json`)
-      .toString()
-  );
   const healthStates: HealthState[] = JSON.parse(
     fs
       .readFileSync(`${BASE_FILE_PATH}/${CollectionName.HEALTH_STATES}.json`)
@@ -46,7 +40,6 @@ export const read = () => {
     users,
     medications,
     thematicMaterials,
-    dialogs,
     healthStates,
     notifications,
   };

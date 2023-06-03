@@ -1,6 +1,5 @@
 import { GeneratorResults } from "../../types/generator.types";
 import {
-  dialogSchema,
   healthStateSchema,
   medicationSchema,
   notificationSchema,
@@ -12,7 +11,6 @@ export const validate = ({
   users,
   medications,
   thematicMaterials,
-  dialogs,
   healthStates,
   notifications,
 }: GeneratorResults) => {
@@ -26,9 +24,6 @@ export const validate = ({
     thematicMaterials.forEach((fbThematicMaterial) =>
       thematicMaterialSchema.parse(fbThematicMaterial)
     );
-  }
-  if (dialogs) {
-    dialogs.forEach((fbDialog) => dialogSchema.parse(fbDialog));
   }
   if (healthStates) {
     healthStates.forEach((fbHealthState) =>

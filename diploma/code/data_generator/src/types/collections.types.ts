@@ -7,6 +7,7 @@ export type FirebaseDocId = {
 
 export type User = FirebaseDocId & {
   email: string;
+  password: string;
   imageUrl: string;
   name: {
     first: string;
@@ -44,12 +45,6 @@ export type ThematicMaterial = FirebaseDocId & {
   description: string;
   author: AuthUserId;
   comments: Comment[];
-};
-
-export type Dialog = FirebaseDocId & {
-  doctor: AuthUserId;
-  patient: AuthUserId;
-  // messages: Message[];
 };
 
 export enum Role {
@@ -174,10 +169,11 @@ export type HealthState = FirebaseDocId & {
 };
 
 export enum PatientReplyStatus {
-  DONE = "Выполнено, спасибо!",
+  DONE = "Выполнена, спасибо!",
   IGNORED = "Проигнорирована",
   DENIED = "Отклонена",
   NOT_SEEN = "Не просмотрена",
+  DOESNT_EXIST = "Не сформирована",
 }
 
 export type PatientReply = {

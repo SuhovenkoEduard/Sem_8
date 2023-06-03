@@ -1,5 +1,4 @@
 import {
-  Dialog,
   HealthState,
   Medication,
   Notification,
@@ -11,7 +10,6 @@ export type GeneratorResults = {
   users: User[];
   medications: Medication[];
   thematicMaterials: ThematicMaterial[];
-  dialogs: Dialog[];
   healthStates: HealthState[];
   notifications: Notification[];
 };

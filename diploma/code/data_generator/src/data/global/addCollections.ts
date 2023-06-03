@@ -8,7 +8,6 @@ export const addCollections = async (results: GeneratorResults) => {
     users,
     medications,
     thematicMaterials,
-    dialogs,
     healthStates,
     notifications,
   } = results;
@@ -47,16 +46,7 @@ export const addCollections = async (results: GeneratorResults) => {
     );
     console.log("ThematicMaterials added!");
   }
-
-  if (dialogs) {
-    await Promise.all(
-      dialogs.map((dialog) =>
-        setDoc(doc(db, CollectionName.DIALOGS, dialog.docId), dialog)
-      )
-    );
-    console.log("Dialogs added!");
-  }
-
+  
   if (healthStates) {
     await Promise.all(
       healthStates.map((healthState) =>

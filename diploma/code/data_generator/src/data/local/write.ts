@@ -2,7 +2,6 @@ import fs from "fs";
 import { BASE_FILE_PATH, CollectionName } from "../../constants";
 import { GeneratorResults } from "../../types/generator.types";
 import {
-  Dialog,
   HealthState,
   Medication,
   Notification,
@@ -30,7 +29,6 @@ export const write = ({
   users,
   medications,
   thematicMaterials,
-  dialogs,
   healthStates,
   notifications,
 }: GeneratorResults) => {
@@ -45,10 +43,6 @@ export const write = ({
   writeToFile<ThematicMaterial>({
     collectionName: CollectionName.THEMATIC_MATERIALS,
     collection: thematicMaterials,
-  });
-  writeToFile<Dialog>({
-    collectionName: CollectionName.DIALOGS,
-    collection: dialogs,
   });
   writeToFile<HealthState>({
     collectionName: CollectionName.HEALTH_STATES,
