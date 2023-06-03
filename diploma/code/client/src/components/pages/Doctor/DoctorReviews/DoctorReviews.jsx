@@ -71,17 +71,18 @@ export const DoctorReviews = ({ reviews, editReview, deleteReview }) => {
           <Typography sx={{ textAlign: "center" }} variant="h6">
             Отзывы
           </Typography>
-          {!sortedReviews.find((review) => review.reviewer === userId) && (
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                color="success"
-                variant="contained"
-                onClick={() => editReview(null)}
-              >
-                Добавить отзыв
-              </Button>
-            </div>
-          )}
+          {!sortedReviews.find((review) => review.reviewer === userId) &&
+            Boolean(editReview) && (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Button
+                  color="success"
+                  variant="contained"
+                  onClick={() => editReview(null)}
+                >
+                  Добавить отзыв
+                </Button>
+              </div>
+            )}
           <Table sx={{ maxWidth: 900 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -127,17 +128,19 @@ export const DoctorReviews = ({ reviews, editReview, deleteReview }) => {
                     </TableCell>
                     <TableCell>{review.content}</TableCell>
                     <TableCell>
-                      {review.reviewer === userId && (
-                        <div style={{ display: "flex", gap: "10px" }}>
-                          <EditButton onClick={() => editReview(review)} />
-                          <IconButton
-                            color="error"
-                            onClick={() => deleteReview(review)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </div>
-                      )}
+                      {review.reviewer === userId &&
+                        Boolean(editReview) &&
+                        Boolean(deleteReview) && (
+                          <div style={{ display: "flex", gap: "10px" }}>
+                            <EditButton onClick={() => editReview(review)} />
+                            <IconButton
+                              color="error"
+                              onClick={() => deleteReview(review)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
+                        )}
                     </TableCell>
                   </TableRow>
                 );

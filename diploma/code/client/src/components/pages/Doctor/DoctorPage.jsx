@@ -53,26 +53,16 @@ export const DoctorPage = () => {
 
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
-  const loadSelectedDoctor = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      if (user.doctor) {
-        const newDoctor = await firebaseRepositories.users.getDocById(
-          user.doctor
-        );
-        setSelectedDoctor(newDoctor);
-      } else {
-        setSelectedDoctor(null);
-      }
-    } catch (e) {
-      console.log(e);
-      setIsLoading(false);
+  const updateSelectedDoctor = useCallback(() => {
+    if (user.doctor) {
+      const newDoctor = doctors.find((doctor) => doctor.docId === user.doctor);
+      setSelectedDoctor(newDoctor);
+    } else {
+      setSelectedDoctor(null);
     }
-  }, [user.doctor]);
+  }, [user.doctor, doctors]);
 
-  useEffect(() => {
-    loadSelectedDoctor();
-  }, [loadSelectedDoctor]);
+  useEffect(updateSelectedDoctor, [updateSelectedDoctor]);
 
   const denyDoctor = async () => {
     try {
@@ -132,7 +122,7 @@ export const DoctorPage = () => {
         },
       };
       await firebaseRepositories.users.updateDoc(newDoctor);
-      await loadSelectedDoctor();
+      await loadDoctors();
     } catch (e) {
       console.log(e);
       NotificationManager.error("Изменение отзыва", "Страница доктор");
@@ -155,7 +145,7 @@ export const DoctorPage = () => {
         },
       };
       await firebaseRepositories.users.updateDoc(newDoctor);
-      await loadSelectedDoctor();
+      await loadDoctors();
     } catch (e) {
       console.log(e);
       NotificationManager.error("Удаление отзыва", "Страница доктор");

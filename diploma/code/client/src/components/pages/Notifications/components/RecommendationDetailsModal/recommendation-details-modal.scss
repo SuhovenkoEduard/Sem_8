@@ -1,19 +1,13 @@
 .MuiDialog-paper {
   max-width: initial !important;
-  .modal-content {
-    padding: 0 20px !important;
-    .health-state-container {
-      padding: 10px 0 0;
-      margin: 20px;
+  .recommendation-details-dialog {
+    .recommendation-details-modal-content {
+      padding: 0 20px !important;
+    }
+    .controls {
       display: flex;
-      flex-direction: column;
-      gap: 20px;
-      .controls {
-        display: flex;
-        justify-content: center;
-        margin-top: -20px;
-      }
+      justify-content: center;
+      margin-top: 10px;
     }
   }
-
 }

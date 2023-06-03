@@ -32,8 +32,12 @@ export const RecommendationDetailsModal = ({
   }, [recommendation]);
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle sx={{ textAlign: "center", marginBottom: "-50px" }}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      className="recommendation-details-dialog"
+    >
+      <DialogTitle sx={{ textAlign: "center", marginBottom: "-10px" }}>
         Подробности рекомендации
       </DialogTitle>
       <DialogContent
@@ -42,11 +46,20 @@ export const RecommendationDetailsModal = ({
           paddingBottom: "20px",
           minWidth: "400px",
           maxWidth: "1400px",
-          overflowY: "scroll",
+          overflowY: "auto",
         }}
       >
-        <div className="health-state-container">
-          <CardContainer sx={{ m: 1, p: 1 }}>
+        <div className="recommendation-details-modal-content">
+          <div
+            style={{
+              margin: "0 auto",
+              p: 1,
+              width: "300px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <Typography
               sx={{ textAlign: "center" }}
               variant="h6"
@@ -55,14 +68,14 @@ export const RecommendationDetailsModal = ({
               Дата
             </Typography>
             <CardContainer
-              style={{ padding: "10px", margin: "10px", textAlign: "center" }}
+              style={{ padding: "5px", width: "250px", textAlign: "center" }}
             >
               {Boolean(recommendation?.createdAt) &&
                 formatDate(recommendation?.createdAt)}
             </CardContainer>
-          </CardContainer>
+          </div>
           <Typography
-            sx={{ textAlign: "center", marginTop: "-20px" }}
+            sx={{ textAlign: "center", marginTop: "10px" }}
             variant="h6"
             component="div"
           >
@@ -72,7 +85,6 @@ export const RecommendationDetailsModal = ({
             <CardContainer
               style={{
                 padding: "10px",
-                marginTop: "-10px",
                 textAlign: "center",
               }}
             >
@@ -120,7 +132,16 @@ export const RecommendationDetailsModal = ({
               </Table>
             </TableContainer>
           )}
-          <CardContainer sx={{ m: 1, mt: 0, p: 1 }}>
+          <div
+            style={{
+              margin: "20px auto",
+              p: 1,
+              width: "300px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <Typography
               sx={{ textAlign: "center" }}
               variant="h6"
@@ -129,13 +150,13 @@ export const RecommendationDetailsModal = ({
               Комментарий
             </Typography>
             <CardContainer
-              style={{ padding: "10px", margin: "10px", textAlign: "center" }}
+              style={{ padding: "5px", width: "250px", textAlign: "center" }}
             >
               {Boolean(recommendation?.comment)
                 ? recommendation?.comment
                 : "Комментарий пуст."}
             </CardContainer>
-          </CardContainer>
+          </div>
         </div>
       </DialogContent>
       <DialogActions className="controls">

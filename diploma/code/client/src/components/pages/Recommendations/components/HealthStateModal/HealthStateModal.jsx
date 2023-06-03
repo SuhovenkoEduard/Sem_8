@@ -15,18 +15,18 @@ import {
 import { CardContainer } from "../../../../ui/CardContainer";
 
 import "./health-state-modal.scss";
-import Paper from "@mui/material/Paper";
 import { convertDailyLogPropNameToMeasurement } from "../../../../../firestore/converters";
 
 export const HealthStateModal = ({ isOpen, onClose, healthStates }) => {
   return (
-    <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle sx={{ textAlign: "center", marginBottom: "-20px" }}>
-        Назначения
-      </DialogTitle>
-      <DialogContent className="modal-content" sx={{ width: "1400px" }}>
+    <Dialog open={isOpen} onClose={onClose} className="health-state-dialog">
+      <DialogTitle sx={{ textAlign: "center" }}>Назначения</DialogTitle>
+      <DialogContent
+        className="health-state-modal-content"
+        sx={{ width: "1400px" }}
+      >
         <CardContainer className="health-state-container">
-          <TableContainer component={Paper}>
+          <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
@@ -65,13 +65,13 @@ export const HealthStateModal = ({ isOpen, onClose, healthStates }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <DialogActions className="controls">
-            <Button onClick={onClose} variant="outlined">
-              Отмена
-            </Button>
-          </DialogActions>
         </CardContainer>
       </DialogContent>
+      <DialogActions className="controls">
+        <Button onClick={onClose} variant="outlined">
+          Отмена
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };
