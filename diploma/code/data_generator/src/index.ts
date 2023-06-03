@@ -18,10 +18,10 @@ const main = async () => {
 
   // const results = read();
   // validate(results);
-  
+
   const results = await readCollections();
-  validate(results)
-  write(results)
+  validate(results);
+  write(results);
 
   // await removeCollections([
   //   CollectionName.USERS,

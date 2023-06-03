@@ -4,13 +4,8 @@ import { firebaseApp } from "../../firebase_config";
 import { CollectionName } from "../../constants";
 
 export const addCollections = async (results: GeneratorResults) => {
-  const {
-    users,
-    medications,
-    thematicMaterials,
-    healthStates,
-    notifications,
-  } = results;
+  const { users, medications, thematicMaterials, healthStates, notifications } =
+    results;
 
   const db = getFirestore(firebaseApp);
 
@@ -46,7 +41,7 @@ export const addCollections = async (results: GeneratorResults) => {
     );
     console.log("ThematicMaterials added!");
   }
-  
+
   if (healthStates) {
     await Promise.all(
       healthStates.map((healthState) =>

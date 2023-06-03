@@ -51,7 +51,7 @@ export const generate = async (): Promise<GeneratorResults> => {
   const healthStates: HealthState[] = generateHealthStates(HEALTH_STATES_DATA);
 
   const notifications: Notification[] = null;
-  
+
   return {
     users,
     medications: null,
