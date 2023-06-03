@@ -7,7 +7,7 @@ export type FirebaseDocId = {
 
 export type User = FirebaseDocId & {
   email: string;
-  password?: string;
+  password: string;
   imageUrl: string;
   name: {
     first: string;
@@ -27,7 +27,10 @@ export type User = FirebaseDocId & {
   doctor?: string;
 };
 
-export type UserInfo = Omit<User, "diary" | "employee" | "relativePatient">;
+export type UserInfo = Omit<
+  User,
+  "diary" | "password" | "employee" | "relativePatient"
+>;
 
 export type Medication = FirebaseDocId & {
   imageUrl: string;

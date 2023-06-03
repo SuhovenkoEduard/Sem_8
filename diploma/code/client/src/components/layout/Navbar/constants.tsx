@@ -117,8 +117,8 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   },
   {
     icon: <PeopleIcon />,
-    label: "Работники",
-    route: Route.employees,
+    label: "Пользователи",
+    route: Route.accounts,
     roles: [Role.ADMIN],
   },
   {

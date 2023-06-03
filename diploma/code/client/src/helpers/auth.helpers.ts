@@ -58,13 +58,13 @@ export const successfulSignUp = async ({
       ? undefined
       : {
           relativePatient: relativePatientId,
-          password,
         };
 
   await firebaseRepositories.users.updateDoc({
     docId: uid,
     address: "",
     email,
+    password,
     imageUrl: "",
     name: { first: firstName, last: lastName },
     phone: "",

@@ -144,7 +144,7 @@ export const diarySchema = z
 export const userSchema = firebaseDocIdSchema
   .extend({
     email: z.string(),
-    password: z.string().optional(),
+    password: z.string(),
     imageUrl: z.string(),
     name: z
       .object({

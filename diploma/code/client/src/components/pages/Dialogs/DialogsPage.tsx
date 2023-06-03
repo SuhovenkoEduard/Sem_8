@@ -16,7 +16,7 @@ import {
 import "stream-chat-react/dist/css/v2/index.css";
 import { i18nInstance, streamClient } from "containers/App/App";
 import useAsyncEffect from "use-async-effect";
-import { Role, User, UserInfo } from "firestore/types/collections.types";
+import { Role, UserInfo } from "firestore/types/collections.types";
 import { Autocomplete, TextField } from "@mui/material";
 import { getUserFullName } from "firestore/helpers";
 import { firebaseRepositories } from "firestore/data/repositories";
@@ -32,7 +32,7 @@ export const DialogsPage = () => {
 
   // dialogs
   const [dialogsUsers, setDialogsUsers] = useState<UserInfo[] | null>(null);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserInfo | null>(null);
 
   const { isLoading, channel } = useDialogsData({
     currentUser,
@@ -102,7 +102,7 @@ export const DialogsPage = () => {
     );
   };
 
-  const getUserOption = useCallback((user: User) => {
+  const getUserOption = useCallback((user: UserInfo) => {
     return {
       value: user.docId,
       label: getUserFullName(user),

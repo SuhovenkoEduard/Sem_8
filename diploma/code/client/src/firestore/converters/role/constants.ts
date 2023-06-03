@@ -11,6 +11,17 @@ export const RUSSIAN_ROLES: {
   [Role.ADMIN]: "админ",
 };
 
+export const RUSSIAN_ROLES_PLURAL: {
+  [key in Role]: string;
+} = {
+  [Role.PATIENT]: "Пациенты",
+  [Role.RELATIVE]: "Родственники",
+  [Role.DOCTOR]: "Доктора",
+  [Role.CONTENT_MAKER]: "Контент-мейкеры",
+  [Role.MODERATOR]: "Модераторы",
+  [Role.ADMIN]: "Админы",
+};
+
 export const RUSSIAN_DAILY_LOG_PROP_NAMES: {
   [key in DailyLogPropName]: string;
 } = {

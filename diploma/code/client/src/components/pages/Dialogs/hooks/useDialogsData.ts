@@ -27,7 +27,7 @@ export const useDialogsData = ({
 }: {
   currentUser: User;
   dialogsUsers: UserInfo[] | null;
-  selectedUser: User | null;
+  selectedUser: UserInfo | null;
 }) => {
   const [channel, setChannel] = useState<Channel | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);

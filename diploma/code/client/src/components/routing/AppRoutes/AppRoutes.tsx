@@ -29,6 +29,7 @@ import {
 } from "components/pages";
 import { RolesCheckRoutes } from "components/routing/RoleCheckRoutes";
 import { Role } from "firestore/types/collections.types";
+import { AccountsPage } from "../../pages/Accounts";
 
 // const HomePage = React.lazy(() => import("components/pages/HomePage"));
 
@@ -115,6 +116,9 @@ export const AppRoutes = () => {
               path={Route.recommendations}
               element={<RecommendationsPage />}
             />
+          </DomRoute>
+          <DomRoute element={<RolesCheckRoutes roles={[Role.ADMIN]} />}>
+            <DomRoute path={Route.accounts} element={<AccountsPage />} />
           </DomRoute>
           {/* Sign out */}
           <DomRoute path={Route.signOut} element={<SignOut />} />
