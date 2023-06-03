@@ -29,6 +29,8 @@ import { getUserSelector } from "../../../store/selectors";
 import dayjs from "dayjs";
 import { Status } from "../Recommendations/components/Status/Status";
 import { NotificationDetails } from "./components/NotificationDetails/NotificationDetails";
+import { useGeneralModalHandlers } from "../../../hooks/useGeneralModalHandlers";
+import { RecommendationDetailsModal } from "./components/RecommendationDetailsModal/RecommendationDetailsModal";
 
 const getHealthStatesByPatientReports = (patientReports, healthStates) =>
   patientReports
@@ -119,6 +121,17 @@ export const NotificationsPage = () => {
     setIsOpen(false);
   };
 
+  const [selectedRecommendation, setSelectedRecommendation] = useState(null);
+  const [isRecModalOpened, openRecModal, closeRecModal] =
+    useGeneralModalHandlers({
+      onOpen: (recommendation) => {
+        setSelectedRecommendation(recommendation);
+      },
+      onClose: () => {
+        setSelectedRecommendation(null);
+      },
+    });
+
   return (
     <PageContainer className="notifications-page">
       {isLoading && <LoadingSpinner />}
@@ -203,7 +216,9 @@ export const NotificationsPage = () => {
                                   variant="contained"
                                   color="info"
                                   sx={{ fontSize: "11px", fontWeight: "bold" }}
-                                  // onClick={() => onOpenEdit(healthState)}
+                                  onClick={() =>
+                                    openRecModal(notification?.recommendation)
+                                  }
                                 >
                                   Подробнее
                                 </Button>
@@ -285,6 +300,11 @@ export const NotificationsPage = () => {
         submitRecommendation={submitRecommendation}
         selectedRecommendation={selectedNotification?.recommendation ?? null}
         healthStates={selectedHealthStates}
+      />
+      <RecommendationDetailsModal
+        isOpen={isRecModalOpened}
+        onClose={closeRecModal}
+        recommendation={selectedRecommendation}
       />
     </PageContainer>
   );
