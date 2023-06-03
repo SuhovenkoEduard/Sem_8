@@ -17,19 +17,6 @@
       padding: 5px;
       text-align: center;
     }
-    .notification-details {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      .patient-report {
-        padding: 5px;
-        display: flex;
-        gap: 10px;
-        .current-value {
-          font-weight: bold;
-        }
-      }
-    }
     .recommendation-details {
       display: flex;
       flex-direction: column;

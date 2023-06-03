@@ -1,0 +1,13 @@
+.notification-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  .patient-report {
+    padding: 5px;
+    display: flex;
+    gap: 10px;
+    .current-value {
+      font-weight: bold;
+    }
+  }
+}

@@ -7,11 +7,7 @@ import { LoadingSpinner } from "../../ui/LoadingSpinner";
 import "./notifications.scss";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import {
-  convertDailyLogPropNameToMeasurement,
-  convertDailyLogPropNameToRussian,
-  convertUserToUserInfo,
-} from "../../../firestore/converters";
+import { convertUserToUserInfo } from "../../../firestore/converters";
 import {
   Button,
   Table,
@@ -31,6 +27,8 @@ import { RecommendationModal } from "./components/RecommendationModal";
 import { useSelector } from "react-redux";
 import { getUserSelector } from "../../../store/selectors";
 import dayjs from "dayjs";
+import { Status } from "../Recommendations/components/Status/Status";
+import { NotificationDetails } from "./components/NotificationDetails/NotificationDetails";
 
 const getHealthStatesByPatientReports = (patientReports, healthStates) =>
   patientReports
@@ -144,8 +142,9 @@ export const NotificationsPage = () => {
                   <TableRow>
                     <TableCell>Дата</TableCell>
                     <TableCell>Пациент</TableCell>
-                    <TableCell>Детали</TableCell>
+                    <TableCell>Отклонения по показателям</TableCell>
                     <TableCell>Рекомендация</TableCell>
+                    <TableCell>Ответ пациента</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -176,76 +175,101 @@ export const NotificationsPage = () => {
                               src={patient.imageUrl}
                               alt={getUserFullName(patient)}
                             />
-                            <Typography noWrap>
-                              {getUserFullName(patient)}
-                            </Typography>
+                            <Typography>{getUserFullName(patient)}</Typography>
                           </div>
                         </TableCell>
                         <TableCell sx={{ minWidth: "300px" }}>
-                          <div className="notification-details">
-                            {notification.patientReports.map(
-                              (patientReport) => (
-                                <CardContainer
-                                  className="patient-report"
-                                  key={
-                                    notification.docId + patientReport.propName
-                                  }
-                                >
-                                  <div className="prop-name">
-                                    {convertDailyLogPropNameToRussian(
-                                      patientReport.propName
-                                    )}
-                                    :
-                                  </div>
-                                  <div className="current-value">
-                                    {patientReport.currentValue}{" "}
-                                    {convertDailyLogPropNameToMeasurement(
-                                      patientReport.propName
-                                    )}
-                                  </div>
-                                </CardContainer>
-                              )
-                            )}
-                          </div>
+                          <NotificationDetails notification={notification} />
                         </TableCell>
                         <TableCell>
+                          {notification?.recommendation && (
+                            <CardContainer
+                              sx={{
+                                padding: "5px",
+                                margin: "10px auto",
+                                fontSize: "12px",
+                              }}
+                            >
+                              Дата рекомендации:{" "}
+                              {formatDate(
+                                notification.recommendation.createdAt
+                              )}
+                            </CardContainer>
+                          )}
                           {notification.recommendation && (
                             <div className="controls">
-                              <Button
-                                variant="contained"
-                                color="info"
-                                // onClick={() => onOpenEdit(healthState)}
-                              >
-                                Подробнее
-                              </Button>
-                              <Button
-                                variant="contained"
-                                color="warning"
-                                onClick={() => onOpen(notification)}
-                              >
-                                Редактировать
-                              </Button>
-                              <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() =>
-                                  onDeleteRecommendation(notification)
-                                }
-                              >
-                                Удалить
-                              </Button>
+                              <div style={{ display: "flex", gap: "5px" }}>
+                                <Button
+                                  variant="contained"
+                                  color="info"
+                                  sx={{ fontSize: "11px", fontWeight: "bold" }}
+                                  // onClick={() => onOpenEdit(healthState)}
+                                >
+                                  Подробнее
+                                </Button>
+                                {!notification?.recommendation
+                                  ?.patientReply && (
+                                  <>
+                                    <Button
+                                      variant="contained"
+                                      color="warning"
+                                      sx={{
+                                        fontSize: "11px",
+                                        fontWeight: "bold",
+                                      }}
+                                      onClick={() => onOpen(notification)}
+                                    >
+                                      Редактировать
+                                    </Button>
+                                    <Button
+                                      variant="contained"
+                                      color="error"
+                                      sx={{
+                                        fontSize: "11px",
+                                        fontWeight: "bold",
+                                      }}
+                                      onClick={() =>
+                                        onDeleteRecommendation(notification)
+                                      }
+                                    >
+                                      Удалить
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                              {notification?.recommendation?.patientReply && (
+                                <div
+                                  style={{
+                                    fontSize: "12px",
+                                    textAlign: "center",
+                                  }}
+                                >
+                                  Изменение рекомендации, после ответа
+                                  пользователя запрещено.
+                                </div>
+                              )}
                             </div>
                           )}
                           {!notification.recommendation && (
-                            <Button
-                              variant="contained"
-                              color="info"
-                              sx={{ width: "150px " }}
-                              onClick={() => onOpen(notification)}
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
                             >
-                              Добавить рекомендацию
-                            </Button>
+                              <Button
+                                variant="contained"
+                                color="info"
+                                sx={{ fontSize: "11px", fontWeight: "bold" }}
+                                onClick={() => onOpen(notification)}
+                              >
+                                Добавить рекомендацию
+                              </Button>
+                            </div>
                           )}
+                        </TableCell>
+                        <TableCell sx={{ minWidth: "270px" }}>
+                          <Status notification={notification} />
                         </TableCell>
                       </TableRow>
                     );

@@ -12,24 +12,10 @@
   }
 
   .notifications-container {
-    .notification-details {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      .patient-report {
-        padding: 5px;
-        display: flex;
-        gap: 10px;
-        .current-value {
-          font-weight: bold;
-          color: red;
-        }
-      }
-    }
     .controls {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 5px;
       align-items: center;
       justify-content: center;
     }

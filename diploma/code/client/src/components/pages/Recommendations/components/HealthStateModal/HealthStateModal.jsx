@@ -22,7 +22,7 @@ export const HealthStateModal = ({ isOpen, onClose, healthStates }) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle sx={{ textAlign: "center", marginBottom: "-20px" }}>
-        Советы
+        Назначения
       </DialogTitle>
       <DialogContent className="modal-content" sx={{ width: "1400px" }}>
         <CardContainer className="health-state-container">
@@ -34,7 +34,7 @@ export const HealthStateModal = ({ isOpen, onClose, healthStates }) => {
                   <TableCell sx={{ minWidth: "120px" }}>Минимум</TableCell>
                   <TableCell sx={{ minWidth: "120px" }}>Максимум</TableCell>
                   <TableCell>Предупреждение</TableCell>
-                  <TableCell>Рекомендация</TableCell>
+                  <TableCell>Назначение</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

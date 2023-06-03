@@ -55,7 +55,7 @@ export const DoctorReviews = ({ reviews }) => {
                 <TableCell>Оценка</TableCell>
                 <TableCell>Дата</TableCell>
                 <TableCell>Пациент</TableCell>
-                <TableCell>Текст отзыва</TableCell>
+                <TableCell>Отзыв</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

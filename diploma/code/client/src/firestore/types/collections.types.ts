@@ -169,10 +169,11 @@ export type HealthState = FirebaseDocId & {
 };
 
 export enum PatientReplyStatus {
-  DONE = "Выполнено, спасибо!",
+  DONE = "Выполнена, спасибо!",
   IGNORED = "Проигнорирована",
   DENIED = "Отклонена",
   NOT_SEEN = "Не просмотрена",
+  DOESNT_EXIST = "Не сформирована",
 }
 
 export type PatientReply = {

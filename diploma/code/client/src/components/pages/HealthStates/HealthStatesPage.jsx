@@ -107,7 +107,7 @@ export const HealthStatesPage = () => {
                           Максимум
                         </TableCell>
                         <TableCell>Предупреждение</TableCell>
-                        <TableCell>Рекомендация</TableCell>
+                        <TableCell>Назначение</TableCell>
                         <TableCell>Управление</TableCell>
                       </TableRow>
                     </TableHead>

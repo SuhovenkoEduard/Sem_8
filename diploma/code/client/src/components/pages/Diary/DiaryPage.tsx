@@ -6,6 +6,7 @@ import { useDailyLog, useDailyLogData } from "components/pages/Diary/hooks/";
 import { Button, TextField } from "@mui/material";
 import {
   DailyLog,
+  DailyLogPropName,
   Diary,
   Note,
   PatientReport,
@@ -36,8 +37,12 @@ import { formatDate } from "helpers/helpers";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 
+import {
+  calculatePatientReportDeviation,
+  generateDocId,
+} from "firestore/helpers";
+
 import "./diary.scss";
-import { generateDocId } from "firestore/helpers";
 
 export const emptyErrors: DiaryFormErrors = {
   sugarLevel: null,
@@ -63,18 +68,16 @@ const generateNotification = async ({
     return;
   }
 
-  const healthStates = await firebaseRepositories.healthStates.getDocs();
-  const patientReports: PatientReport[] = healthStates
-    .filter(({ min, max, propName }) => {
+  const patientReports: PatientReport[] = Object.values(DailyLogPropName)
+    .filter((propName) => {
       const currentValue = +dailyLogData[propName];
       return (
         !isNaN(currentValue) &&
         currentValue &&
-        min <= currentValue &&
-        currentValue <= max
+        !!calculatePatientReportDeviation(propName, currentValue)
       );
     })
-    .map(({ propName }) => ({
+    .map((propName) => ({
       currentValue: +dailyLogData[propName],
       propName,
     }));
@@ -184,7 +187,7 @@ export const DiaryPage = () => {
       await dispatch(fetchUser(newUser.docId));
       await generateNotification({ user, dailyLogData });
     } catch (err) {
-      dispatch(setDailyLog(convertDailyLogToDailyLogData(originalDailyLog)));
+      dispatch(setDailyLog(originalDailyLog));
       console.log(err);
       NotificationManager.error(
         "Сохранение дневника",

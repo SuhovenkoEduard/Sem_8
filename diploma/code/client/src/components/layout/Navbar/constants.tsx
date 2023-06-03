@@ -63,7 +63,7 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
   },
   {
     icon: <RecommendIcon />,
-    label: "Готовые рекомендации",
+    label: "Назначения",
     route: Route.healthStates,
     roles: [Role.DOCTOR],
   },

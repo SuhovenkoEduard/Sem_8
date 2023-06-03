@@ -23,17 +23,10 @@ import { formatDate } from "../../../helpers/helpers";
 import Avatar from "@mui/material/Avatar";
 import { getUserFullName } from "../../../firestore/helpers";
 import { CardContainer } from "../../ui/CardContainer";
-import {
-  convertDailyLogPropNameToMeasurement,
-  convertDailyLogPropNameToRussian,
-} from "../../../firestore/converters";
 import { HealthStateModal } from "./components/HealthStateModal";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
-import { PatientReplyStatus } from "../../../firestore/types/collections.types";
 import dayjs from "dayjs";
+import { Status } from "./components/Status/Status";
+import { NotificationDetails } from "../Notifications/components/NotificationDetails/NotificationDetails";
 
 export const RecommendationsPage = () => {
   const user = useSelector(getUserSelector);
@@ -118,8 +111,8 @@ export const RecommendationsPage = () => {
                 <TableRow>
                   <TableCell>Дата</TableCell>
                   <TableCell>Доктор</TableCell>
-                  <TableCell>Детали</TableCell>
-                  <TableCell>Советы</TableCell>
+                  <TableCell>Отклонения по показателям</TableCell>
+                  <TableCell>Назначения</TableCell>
                   <TableCell>Комментарий</TableCell>
                   <TableCell>Статус</TableCell>
                 </TableRow>
@@ -151,36 +144,14 @@ export const RecommendationsPage = () => {
                             src={doctor.imageUrl}
                             alt={getUserFullName(doctor)}
                           />
-                          <Typography noWrap>
-                            {getUserFullName(doctor)}
-                          </Typography>
+                          <Typography>{getUserFullName(doctor)}</Typography>
                         </div>
                       </TableCell>
                       <TableCell sx={{ minWidth: "300px" }}>
                         <CardContainer className="report-date">
                           Дата уведомления: {formatDate(notification.createdAt)}
                         </CardContainer>
-                        <div className="notification-details">
-                          {notification.patientReports.map((patientReport) => (
-                            <CardContainer
-                              className="patient-report"
-                              key={notification.docId + patientReport.propName}
-                            >
-                              <div className="prop-name">
-                                {convertDailyLogPropNameToRussian(
-                                  patientReport.propName
-                                )}
-                                :
-                              </div>
-                              <div className="current-value">
-                                {patientReport.currentValue}{" "}
-                                {convertDailyLogPropNameToMeasurement(
-                                  patientReport.propName
-                                )}
-                              </div>
-                            </CardContainer>
-                          ))}
-                        </div>
+                        <NotificationDetails notification={notification} />
                       </TableCell>
                       <TableCell>
                         <div className="recommendation-details">
@@ -200,6 +171,7 @@ export const RecommendationsPage = () => {
                               <Button
                                 variant="contained"
                                 color="info"
+                                sx={{ fontSize: "11px", fontWeight: "bold" }}
                                 onClick={() => onOpen(notification)}
                               >
                                 Подробнее
@@ -207,7 +179,7 @@ export const RecommendationsPage = () => {
                             </div>
                           )}
                           {!notification.recommendation.healthStates.length && (
-                            <div>Советов нет.</div>
+                            <div>Назначений нет.</div>
                           )}
                         </div>
                       </TableCell>
@@ -215,44 +187,10 @@ export const RecommendationsPage = () => {
                         {notification.recommendation.comment}
                       </TableCell>
                       <TableCell>
-                        {notification.recommendation?.patientReply && (
-                          <CardContainer sx={{ mb: 1, p: 1 }}>
-                            Дата ответа:{" "}
-                            {formatDate(
-                              notification.recommendation.patientReply.createdAt
-                            )}
-                          </CardContainer>
-                        )}
-                        <FormControl fullWidth>
-                          <InputLabel id="patient-reply-status-select-label-id">
-                            Статус
-                          </InputLabel>
-                          <Select
-                            labelId="patient-reply-status-select-label-id"
-                            value={
-                              notification.recommendation.patientReply
-                                ? notification.recommendation.patientReply
-                                    .status
-                                : PatientReplyStatus.NOT_SEEN
-                            }
-                            label="Статус"
-                            onChange={({ target: { value } }) =>
-                              onStatusChange(notification, value)
-                            }
-                          >
-                            {Object.values(PatientReplyStatus).map((status) => (
-                              <MenuItem
-                                key={notification.docId + status}
-                                value={status}
-                                disabled={
-                                  status === PatientReplyStatus.NOT_SEEN
-                                }
-                              >
-                                {status}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                        <Status
+                          notification={notification}
+                          onStatusChange={onStatusChange}
+                        />
                       </TableCell>
                     </TableRow>
                   );
