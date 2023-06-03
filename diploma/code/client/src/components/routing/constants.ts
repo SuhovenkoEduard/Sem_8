@@ -49,7 +49,7 @@ export const RouteTitles: {
   [Route.relative]: "Родственник",
   [Route.doctor]: "Доктор",
   [Route.reviews]: "Отзывы",
-  [Route.healthStates]: "Готовые рекомендации",
+  [Route.healthStates]: "Назначения",
   [Route.notifications]: "Уведомления",
   [Route.recommendations]: "Рекомендации",
 };

@@ -36,7 +36,7 @@ export const HealthStatesChip = ({
   return (
     <FormControl fullWidth>
       <InputLabel id="demo-multiple-chip-label">
-        Готовые рекомендации
+        Назначения
       </InputLabel>
       <Select
         labelId="demo-multiple-chip-label"
@@ -47,7 +47,7 @@ export const HealthStatesChip = ({
         input={
           <OutlinedInput
             id="select-multiple-chip"
-            label="Готовые рекомендации"
+            label="Назначения"
           />
         }
         renderValue={(selected) => (
