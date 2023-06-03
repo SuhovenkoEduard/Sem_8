@@ -40,10 +40,5 @@ doctor - ibtsnqFcOma3Ip1U2CRVBQD4Bwv1
 patient_igor - jsvFTA0FUvYi7rBzIpKboW9iOap1
 patient_alex - 4SjKsrZJdMdMOXHB3vzrlx7Y0Dj1
 
-New pages:
-	? Patients [doctor]
-
 1. создание/удаление тематических материалов (доктор)
-2. добавление/редактирование отзывов во вкладке "Врач" (пациент)
-3. Детали рекомендации вкладка "Уведомления" (доктор)
-4. страница пациентов (доктор)
+2. страница пациентов (доктор)

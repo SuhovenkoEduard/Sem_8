@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { PageContainer } from "components/layout";
 import { useSelector } from "react-redux";
-import useAsyncEffect from "use-async-effect";
 import { NotificationManager } from "react-notifications";
 import { getUserSelector } from "../../../store/selectors";
 import { firebaseRepositories } from "../../../firestore/data/repositories";
@@ -13,12 +12,15 @@ import { getUserFullName } from "../../../firestore/helpers";
 import { convertRoleToRussian } from "../../../firestore/converters";
 import { Button } from "@mui/material";
 import { useAppDispatch } from "../../../store";
-import "./doctor.scss";
 import { fetchUser } from "../../../store/reducers/user/actions";
 import { setUser } from "../../../store/reducers/user/userSlice";
 import { DoctorView } from "./DoctorView";
 import Typography from "@mui/material/Typography";
 import { DoctorDetails } from "./DoctorDetails";
+import { ReviewEditModal } from "./ReviewEditModal";
+import { useGeneralModalHandlers } from "../../../hooks/useGeneralModalHandlers";
+
+import "./doctor.scss";
 
 export const DoctorPage = () => {
   const user = useSelector(getUserSelector);
@@ -30,7 +32,7 @@ export const DoctorPage = () => {
   const [acceptedDoctor, setAcceptedDoctor] = useState(null);
   const [doctors, setDoctors] = useState([]);
 
-  useAsyncEffect(async () => {
+  const loadDoctors = useCallback(async () => {
     try {
       setIsLoading(true);
       const newDoctors = await firebaseRepositories.users.getDocs(
@@ -45,18 +47,32 @@ export const DoctorPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    loadDoctors();
+  }, [loadDoctors]);
+
   const [selectedDoctor, setSelectedDoctor] = useState(null);
 
-  useAsyncEffect(async () => {
-    if (user.doctor) {
-      const newDoctor = await firebaseRepositories.users.getDocById(
-        user.doctor
-      );
-      setSelectedDoctor(newDoctor);
-    } else {
-      setSelectedDoctor(null);
+  const loadSelectedDoctor = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      if (user.doctor) {
+        const newDoctor = await firebaseRepositories.users.getDocById(
+          user.doctor
+        );
+        setSelectedDoctor(newDoctor);
+      } else {
+        setSelectedDoctor(null);
+      }
+    } catch (e) {
+      console.log(e);
+      setIsLoading(false);
     }
   }, [user.doctor]);
+
+  useEffect(() => {
+    loadSelectedDoctor();
+  }, [loadSelectedDoctor]);
 
   const denyDoctor = async () => {
     try {
@@ -93,6 +109,72 @@ export const DoctorPage = () => {
       setAcceptedDoctor(null);
     }
   };
+
+  const editReview = async (updatedReview) => {
+    try {
+      setIsLoading(true);
+      let newReviews = selectedDoctor.employee.reviews.map((review) => {
+        if (review.reviewer !== updatedReview.reviewer) {
+          return review;
+        }
+        return updatedReview;
+      });
+      if (
+        !newReviews.find((review) => review.reviewer === updatedReview.reviewer)
+      ) {
+        newReviews = [...newReviews, updatedReview];
+      }
+      const newDoctor = {
+        ...selectedDoctor,
+        employee: {
+          ...selectedDoctor.employee,
+          reviews: newReviews,
+        },
+      };
+      await firebaseRepositories.users.updateDoc(newDoctor);
+      await loadSelectedDoctor();
+    } catch (e) {
+      console.log(e);
+      NotificationManager.error("Изменение отзыва", "Страница доктор");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteReview = async (reviewToDelete) => {
+    try {
+      setIsLoading(true);
+      let newReviews = selectedDoctor.employee.reviews.filter(
+        (review) => review.reviewer !== reviewToDelete.reviewer
+      );
+      const newDoctor = {
+        ...selectedDoctor,
+        employee: {
+          ...selectedDoctor.employee,
+          reviews: newReviews,
+        },
+      };
+      await firebaseRepositories.users.updateDoc(newDoctor);
+      await loadSelectedDoctor();
+    } catch (e) {
+      console.log(e);
+      NotificationManager.error("Удаление отзыва", "Страница доктор");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const [selectedReview, setSelectedReview] = useState(null);
+
+  const [isReviewModalOpened, openReviewModal, closeReviewModal] =
+    useGeneralModalHandlers({
+      onOpen: (review) => {
+        setSelectedReview(review);
+      },
+      onClose: () => {
+        setSelectedReview(null);
+      },
+    });
 
   return (
     <PageContainer className="doctor-page">
@@ -145,7 +227,17 @@ export const DoctorPage = () => {
               </Button>
             )}
           </CardContainer>
-          <DoctorDetails doctor={selectedDoctor} />
+          <DoctorDetails
+            doctor={selectedDoctor}
+            editReview={openReviewModal}
+            deleteReview={deleteReview}
+          />
+          <ReviewEditModal
+            isOpen={isReviewModalOpened}
+            onClose={closeReviewModal}
+            selectedReview={selectedReview}
+            submitReview={editReview}
+          />
         </div>
       ) : (
         <div className="doctors-list">

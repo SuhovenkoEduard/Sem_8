@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { CardContainer } from "../../../ui/CardContainer";
 
-import "./doctor-reviews.scss";
 import Paper from "@mui/material/Paper";
 import {
+  Button,
+  IconButton,
   Table,
   TableBody,
   TableCell,
@@ -20,10 +21,20 @@ import Typography from "@mui/material/Typography";
 import { getUserFullName } from "../../../../firestore/helpers";
 import Avatar from "@mui/material/Avatar";
 import ReactStars from "react-stars/dist/react-stars";
+import { EditButton } from "../../../ui/EditButton";
+import { useSelector } from "react-redux";
+import { getUserIdSelector } from "../../../../store/selectors";
+import DeleteIcon from "@mui/icons-material/Delete";
+import dayjs from "dayjs";
 
-export const DoctorReviews = ({ reviews }) => {
+import "./doctor-reviews.scss";
+
+export const DoctorReviews = ({ reviews, editReview, deleteReview }) => {
+  const userId = useSelector(getUserIdSelector);
+
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
+
   useAsyncEffect(async () => {
     try {
       setIsLoading(true);
@@ -40,6 +51,17 @@ export const DoctorReviews = ({ reviews }) => {
     }
   }, []);
 
+  const sortedReviews = useMemo(() => {
+    const firstReview = [reviews.find((review) => review.reviewer === userId)];
+    const restReviews = reviews.filter((review) => review.reviewer !== userId);
+    return [
+      ...firstReview.filter(Boolean),
+      ...restReviews.sort((leftReview, rightReview) =>
+        dayjs(leftReview.createdAt).diff(dayjs(rightReview.createdAt), "second")
+      ),
+    ];
+  }, [reviews, userId]);
+
   return (
     <CardContainer className="doctor-reviews">
       {isLoading || !users.length ? (
@@ -49,6 +71,17 @@ export const DoctorReviews = ({ reviews }) => {
           <Typography sx={{ textAlign: "center" }} variant="h6">
             Отзывы
           </Typography>
+          {!sortedReviews.find((review) => review.reviewer === userId) && (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                color="success"
+                variant="contained"
+                onClick={() => editReview(null)}
+              >
+                Добавить отзыв
+              </Button>
+            </div>
+          )}
           <Table sx={{ maxWidth: 900 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -56,10 +89,11 @@ export const DoctorReviews = ({ reviews }) => {
                 <TableCell>Дата</TableCell>
                 <TableCell>Пациент</TableCell>
                 <TableCell>Отзыв</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {reviews.map((review) => {
+              {sortedReviews.map((review) => {
                 const reviewer = users.find(
                   (user) => user.docId === review.reviewer
                 );
@@ -92,6 +126,19 @@ export const DoctorReviews = ({ reviews }) => {
                       </div>
                     </TableCell>
                     <TableCell>{review.content}</TableCell>
+                    <TableCell>
+                      {review.reviewer === userId && (
+                        <div style={{ display: "flex", gap: "10px" }}>
+                          <EditButton onClick={() => editReview(review)} />
+                          <IconButton
+                            color="error"
+                            onClick={() => deleteReview(review)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </div>
+                      )}
+                    </TableCell>
                   </TableRow>
                 );
               })}
