@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { PageContainer } from "components/layout";
-import { ThematicMaterial } from "firestore/types/collections.types";
+import { Role, ThematicMaterial } from "firestore/types/collections.types";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { NotificationManager } from "react-notifications";
 import { LoadingSpinner } from "components/ui/LoadingSpinner";
@@ -10,12 +10,15 @@ import { Route } from "components/routing";
 import { isMobile } from "react-device-detect";
 import { useGeneralModalHandlers } from "../../../hooks/useGeneralModalHandlers";
 import { Button } from "@mui/material";
-import { ThematicMaterialEditModal } from "./components/ThematicMaterialEditModal";
+import { ThematicMaterialEditModal } from "./components";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
+import { getUserSelector } from "../../../store/selectors";
 
 import "./thematic-materials.scss";
 
 export const ThematicMaterialsPage = () => {
+  const user = useSelector(getUserSelector);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [thematicMaterials, setThematicMaterials] = useState<
@@ -78,16 +81,18 @@ export const ThematicMaterialsPage = () => {
         <LoadingSpinner />
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              color="success"
-              variant="contained"
-              sx={{ fontSize: "11px", fontWeight: "bold" }}
-              onClick={openThematicMaterialModal as () => void}
-            >
-              Добавить тематический материал
-            </Button>
-          </div>
+          {[Role.DOCTOR, Role.CONTENT_MAKER].includes(user.role) && (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Button
+                color="success"
+                variant="contained"
+                sx={{ fontSize: "11px", fontWeight: "bold" }}
+                onClick={openThematicMaterialModal as () => void}
+              >
+                Добавить тематический материал
+              </Button>
+            </div>
+          )}
           <div
             className="thematic-materials-container"
             style={{
@@ -107,14 +112,14 @@ export const ThematicMaterialsPage = () => {
               />
             ))}
           </div>
+          <ThematicMaterialEditModal
+            isOpen={isThematicMaterialModalOpened}
+            onClose={closeThematicMaterialModal as () => void}
+            submitThematicMaterial={submitThematicMaterial}
+            selectedThematicMaterial={null}
+          />
         </div>
       )}
-      <ThematicMaterialEditModal
-        isOpen={isThematicMaterialModalOpened}
-        onClose={closeThematicMaterialModal as () => void}
-        submitThematicMaterial={submitThematicMaterial}
-        selectedThematicMaterial={null}
-      />
     </PageContainer>
   );
 };

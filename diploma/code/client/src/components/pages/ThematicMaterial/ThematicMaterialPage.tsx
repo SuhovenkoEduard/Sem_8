@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Role,
   ThematicMaterial,
   User,
 } from "firestore/types/collections.types";
-import useAsyncEffect from "use-async-effect";
 import { firebaseRepositories } from "firestore/data/repositories";
 import { NotificationManager } from "react-notifications";
 import { PageContainer } from "components/layout";
@@ -22,9 +21,14 @@ import { EditButton } from "components/ui/EditButton";
 import { useSelector } from "react-redux";
 import { getUserInfoSelector } from "store/selectors";
 import pretty from "pretty";
+import { deepCopy } from "deep-copy-ts";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 import "./thematic-material.scss";
-import { deepCopy } from "deep-copy-ts";
+import { useGeneralModalHandlers } from "../../../hooks/useGeneralModalHandlers";
+import { ThematicMaterialEditModal } from "../ThematicMaterials";
+import Typography from "@mui/material/Typography";
 
 const formatContent = (content: string) => pretty(content, { ocd: true });
 
@@ -39,7 +43,7 @@ export const ThematicMaterialPage = () => {
   const params = useParams();
   const thematicMaterialId = params.id as string;
 
-  useAsyncEffect(async () => {
+  const loadThematicMaterial = useCallback(async () => {
     try {
       setIsLoading(true);
       const newMaterial =
@@ -66,7 +70,11 @@ export const ThematicMaterialPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [thematicMaterialId]);
+
+  useEffect(() => {
+    loadThematicMaterial();
+  }, [loadThematicMaterial]);
 
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [newContent, setNewContent] = useState<string>("");
@@ -123,98 +131,183 @@ export const ThematicMaterialPage = () => {
     }
   };
 
+  const [
+    isThematicMaterialModalOpened,
+    openThematicMaterialModal,
+    closeThematicMaterialModal,
+  ] = useGeneralModalHandlers();
+
+  const submitThematicMaterial = async (
+    updatedThematicMaterial: ThematicMaterial
+  ) => {
+    try {
+      setIsLoading(true);
+      await firebaseRepositories.thematicMaterials.updateDoc(
+        updatedThematicMaterial
+      );
+      await loadThematicMaterial();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const deleteThematicMaterial = async () => {
+    if (!thematicMaterial?.docId) {
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await firebaseRepositories.thematicMaterials.deleteDocById(
+        thematicMaterial.docId
+      );
+      navigate(Route.thematicMaterials);
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <PageContainer className="thematic-material-page">
-      {isLoading || !thematicMaterial || !author ? (
+      {!isLoading && (!thematicMaterial || !author) && (
+        <Typography variant="h6" component="h2" sx={{ mt: 2 }}>
+          Тематический материал не найден.
+        </Typography>
+      )}
+      {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="thematic-material-container">
-          <Button
-            onClick={() => navigate(Route.thematicMaterials)}
-            variant="contained"
-            startIcon={<ArrowBackIcon />}
-            sx={{ width: "min-content" }}
-          >
-            Вернуться
-          </Button>
-          <CardContainer className="thematic-material-header-container">
-            <div className="image">
-              <img
-                src={thematicMaterial.imageUrl}
-                alt={thematicMaterial.title}
-              />
-            </div>
-            <div className="short-info">
-              <div className="author">
-                <div className="author-badge">
-                  <div className="author-badge__avatar">
-                    <Avatar src={author.imageUrl} />
-                  </div>
-                  <div className="author-badge__fullname">
-                    {getUserFullName(author)}
-                  </div>
-                </div>
-                <div className="light-text">Автор</div>
-              </div>
-              <div className="title">{thematicMaterial.title}</div>
-              <div className="light-text">
-                {formatDate(thematicMaterial.createdAt)}
-              </div>
-              <div className="description">{thematicMaterial.description}</div>
-            </div>
-          </CardContainer>
-          <CardContainer className="thematic-material-body">
-            {!isEditMode &&
-              [Role.DOCTOR, Role.CONTENT_MAKER].includes(userInfo.role) && (
-                <EditButton onClick={handleThematicMaterialEdit} />
-              )}
-            {isEditMode ? (
-              <form className="edit-form" onSubmit={handleSubmit}>
-                <TextField
-                  multiline
-                  label="Текст статьи"
-                  name="content"
-                  value={newContent}
-                  onChange={handleFieldChange}
-                  fullWidth
-                  margin="normal"
-                  disabled={isFormSaving}
-                />
-                <div className="controls">
+        thematicMaterial &&
+        author && (
+          <div className="thematic-material-container">
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "20px",
+              }}
+            >
+              <Button
+                onClick={() => navigate(Route.thematicMaterials)}
+                variant="contained"
+                startIcon={<ArrowBackIcon />}
+                sx={{ width: "min-content" }}
+              >
+                Вернуться
+              </Button>
+              {[Role.DOCTOR, Role.CONTENT_MAKER].includes(userInfo.role) && (
+                <div style={{ display: "flex", gap: "20px" }}>
                   <Button
-                    variant="outlined"
-                    onClick={handleCancel}
-                    disabled={isFormSaving}
+                    onClick={openThematicMaterialModal as () => void}
+                    variant="contained"
+                    color="warning"
+                    startIcon={<EditIcon />}
+                    sx={{ width: "min-content" }}
                   >
-                    Отмена
+                    Редактировать
                   </Button>
-                  {isFormSaving ? (
-                    <LoadingSpinner style={{ margin: "0", width: "100px" }} />
-                  ) : (
+                  <Button
+                    onClick={() => deleteThematicMaterial()}
+                    variant="contained"
+                    color="error"
+                    startIcon={<DeleteIcon />}
+                    sx={{ width: "min-content" }}
+                  >
+                    Удалить
+                  </Button>
+                </div>
+              )}
+            </div>
+            <CardContainer className="thematic-material-header-container">
+              <div className="image">
+                <img
+                  src={thematicMaterial.imageUrl}
+                  alt={thematicMaterial.title}
+                />
+              </div>
+              <div className="short-info">
+                <div className="author">
+                  <div className="author-badge">
+                    <div className="author-badge__avatar">
+                      <Avatar src={author.imageUrl} />
+                    </div>
+                    <div className="author-badge__fullname">
+                      {getUserFullName(author)}
+                    </div>
+                  </div>
+                  <div className="light-text">Автор</div>
+                </div>
+                <div className="title">{thematicMaterial.title}</div>
+                <div className="light-text">
+                  {formatDate(thematicMaterial.createdAt)}
+                </div>
+                <div className="description">
+                  {thematicMaterial.description}
+                </div>
+              </div>
+            </CardContainer>
+            <CardContainer className="thematic-material-body">
+              {!isEditMode &&
+                [Role.DOCTOR, Role.CONTENT_MAKER].includes(userInfo.role) && (
+                  <EditButton onClick={handleThematicMaterialEdit} />
+                )}
+              {isEditMode ? (
+                <form className="edit-form" onSubmit={handleSubmit}>
+                  <TextField
+                    multiline
+                    label="Текст статьи"
+                    name="content"
+                    value={newContent}
+                    onChange={handleFieldChange}
+                    fullWidth
+                    margin="normal"
+                    disabled={isFormSaving}
+                  />
+                  <div className="controls">
                     <Button
                       variant="outlined"
-                      type="submit"
-                      disabled={
-                        formatContent(thematicMaterial.content) ===
-                          formatContent(newContent) || isFormSaving
-                      }
+                      onClick={handleCancel}
+                      disabled={isFormSaving}
                     >
-                      Подтвердить
+                      Отмена
                     </Button>
-                  )}
-                </div>
-              </form>
-            ) : (
-              ReactHtmlParser(thematicMaterial.content)
-            )}
-          </CardContainer>
-          {/* todo comments for thematic material page */}
-          {/*<CardContainer className="comments" title="Комментарии">*/}
-          {/*{thematicMaterial.comments.map((comment) => (*/}
-          {/*  <div key={comment.message.createdAt}>{JSON.stringify(comment, null, '  ')}</div>*/}
-          {/*))}*/}
-          {/*</CardContainer>*/}
-        </div>
+                    {isFormSaving ? (
+                      <LoadingSpinner style={{ margin: "0", width: "100px" }} />
+                    ) : (
+                      <Button
+                        variant="outlined"
+                        type="submit"
+                        disabled={
+                          formatContent(thematicMaterial.content) ===
+                            formatContent(newContent) || isFormSaving
+                        }
+                      >
+                        Подтвердить
+                      </Button>
+                    )}
+                  </div>
+                </form>
+              ) : (
+                ReactHtmlParser(thematicMaterial.content)
+              )}
+            </CardContainer>
+            {/* todo comments for thematic material page */}
+            {/*<CardContainer className="comments" title="Комментарии">*/}
+            {/*{thematicMaterial.comments.map((comment) => (*/}
+            {/*  <div key={comment.message.createdAt}>{JSON.stringify(comment, null, '  ')}</div>*/}
+            {/*))}*/}
+            {/*</CardContainer>*/}
+            <ThematicMaterialEditModal
+              isOpen={isThematicMaterialModalOpened}
+              onClose={closeThematicMaterialModal as () => void}
+              submitThematicMaterial={submitThematicMaterial}
+              selectedThematicMaterial={thematicMaterial}
+            />
+          </div>
+        )
       )}
     </PageContainer>
   );
