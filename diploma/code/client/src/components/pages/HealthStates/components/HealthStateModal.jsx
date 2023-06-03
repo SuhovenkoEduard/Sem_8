@@ -68,8 +68,7 @@ export const HealthStateModal = ({
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>
-        {(healthStateToEdit ? "Редактирование" : "Добавление") +
-          " назначения"}
+        {(healthStateToEdit ? "Редактирование" : "Добавление") + " назначения"}
       </DialogTitle>
       <DialogContent
         className="modal-content"

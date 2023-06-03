@@ -35,21 +35,14 @@ export const HealthStatesChip = ({
 
   return (
     <FormControl fullWidth>
-      <InputLabel id="demo-multiple-chip-label">
-        Назначения
-      </InputLabel>
+      <InputLabel id="demo-multiple-chip-label">Назначения</InputLabel>
       <Select
         labelId="demo-multiple-chip-label"
         id="demo-multiple-chip"
         multiple
         value={healthStates}
         onChange={handleChange}
-        input={
-          <OutlinedInput
-            id="select-multiple-chip"
-            label="Назначения"
-          />
-        }
+        input={<OutlinedInput id="select-multiple-chip" label="Назначения" />}
         renderValue={(selected) => (
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
             {selected.map((value) => {

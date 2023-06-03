@@ -80,6 +80,8 @@ export const ProfilePage: React.FC = () => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
   const [isImageLoading, setIsImageLoading] = useState<boolean>(false);
   const [isFormSaving, setIsFormSaving] = useState<boolean>(false);
+  const [isDoctorDescriptionSaving, setIsDoctorDescriptionSaving] =
+    useState<boolean>(false);
 
   // effects
   useEffect(
@@ -172,6 +174,29 @@ export const ProfilePage: React.FC = () => {
     } finally {
       setIsFormSaving(false);
       setIsEditMode(false);
+    }
+  };
+
+  const changeDescription = async (newDescription: string) => {
+    if (!user.employee) {
+      return;
+    }
+    try {
+      setIsDoctorDescriptionSaving(true);
+      const newEmployee: User["employee"] = {
+        ...user.employee,
+        description: newDescription,
+      };
+      const newDoctor: User = {
+        ...user,
+        employee: newEmployee,
+      };
+      await firebaseRepositories.users.updateDoc(newDoctor);
+      await dispatch(fetchUser(newDoctor.docId));
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setIsDoctorDescriptionSaving(false);
     }
   };
 
@@ -305,7 +330,14 @@ export const ProfilePage: React.FC = () => {
         </div>
         {user.role === Role.DOCTOR && (
           <div className="doctor-info" style={{ marginBottom: "5rem" }}>
-            <DoctorDescription doctor={user} />
+            {isDoctorDescriptionSaving ? (
+              <LoadingSpinner />
+            ) : (
+              <DoctorDescription
+                doctor={user}
+                changeDescription={changeDescription}
+              />
+            )}
           </div>
         )}
       </div>
