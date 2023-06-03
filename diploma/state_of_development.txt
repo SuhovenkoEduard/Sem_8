@@ -36,7 +36,6 @@ temperature: 34, 42
 	
 jsvFTA0FUvYi7rBzIpKboW9iOap1
 
-doctor - ibtsnqFcOma3Ip1U2CRVBQD4Bwv1
 patient_igor - jsvFTA0FUvYi7rBzIpKboW9iOap1
 patient_alex - 4SjKsrZJdMdMOXHB3vzrlx7Y0Dj1
 
