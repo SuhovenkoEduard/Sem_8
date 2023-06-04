@@ -23,14 +23,19 @@ import Avatar from "@mui/material/Avatar";
 import ReactStars from "react-stars/dist/react-stars";
 import { EditButton } from "../../../ui/EditButton";
 import { useSelector } from "react-redux";
-import { getUserIdSelector } from "../../../../store/selectors";
+import {
+  getUserIdSelector,
+  getUserSelector,
+} from "../../../../store/selectors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import dayjs from "dayjs";
+import { Role } from "firestore/types/collections.types";
 
 import "./doctor-reviews.scss";
 
 export const DoctorReviews = ({ reviews, editReview, deleteReview }) => {
   const userId = useSelector(getUserIdSelector);
+  const currentUser = useSelector(getUserSelector);
 
   const [isLoading, setIsLoading] = useState(false);
   const [users, setUsers] = useState([]);
@@ -71,7 +76,8 @@ export const DoctorReviews = ({ reviews, editReview, deleteReview }) => {
           <Typography sx={{ textAlign: "center" }} variant="h6">
             Отзывы
           </Typography>
-          {!sortedReviews.find((review) => review.reviewer === userId) &&
+          {currentUser.role === Role.PATIENT &&
+            !sortedReviews.find((review) => review.reviewer === userId) &&
             Boolean(editReview) && (
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <Button
@@ -128,7 +134,8 @@ export const DoctorReviews = ({ reviews, editReview, deleteReview }) => {
                     </TableCell>
                     <TableCell>{review.content}</TableCell>
                     <TableCell>
-                      {review.reviewer === userId &&
+                      {currentUser.role === Role.PATIENT &&
+                        review.reviewer === userId &&
                         Boolean(editReview) &&
                         Boolean(deleteReview) && (
                           <div style={{ display: "flex", gap: "10px" }}>

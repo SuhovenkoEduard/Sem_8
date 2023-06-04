@@ -30,7 +30,9 @@ export const DoctorDescription = ({ doctor, changeDescription }) => {
       <Typography sx={{ textAlign: "center" }} variant="h6">
         <div style={{ display: "flex", justifyContent: "center" }}>
           <div>Описание</div>
-          {!isEditing && <EditButton onClick={() => setIsEditing(true)} />}
+          {!isEditing && Boolean(changeDescription) && (
+            <EditButton onClick={() => setIsEditing(true)} />
+          )}
         </div>
       </Typography>
       {!isEditing ? (

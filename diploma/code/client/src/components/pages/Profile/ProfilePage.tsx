@@ -178,7 +178,7 @@ export const ProfilePage: React.FC = () => {
   };
 
   const changeDescription = async (newDescription: string) => {
-    if (!user.employee) {
+    if (!user.employee || user.role !== Role.DOCTOR) {
       return;
     }
     try {
@@ -328,7 +328,7 @@ export const ProfilePage: React.FC = () => {
             </Card>
           )}
         </div>
-        {user.role === Role.DOCTOR && (
+        {user.role === Role.DOCTOR && Boolean(changeDescription) && (
           <div className="doctor-info" style={{ marginBottom: "5rem" }}>
             {isDoctorDescriptionSaving ? (
               <LoadingSpinner />
