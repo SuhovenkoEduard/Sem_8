@@ -12,6 +12,9 @@
     "allowJs": true,
     "module": "ESNext"
   },
+  "ts-node": {
+    "esm": true
+  },
   "include": [
     "src"
   ],

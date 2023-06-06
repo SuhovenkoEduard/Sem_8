@@ -1,13 +1,7 @@
-import { faker } from "@faker-js/faker";
-import {
-  readCollections,
-  addCollections,
-  generate,
-  read,
-  removeCollections,
-  validate,
-  write,
-} from "./data";
+import { faker } from '@faker-js/faker'
+import { addCollections, read, readCollections, removeCollections, validate, write, } from './data'
+import { CollectionName } from './constants'
+import { GeneratorResults } from './types/generator.types'
 
 faker.setLocale("ru");
 
