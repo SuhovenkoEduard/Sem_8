@@ -15,3 +15,4 @@ export { ReviewsPage } from "./Reviews";
 export { HealthStatesPage } from "./HealthStates";
 export { NotificationsPage } from "./Notifications";
 export { RecommendationsPage } from "./Recommendations";
+export { PatientsPage } from "./Patients";

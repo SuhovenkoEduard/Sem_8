@@ -68,6 +68,12 @@ export const navbarItemsData: Omit<NavBarItem, "id">[] = [
     roles: [Role.DOCTOR],
   },
   {
+    icon: <PeopleIcon />,
+    label: "Пациенты",
+    route: Route.patients,
+    roles: [Role.DOCTOR],
+  },
+  {
     icon: <AlarmIcon />,
     label: "Цели",
     route: Route.goals,
