@@ -29,6 +29,7 @@
   "files": [
     "./.eslintrc.js",
     "./src/definitions/notifications.d.ts",
-    "./src/definitions/svg.d.ts"
+    "./src/definitions/svg.d.ts",
+    "node_modules/@types/jest/index.d.ts"
   ]
 }
