@@ -2,7 +2,6 @@ export {}
 
 describe("Тестирование маршрута бизнес логики /doctor", () => {
   describe("Подмаршрут /get-patients", () => {
-    it("Проверка существования доктора", () => expect(true).toBe(true))
     it("Проверка получения всех пациентов", () => expect(true).toBe(true))
   })
   describe("Подмаршрут /get-patients-statistics", () => {
