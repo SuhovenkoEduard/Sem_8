@@ -1,0 +1,37 @@
+sourcesPath?: string = "./in"
+  extensions?: [".js", ".jsx", ".ts", ".tsx"] = [".js", ".jsx", ".ts", ".tsx"]
+  excludeFileNames?: string[] = []
+  delimiter?: string = "\n"
+  preserveEmptyLines?: boolean = false
+  docxFilePath?: string = "./out/full_code.docx"
+
+  argv:
+    to specify string:
+      --sample_prop=string
+      --sample_prop="string with spaces"
+
+    to specify boolean:
+      true:
+        --sample_prop
+      false:
+        --no-sample_prop
+
+    to specify array of strings:
+       --sample_prop item1 item2
+
+  example command:
+   ts-node .\src\index.ts
+    --sourcesPath=../client/src
+    --extensions .js .jsx .ts .tsx
+    --excludedFileNames index test
+    ### --delimiter \n - Doesn't work currently, if you pass '\n' it escapes '\' character
+    --no-preserveEmptyLines
+    --docxFilePath=./out/full_code.docx
+
+   or
+
+   command: ts-node .\src\index.ts --sourcesPath=../client/src --extensions .js .jsx .ts .tsx --excludedFileNames index test --no-preserveEmptyLines --docxFilePath=./out/full_code.docx
+
+   minimal:
+    command: ts-node .\src\index.ts --sourcesPath=../client/src
+    ### output will be in ./out
