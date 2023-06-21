@@ -8,7 +8,7 @@ import ruUpdated from "assets/i18/ru.json";
 
 import "containers/App/app.scss";
 
-export const streamClient = StreamChat.getInstance("bq8h3h82pvd8");
+export const streamClient = StreamChat.getInstance("vhmmd7vg3ney");
 export const i18nInstance = new Streami18n({
   language: "ru",
   translationsForLanguage: ruUpdated,
